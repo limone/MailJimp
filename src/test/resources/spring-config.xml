@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!-- 
+		We use this to inject the username, password and API key information into the bean directly.
+		Please note that you can also inject them directly via constructor args, if you desire - check out the bean
+		definition for a sample.
+		
+		The properties file needs to contain the following:
+		mc.username=your_username
+		mc.password=your_password
+		mc.apiKey=your_api_key
+	-->
+	<bean id="properties" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+		<property name="locations">
+			<list>
+				<value>${config}/mc4j.properties</value>
+			</list>
+		</property>
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="ignoreInvalidKeys" value="true" />
+	</bean>
+	
+	<bean name="mc" class="mc4j.service.impl.MailChimpService">
+		<!-- 
+			You can manually hardcode the credentials and API keys through the XLM configuration, if you want 
+		-->
+		<!--
+			<constructor-arg name="username" value="your_username" />
+			<constructor-arg name="password" value="your_password" />
+			<constructor-arg name="apiKey" value="your_api_key" />
+		-->
+	</bean>
+</beans>
