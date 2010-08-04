@@ -4,11 +4,29 @@
 	<artifactId>mc4j</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<name>MailChimp Java API</name>
+	<description>A Java library that wraps around the MailChimp web-based API.</description>
+	<url>http://github.com/mlaccetti/mc4j</url>
+	
+	<developers>
+		<developer>
+			<id>mlaccetti</id>
+			<name>Michael Laccetti</name>
+			<email>michael@laccetti.com</email>
+			<organization>Limone Fresco Limited</organization>
+			<url>http://www.laccetti.com/</url>
+			<timezone>EST5EDT</timezone>
+		</developer>
+	</developers>
+	
+	<scm>
+		<connection>scm:git:git://github.com/mlaccetti/mc4j.git</connection>
+		<developerConnection>scm:git:git@github.com:mlaccetti/mc4j.git</developerConnection>
+	</scm>
 	
 	<licenses>
 		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<name>The GNU General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/gpl.html</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
