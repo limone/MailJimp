@@ -30,6 +30,12 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>3</version>
+	</parent>
 	
 	<dependencies>
 		<!-- Spring -->
