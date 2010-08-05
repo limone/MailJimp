@@ -22,8 +22,22 @@ public class TestMailChimpService {
 		
 	@Test
 	public void testListApiKeys() {
-		String content = mSvc.listApiKeys();
+		String content = mSvc.keyList();
 		assertNotNull("No content", content);
-		log.debug("Content: {}", content);
+		log.debug("List Content: {}", content);
+	}
+	
+	@Test
+	public void testKeyAdd() {
+		String content = mSvc.keyAdd();
+		assertNotNull("No Content", content);
+		log.debug("Add Content: {}", content);
+	}
+	
+	@Test
+	public void testKeyExpire() {
+		Boolean content = mSvc.keyExpire();
+		assertNotNull("No Content", content);
+		log.debug("Expire Content: {}", content);
 	}
 }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MCAPI xmlns="mc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="mc mailchimp.xsd" type="array">
+	<error type="string">Invalid Mailchimp API Key: 17e3df8497f8e7bb87589a09aa3088c5-us1</error>
+	<code type="integer">104</code>
+</MCAPI>

@@ -18,6 +18,7 @@ package mc4j.service.impl;
 
 import javax.annotation.PostConstruct;
 
+import mc4j.service.IMailChimpAPI;
 import mc4j.service.IMailChimpService;
 import mc4j.service.MailChimpExceptionMapper;
 
@@ -27,10 +28,13 @@ import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MailChimpService {
+public class MailChimpService implements IMailChimpService {
 	private transient final Logger log = LoggerFactory.getLogger(getClass());
 	private final JAXRSClientFactoryBean bean = new JAXRSClientFactoryBean();
-	private IMailChimpService svc;
+	private IMailChimpAPI svc;
+	
+	// Constants
+	private static final String FORMAT = "xml";
 	
 	// Credentials
 	private String username;
@@ -86,16 +90,28 @@ public class MailChimpService {
 	@PostConstruct
 	protected void init() {
 		log.info("Creating MailChimp integration client.");
-		bean.setServiceClass(IMailChimpService.class);
+		bean.setServiceClass(IMailChimpAPI.class);
 		bean.setAddress("https://api.mailchimp.com/1.2/");
 		bean.setProvider(new MailChimpExceptionMapper());
-		svc = bean.create(IMailChimpService.class, new Object[]{});
+		svc = bean.create(IMailChimpAPI.class, new Object[]{});
 		bean.getInInterceptors().add(new LoggingInInterceptor());
 		bean.getOutInterceptors().add(new LoggingOutInterceptor());
 	}
-	
 
-	public String listApiKeys() {
-		return svc.listApiKeys("xml", "apikeys", username, password, apiKey, false);
+	@Override
+	public String keyAdd() {
+		return svc.keyAdd(FORMAT, "apikeyAdd", username, password, apiKey);
+	}
+
+	@Override
+	public Boolean keyExpire() {
+		String content = svc.keyExpire(FORMAT, "apikeyExpire", username, password, apiKey);
+		log.debug(content);
+		return Boolean.TRUE;
+	}
+
+	@Override
+	public String keyList() {
+		return svc.keyList(FORMAT, "apikeys", username, password, apiKey, false);
 	}
 }

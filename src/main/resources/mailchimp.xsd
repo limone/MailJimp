@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="mc" targetNamespace="mc">
+	<xs:element name="MCAPI" type="MCAPI" />
+	
+	<xs:complexType name="MCAPI">
+		<xs:attribute name="type" type="Types" />
+		<xs:choice>
+			<xs:group ref="ErrorGroup" />
+		</xs:choice>
+	</xs:complexType>
+	
+	<xs:group name="ErrorGroup">
+		<xs:sequence>
+			<xs:element name="error" type="ErrorType" />
+			<xs:element name="code" type="CodeType" />
+		</xs:sequence>
+	</xs:group>
+
+	<xs:complexType name="ErrorType">
+		<xs:attribute name="type" type="Types" />
+	</xs:complexType>
+	
+	<xs:complexType name="CodeType">
+		<xs:attribute name="type" type="Types" />
+	</xs:complexType>
+	
+	<xs:simpleType name="Types">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="string" />
+			<xs:enumeration value="boolean" />
+			<xs:enumeration value="integer" />
+			<xs:enumeration value="array" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
