@@ -3,10 +3,10 @@
 	<xs:element name="MCAPI" type="MCAPI" />
 	
 	<xs:complexType name="MCAPI">
-		<xs:attribute name="type" type="Types" />
 		<xs:choice>
 			<xs:group ref="ErrorGroup" />
 		</xs:choice>
+		<xs:attribute name="type" type="Types" />
 	</xs:complexType>
 	
 	<xs:group name="ErrorGroup">
