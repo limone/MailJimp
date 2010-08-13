@@ -54,7 +54,7 @@ public class MailChimpParser implements Serializable {
 			Node e = errors.item(i);
 			Node c = codes.item(i);
 			
-			MailChimpError mc = new MailChimpError(e.getNodeValue(), Integer.getInteger(c.getNodeName()));
+			MailChimpError mc = new MailChimpError(e.getTextContent(), Integer.getInteger(c.getTextContent()));
 			mcErrors.add(mc);
 		}
 		return mcErrors;

@@ -25,6 +25,7 @@ import mc4j.dom.MailChimpError;
 import mc4j.dom.Pair;
 import mc4j.service.IMailChimpAPI;
 import mc4j.service.IMailChimpService;
+import mc4j.service.MailChimpException;
 import mc4j.service.MailChimpExceptionMapper;
 import mc4j.xml.MailChimpParser;
 
@@ -109,35 +110,40 @@ public class MailChimpService implements IMailChimpService {
 		bean.getOutInterceptors().add(new LoggingOutInterceptor());
 	}
 	
-	private Pair<Document,List<MailChimpError>> convertAndCheck(Response r) {
+	private Document convertAndCheck(Response r) throws MailChimpException {
+		Document d = null;
+		List<MailChimpError> errors = null;
 		try {
-			Document d = mcParser.convertToDocument(r);
-			List<MailChimpError> errors = mcParser.checkErrors(d);
-			return new Pair<Document, List<MailChimpError>>(d, errors);
+			d = mcParser.convertToDocument(r);
+			errors = mcParser.checkErrors(d);
 		} catch (Exception ex) {
 			log.error("Could not convert XML to document and check for errors.", ex);
-			return null;
+			throw new MailChimpException(999, "Could not convert XML to document and check for errors.", ex);
 		}
+		
+		if (errors != null && errors.size() > 0) {
+			MailChimpException mce = new MailChimpException(999, "Errors found.");
+			mce.setErrors(errors);
+			throw mce;
+		}
+		return d;
 	}
 
 	@Override
-	public String keyAdd() {
-		Pair<Document,List<MailChimpError>> ret = convertAndCheck(svc.keyAdd(FORMAT, "apikeyAdd", username, password, apiKey));
-		if (ret.t2 != null) {
-			log.warn("Errors found while trying to add a key.");
-		}
+	public String keyAdd() throws MailChimpException {
+		Document ret = convertAndCheck(svc.keyAdd(FORMAT, "apikeyAdd", username, password, apiKey));
 		return null;
 	}
 
 	@Override
-	public Boolean keyExpire() {
-		Pair<Document,List<MailChimpError>> ret = convertAndCheck(svc.keyExpire(FORMAT, "apikeyExpire", username, password, apiKey));
+	public Boolean keyExpire() throws MailChimpException {
+		Document ret = convertAndCheck(svc.keyExpire(FORMAT, "apikeyExpire", username, password, apiKey));
 		return Boolean.TRUE;
 	}
 
 	@Override
-	public String keyList() {
-		Pair<Document,List<MailChimpError>> ret = convertAndCheck(svc.keyList(FORMAT, "apikeys", username, password, apiKey, false));
+	public String keyList() throws MailChimpException {
+		Document ret = convertAndCheck(svc.keyList(FORMAT, "apikeys", username, password, apiKey, false));
 		return null;
 	}
 }
