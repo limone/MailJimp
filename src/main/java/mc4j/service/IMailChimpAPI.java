@@ -20,19 +20,20 @@ import java.io.Serializable;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 
 public interface IMailChimpAPI extends Serializable {
 	// Key Management
 	@GET
-	public String keyList(@QueryParam("output") String output, @QueryParam("method") String method, @QueryParam("username") String username, @QueryParam("password") String password, @QueryParam("apikey") String apikey, @QueryParam("expired") Boolean expired);
+	public Response keyList(@QueryParam("output") String output, @QueryParam("method") String method, @QueryParam("username") String username, @QueryParam("password") String password, @QueryParam("apikey") String apikey, @QueryParam("expired") Boolean expired);
 
 	@GET
-	public String keyAdd(@QueryParam("output") String output, @QueryParam("method") String method, @QueryParam("username") String username, @QueryParam("password") String password, @QueryParam("apikey") String apikey);
+	public Response keyAdd(@QueryParam("output") String output, @QueryParam("method") String method, @QueryParam("username") String username, @QueryParam("password") String password, @QueryParam("apikey") String apikey);
 	
 	@GET
-	public String keyExpire(@QueryParam("output") String output, @QueryParam("method") String method, @QueryParam("username") String username, @QueryParam("password") String password, @QueryParam("apikey") String apikey);
+	public Response keyExpire(@QueryParam("output") String output, @QueryParam("method") String method, @QueryParam("username") String username, @QueryParam("password") String password, @QueryParam("apikey") String apikey);
 	
 	// List Management
 	@GET
-	public String listAll(@QueryParam("output") String output, @QueryParam("method") String method, @QueryParam("apikey") String apikey);
+	public Response listAll(@QueryParam("output") String output, @QueryParam("method") String method, @QueryParam("apikey") String apikey);
 }

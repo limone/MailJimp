@@ -13,19 +13,19 @@ public interface IMailChimpService extends Serializable {
 	 * 
 	 * @return List of keys
 	 */
-	public String keyList();
+	public String keyList() throws MailChimpException;
 	
 	/**
 	 * Add an API Key to your account. 
 	 * 
 	 * @return Newly generated key
 	 */
-	public String keyAdd();
+	public String keyAdd() throws MailChimpException;
 	
 	/**
 	 * Expire a Specific API Key.
 	 * 
 	 * @return Whether or not the API key was expired
 	 */
-	public Boolean keyExpire();
+	public Boolean keyExpire() throws MailChimpException;
 }

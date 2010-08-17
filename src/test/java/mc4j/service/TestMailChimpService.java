@@ -1,7 +1,6 @@
 package mc4j.service;
 
-import static org.junit.Assert.*;
-
+import mc4j.dom.MailChimpError;
 import mc4j.service.impl.MailChimpService;
 
 import org.junit.Test;
@@ -22,22 +21,40 @@ public class TestMailChimpService {
 		
 	@Test
 	public void testListApiKeys() {
-		String content = mSvc.keyList();
-		assertNotNull("No content", content);
-		log.debug("List Content: {}", content);
+		try {
+			String content = mSvc.keyList();
+			log.debug("List Content: {}", content);
+		} catch (MailChimpException mce) {
+			processError(mce);
+		}
 	}
 	
 	@Test
 	public void testKeyAdd() {
-		String content = mSvc.keyAdd();
-		assertNotNull("No Content", content);
-		log.debug("Add Content: {}", content);
+		try {
+			String content = mSvc.keyAdd();
+			log.debug("Add Content: {}", content);
+		} catch (MailChimpException mce) {
+			processError(mce);
+		}
 	}
 	
 	@Test
 	public void testKeyExpire() {
-		Boolean content = mSvc.keyExpire();
-		assertNotNull("No Content", content);
-		log.debug("Expire Content: {}", content);
+		try {
+			Boolean content = mSvc.keyExpire();
+			log.debug("Expire Content: {}", content);
+		} catch (MailChimpException mce) {
+			processError(mce);
+		}
+	}
+	
+	private void processError(MailChimpException mce) {
+		log.error("Exception while trying to process MailChimp call.");
+		if (mce.getErrors() != null && mce.getErrors().size() > 0) {
+			for (MailChimpError e : mce.getErrors()) {
+				log.warn("Mail chimp error: {}", e.getError());
+			}
+		}
 	}
 }

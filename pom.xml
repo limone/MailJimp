@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>limone.mc4j</groupId>
+	<groupId>me.limone.mc4j</groupId>
 	<artifactId>mc4j</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<name>MailChimp Java API</name>
@@ -182,25 +182,6 @@
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<configuration>
 					<downloadSources>true</downloadSources>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>1.3</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>xjc</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<packageName>mc4j.dom</packageName>
-					<clearOutputDir>false</clearOutputDir>
-					<outputDirectory>src/main/java</outputDirectory>
-					<schemaDirectory>src/main/resources</schemaDirectory>
-					<extension>true</extension>
 				</configuration>
 			</plugin>
 		</plugins>

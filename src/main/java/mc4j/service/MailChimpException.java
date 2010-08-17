@@ -16,8 +16,14 @@
 */
 package mc4j.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import mc4j.dom.MailChimpError;
+
 public class MailChimpException extends Exception {
 	private final int statusCode;
+	private List<MailChimpError> errors = new ArrayList<MailChimpError>();
 	
 	public MailChimpException(int statusCode, String message) {
 		super(message);
@@ -31,5 +37,13 @@ public class MailChimpException extends Exception {
 
 	public int getStatusCode() {
 		return statusCode;
+	}
+
+	public List<MailChimpError> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<MailChimpError> errors) {
+		this.errors = errors;
 	}
 }
