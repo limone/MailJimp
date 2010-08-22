@@ -18,9 +18,11 @@ package mc4j.service.impl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import mc4j.dom.ApiKey;
 import mc4j.service.IMailChimpService;
 import mc4j.service.MailChimpException;
 
@@ -32,6 +34,8 @@ import org.slf4j.LoggerFactory;
 public class MailChimpService implements IMailChimpService {
 	private transient final Logger log = LoggerFactory.getLogger(getClass());
 	private transient XmlRpcClient client;
+	
+	private transient final MailChimpParser mp = new MailChimpParser();
 	
 	// Credentials
 	private String username;
@@ -97,6 +101,16 @@ public class MailChimpService implements IMailChimpService {
 		client.setConfig(config);
 	}
 	
+	@SuppressWarnings("unchecked")
+	private <T> T invoke(String method, Object[] params) throws MailChimpException {
+		try {
+			return (T)mp.parseApiKeys(client.execute(method, params));
+		} catch (Exception ex) {
+			log.error("Could not invoke XML RPC client.", ex);
+			throw new MailChimpException("Could not invoke XML RPC client.", ex);
+		}
+	}
+	
 	@Override
 	public String keyAdd() throws MailChimpException {
 		/*Document d = convertAndCheck(svc.keyAdd(FORMAT, "apikeyAdd", username, password, apiKey));
@@ -114,10 +128,13 @@ public class MailChimpService implements IMailChimpService {
 	}
 
 	@Override
-	public String keyList() throws MailChimpException {
-		/*ApiKeys keys = svc.keyList(FORMAT, "apikeys", username, password, apiKey, false);
-		log.debug("Key: {}", keys.toString());
-		return null;*/
-		return null;
+	public List<ApiKey> keyList() throws MailChimpException {
+		return keyList(true);
+	}
+	
+	@Override
+	public List<ApiKey> keyList(boolean includeExpired) throws MailChimpException {
+		Object[] params = new Object[] { username, password, apiKey, includeExpired};
+		return invoke("apikeys", params);
 	}
 }
