@@ -16,6 +16,7 @@
 */
 package mc4j.service.impl;
 
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -23,9 +24,11 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import mc4j.dom.ApiKey;
+import mc4j.dom.MailingList;
 import mc4j.service.IMailChimpService;
 import mc4j.service.MailChimpException;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.slf4j.Logger;
@@ -102,9 +105,10 @@ public class MailChimpService implements IMailChimpService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T> T invoke(String method, Object[] params) throws MailChimpException {
+	private <T> T invoke(String method, Object[] params, String methodName) throws MailChimpException {
 		try {
-			return (T)mp.parseApiKeys(client.execute(method, params));
+			Method m = ClassUtils.getPublicMethod(MailChimpParser.class, methodName, new Class[]{Object.class});
+			return (T)m.invoke(mp, client.execute(method, params));
 		} catch (Exception ex) {
 			log.error("Could not invoke XML RPC client.", ex);
 			throw new MailChimpException("Could not invoke XML RPC client.", ex);
@@ -113,18 +117,14 @@ public class MailChimpService implements IMailChimpService {
 	
 	@Override
 	public String keyAdd() throws MailChimpException {
-		/*Document d = convertAndCheck(svc.keyAdd(FORMAT, "apikeyAdd", username, password, apiKey));
-		String key = mcParser.retrieveContent(d, String.class);
-		return key;*/
-		return null;
+		Object[] params = new Object[] { username, password, apiKey};
+		return invoke("apikeyAdd", params, "createApiKey");
 	}
 
 	@Override
 	public Boolean keyExpire() throws MailChimpException {
-		/*Document d = convertAndCheck(svc.keyExpire(FORMAT, "apikeyExpire", username, password, apiKey));
-		Boolean isExpired = mcParser.retrieveContent(d, Boolean.class);
-		return isExpired;*/
-		return Boolean.FALSE;
+		Object[] params = new Object[] { username, password, apiKey};
+		return invoke("apikeyExpire", params, "expireApiKey");
 	}
 
 	@Override
@@ -135,6 +135,12 @@ public class MailChimpService implements IMailChimpService {
 	@Override
 	public List<ApiKey> keyList(boolean includeExpired) throws MailChimpException {
 		Object[] params = new Object[] { username, password, apiKey, includeExpired};
-		return invoke("apikeys", params);
+		return invoke("apikeys", params, "parseApiKeys");
+	}
+
+	@Override
+	public List<MailingList> getLists() throws MailChimpException {
+		Object[] params = new Object[] { apiKey };
+		return invoke("lists", params, "parseLists");
 	}
 }

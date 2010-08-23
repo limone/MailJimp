@@ -4,6 +4,7 @@ import java.util.List;
 
 import mc4j.dom.ApiKey;
 import mc4j.dom.MailChimpError;
+import mc4j.dom.MailingList;
 import mc4j.service.impl.MailChimpService;
 
 import org.junit.Ignore;
@@ -52,6 +53,16 @@ public class TestMailChimpService {
 		try {
 			Boolean content = mSvc.keyExpire();
 			log.debug("Expire Content: {}", content);
+		} catch (MailChimpException mce) {
+			processError(mce);
+		}
+	}
+	
+	@Test
+	public void testGetLists() {
+		try {
+			List<MailingList> content = mSvc.getLists();
+			log.debug("Lists Content: {}", content);
 		} catch (MailChimpException mce) {
 			processError(mce);
 		}

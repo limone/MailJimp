@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import mc4j.dom.ApiKey;
+import mc4j.dom.MailingList;
 
 /**
  * All of the functionality that is exposed by the MailChimp API.
@@ -39,4 +40,6 @@ public interface IMailChimpService extends Serializable {
 	 * @return Whether or not the API key was expired
 	 */
 	public Boolean keyExpire() throws MailChimpException;
+	
+	public List<MailingList> getLists() throws MailChimpException;
 }
