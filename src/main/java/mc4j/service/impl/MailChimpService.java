@@ -19,12 +19,16 @@ package mc4j.service.impl;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
 import mc4j.dom.ApiKey;
 import mc4j.dom.MailingList;
+import mc4j.dom.MemberStatus;
 import mc4j.service.IMailChimpService;
 import mc4j.service.MailChimpException;
 
@@ -96,6 +100,7 @@ public class MailChimpService implements IMailChimpService {
 		log.info("Creating MailChimp integration client.");
 		XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
 		try {
+			config.setEnabledForExtensions(true);
 			config.setServerURL(new URL("http://api.mailchimp.com/1.2/"));
 		} catch (MalformedURLException mue) {
 			log.warn("MailChimp API URL was invalid.");
@@ -142,5 +147,23 @@ public class MailChimpService implements IMailChimpService {
 	public List<MailingList> getLists() throws MailChimpException {
 		Object[] params = new Object[] { apiKey };
 		return invoke("lists", params, "parseLists");
+	}
+
+	@Override
+	public Map<String, Date> getListMembers(String listId, MemberStatus memberStatus, Date since, Integer start, Integer limit) throws MailChimpException {
+		List<Object> p = new ArrayList<Object>();
+		p.add(apiKey);
+		p.add(listId);
+		p.add(memberStatus.getStatus());
+		if (since != null) {
+			p.add(MailChimpConstants.sdf.format(since));
+		}
+		if (start != null) {
+			p.add(start);
+		}
+		if (limit != null) {
+			p.add(limit);
+		}
+		return invoke("listMembers", p.toArray(), "parseListMembers");
 	}
 }

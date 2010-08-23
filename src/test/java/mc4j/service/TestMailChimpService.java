@@ -1,10 +1,13 @@
 package mc4j.service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import mc4j.dom.ApiKey;
 import mc4j.dom.MailChimpError;
 import mc4j.dom.MailingList;
+import mc4j.dom.MemberStatus;
 import mc4j.service.impl.MailChimpService;
 
 import org.junit.Ignore;
@@ -23,6 +26,15 @@ public class TestMailChimpService {
 
 	@Autowired
 	private MailChimpService mSvc;
+	
+	private void processError(MailChimpException mce) {
+		log.error("Exception while trying to process MailChimp call.");
+		if (mce.getErrors() != null && mce.getErrors().size() > 0) {
+			for (MailChimpError e : mce.getErrors()) {
+				log.warn("Mail chimp error: {}", e.getError());
+			}
+		}
+	}
 
 	@Test
 	public void testListApiKeys() {
@@ -67,13 +79,14 @@ public class TestMailChimpService {
 			processError(mce);
 		}
 	}
-
-	private void processError(MailChimpException mce) {
-		log.error("Exception while trying to process MailChimp call.");
-		if (mce.getErrors() != null && mce.getErrors().size() > 0) {
-			for (MailChimpError e : mce.getErrors()) {
-				log.warn("Mail chimp error: {}", e.getError());
-			}
+	
+	@Test
+	public void testGetListMembers() {
+		try {
+			Map<String,Date> content = mSvc.getListMembers("b0308c77a5", MemberStatus.SUBSCRIBED, null, null, null);
+			log.debug("List members: {}", content);
+		} catch (MailChimpException mce) {
+			processError(mce);
 		}
 	}
 }

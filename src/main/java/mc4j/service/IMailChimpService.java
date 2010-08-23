@@ -1,10 +1,13 @@
 package mc4j.service;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import mc4j.dom.ApiKey;
 import mc4j.dom.MailingList;
+import mc4j.dom.MemberStatus;
 
 /**
  * All of the functionality that is exposed by the MailChimp API.
@@ -42,4 +45,5 @@ public interface IMailChimpService extends Serializable {
 	public Boolean keyExpire() throws MailChimpException;
 	
 	public List<MailingList> getLists() throws MailChimpException;
+	public Map<String,Date> getListMembers(String listId, MemberStatus memberStatus, Date since, Integer start, Integer limit) throws MailChimpException;
 }
