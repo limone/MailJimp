@@ -7,6 +7,7 @@ import java.util.Map;
 import mc4j.dom.ApiKey;
 import mc4j.dom.MailChimpError;
 import mc4j.dom.MailingList;
+import mc4j.dom.MemberInfo;
 import mc4j.dom.MemberStatus;
 import mc4j.service.impl.MailChimpService;
 
@@ -37,6 +38,7 @@ public class TestMailChimpService {
 	}
 
 	@Test
+	@Ignore
 	public void testListApiKeys() {
 		try {
 			List<ApiKey> content = mSvc.keyList();
@@ -71,6 +73,7 @@ public class TestMailChimpService {
 	}
 	
 	@Test
+	@Ignore
 	public void testGetLists() {
 		try {
 			List<MailingList> content = mSvc.getLists();
@@ -81,10 +84,21 @@ public class TestMailChimpService {
 	}
 	
 	@Test
+	@Ignore
 	public void testGetListMembers() {
 		try {
 			Map<String,Date> content = mSvc.getListMembers("b0308c77a5", MemberStatus.SUBSCRIBED, null, null, null);
 			log.debug("List members: {}", content);
+		} catch (MailChimpException mce) {
+			processError(mce);
+		}
+	}
+	
+	@Test
+	public void testGetListMemberInfo() {
+		try {
+			MemberInfo content = mSvc.getMemberInfo("b0308c77a5", "michael@laccetti.com");
+			log.debug("Members info: {}", content);
 		} catch (MailChimpException mce) {
 			processError(mce);
 		}

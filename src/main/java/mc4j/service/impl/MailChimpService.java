@@ -28,6 +28,7 @@ import javax.annotation.PostConstruct;
 
 import mc4j.dom.ApiKey;
 import mc4j.dom.MailingList;
+import mc4j.dom.MemberInfo;
 import mc4j.dom.MemberStatus;
 import mc4j.service.IMailChimpService;
 import mc4j.service.MailChimpException;
@@ -122,13 +123,13 @@ public class MailChimpService implements IMailChimpService {
 	
 	@Override
 	public String keyAdd() throws MailChimpException {
-		Object[] params = new Object[] { username, password, apiKey};
+		Object[] params = new Object[] { username, password, apiKey };
 		return invoke("apikeyAdd", params, "createApiKey");
 	}
 
 	@Override
 	public Boolean keyExpire() throws MailChimpException {
-		Object[] params = new Object[] { username, password, apiKey};
+		Object[] params = new Object[] { username, password, apiKey };
 		return invoke("apikeyExpire", params, "expireApiKey");
 	}
 
@@ -139,7 +140,7 @@ public class MailChimpService implements IMailChimpService {
 	
 	@Override
 	public List<ApiKey> keyList(boolean includeExpired) throws MailChimpException {
-		Object[] params = new Object[] { username, password, apiKey, includeExpired};
+		Object[] params = new Object[] { username, password, apiKey, includeExpired };
 		return invoke("apikeys", params, "parseApiKeys");
 	}
 
@@ -165,5 +166,11 @@ public class MailChimpService implements IMailChimpService {
 			p.add(limit);
 		}
 		return invoke("listMembers", p.toArray(), "parseListMembers");
+	}
+
+	@Override
+	public MemberInfo getMemberInfo(String listId, String emailAddress) throws MailChimpException {
+		Object[] params = new Object[] { apiKey, listId, emailAddress };
+		return invoke("listMemberInfo", params, "parseListMemberInfo");
 	}
 }
