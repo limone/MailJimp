@@ -2,7 +2,6 @@ package mc4j.dom;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 public class MemberInfo implements Serializable {
@@ -15,7 +14,6 @@ public class MemberInfo implements Serializable {
 	private String ipSignup;
 	private Integer memberRating;
 	private String campaignId;
-	private List<Object> lists;
 	private Date timestamp;
 	private Date infoChanged;
 	private Integer webId;
@@ -24,7 +22,7 @@ public class MemberInfo implements Serializable {
 		// empty
 	}
 
-	public MemberInfo(String id, String email, String emailType, Map<String,String> merges, MemberStatus status, String ipOpt, String ipSignup, Integer memberRating, String campaignId, List<Object> lists, Date timestamp, Date infoChanged, Integer webId) {
+	public MemberInfo(String id, String email, String emailType, Map<String,String> merges, MemberStatus status, String ipOpt, String ipSignup, Integer memberRating, String campaignId, Date timestamp, Date infoChanged, Integer webId) {
 		this.id = id;
 		this.email = email;
 		this.emailType = emailType;
@@ -34,10 +32,14 @@ public class MemberInfo implements Serializable {
 		this.ipSignup = ipSignup;
 		this.memberRating = memberRating;
 		this.campaignId = campaignId;
-		this.lists = lists;
 		this.timestamp = timestamp;
 		this.infoChanged = infoChanged;
 		this.webId = webId;
+	}
+
+	@Override
+	public String toString() {
+		return "MemberInfo [campaignId=" + campaignId + ", email=" + email + ", emailType=" + emailType + ", id=" + id + ", infoChanged=" + infoChanged + ", ipOpt=" + ipOpt + ", ipSignup=" + ipSignup + ", memberRating=" + memberRating + ", merges=" + merges + ", status=" + status + ", timestamp=" + timestamp + ", webId=" + webId + "]";
 	}
 
 	public String getId() {
@@ -110,14 +112,6 @@ public class MemberInfo implements Serializable {
 
 	public void setCampaignId(String campaignId) {
 		this.campaignId = campaignId;
-	}
-
-	public List<Object> getLists() {
-		return lists;
-	}
-
-	public void setLists(List<Object> lists) {
-		this.lists = lists;
 	}
 
 	public Date getTimestamp() {

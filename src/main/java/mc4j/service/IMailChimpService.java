@@ -48,4 +48,5 @@ public interface IMailChimpService extends Serializable {
 	public List<MailingList> getLists() throws MailChimpException;
 	public Map<String,Date> getListMembers(String listId, MemberStatus memberStatus, Date since, Integer start, Integer limit) throws MailChimpException;
 	public MemberInfo getMemberInfo(String listId, String emailAddress) throws MailChimpException;
+	public Boolean listSubscribe();
 }

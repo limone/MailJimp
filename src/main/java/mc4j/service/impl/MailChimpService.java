@@ -173,4 +173,9 @@ public class MailChimpService implements IMailChimpService {
 		Object[] params = new Object[] { apiKey, listId, emailAddress };
 		return invoke("listMemberInfo", params, "parseListMemberInfo");
 	}
+
+	@Override
+	public Boolean listSubscribe() {
+		return null;
+	}
 }

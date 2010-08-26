@@ -58,7 +58,7 @@ public class MailChimpParser {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T convert(Class<T> expected, Object value) throws MailChimpException {
+	private <T,Z> T convert(Class<T> expected, Object value) throws MailChimpException {
 		if (value == null) { return null; }
 
 		if (expected.isEnum()) {
@@ -94,8 +94,14 @@ public class MailChimpParser {
 		
 		if (expected.isAssignableFrom(List.class)) {
 			if (value.getClass().isArray()) {
-				Object[] o = (Object[])value;
 				return null;
+			} else if (value.getClass().isAssignableFrom(Map.class)) {
+				try {
+					T obj = expected.newInstance();
+					setVars((Map<String,Object>)value, obj);
+				} catch (Exception ex) {
+					throw new MailChimpException("Could not process nested collection.", ex);
+				}
 			}
 			throw new MailChimpException("We expected a list, but the inbound element was not an array.");
 		}
