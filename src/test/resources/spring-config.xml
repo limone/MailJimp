@@ -24,7 +24,7 @@
 	
 	<bean name="mc" class="mc4j.service.impl.MailChimpService">
 		<!-- 
-			You can manually hardcode the credentials and API keys through the XLM configuration, if you want 
+			You can manually hardcode the credentials and API keys through the XML configuration, if you want 
 		-->
 		<!--
 			<constructor-arg name="username" value="your_username" />

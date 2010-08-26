@@ -6,7 +6,6 @@
 	<name>MailChimp Java API</name>
 	<description>A Java library that wraps around the MailChimp web-based API.</description>
 	<url>http://github.com/mlaccetti/mc4j</url>
-
 	<developers>
 		<developer>
 			<id>mlaccetti</id>
@@ -17,12 +16,10 @@
 			<timezone>EST5EDT</timezone>
 		</developer>
 	</developers>
-
 	<scm>
 		<connection>scm:git:git://github.com/mlaccetti/mc4j.git</connection>
 		<developerConnection>scm:git:git@github.com:mlaccetti/mc4j.git</developerConnection>
 	</scm>
-
 	<licenses>
 		<license>
 			<name>The GNU General Public License, Version 3</name>
@@ -30,13 +27,11 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
-		<version>3</version>
+		<version>4</version>
 	</parent>
-
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -64,7 +59,6 @@
 			<artifactId>spring-web</artifactId>
 			<version>3.0.2.RELEASE</version>
 		</dependency>
-
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -76,12 +70,11 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
-
 		<!-- JAXRS -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-bundle-jaxrs</artifactId>
-			<version>2.2.9</version>
+			<version>2.2.10</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>jetty</artifactId>
@@ -113,13 +106,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<dependency>
-			<groupId>org.apache.neethi</groupId>
-			<artifactId>neethi</artifactId>
-			<version>2.0.4</version>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.3.1</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.xmlrpc</groupId>
+			<artifactId>xmlrpc-client</artifactId>
+			<version>3.1.3</version>
+		</dependency>
+		
 		<!-- Test -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -151,7 +148,6 @@
 				</excludes>
 			</resource>
 		</resources>
-
 		<testResources>
 			<testResource>
 				<filtering>false</filtering>
@@ -164,7 +160,6 @@
 				</excludes>
 			</testResource>
 		</testResources>
-
 		<plugins>
 			<plugin>
 				<inherited>true</inherited>

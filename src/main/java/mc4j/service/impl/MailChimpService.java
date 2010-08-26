@@ -16,37 +16,34 @@
 */
 package mc4j.service.impl;
 
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.ws.rs.core.Response;
 
-import mc4j.dom.MailChimpError;
-import mc4j.dom.Pair;
-import mc4j.service.IMailChimpAPI;
+import mc4j.dom.ApiKey;
+import mc4j.dom.MailingList;
+import mc4j.dom.MemberInfo;
+import mc4j.dom.MemberStatus;
 import mc4j.service.IMailChimpService;
 import mc4j.service.MailChimpException;
-import mc4j.service.MailChimpExceptionMapper;
-import mc4j.xml.MailChimpParser;
 
-import org.apache.cxf.interceptor.LoggingInInterceptor;
-import org.apache.cxf.interceptor.LoggingOutInterceptor;
-import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
+import org.apache.commons.lang.ClassUtils;
+import org.apache.xmlrpc.client.XmlRpcClient;
+import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.w3c.dom.Document;
 
 public class MailChimpService implements IMailChimpService {
 	private transient final Logger log = LoggerFactory.getLogger(getClass());
-	private final JAXRSClientFactoryBean bean = new JAXRSClientFactoryBean();
-	private IMailChimpAPI svc;
+	private transient XmlRpcClient client;
 	
-	@Autowired
-	private MailChimpParser mcParser;
-	
-	// Constants
-	private static final String FORMAT = "xml";
+	private transient final MailChimpParser mp = new MailChimpParser();
 	
 	// Credentials
 	private String username;
@@ -102,48 +99,78 @@ public class MailChimpService implements IMailChimpService {
 	@PostConstruct
 	protected void init() {
 		log.info("Creating MailChimp integration client.");
-		bean.setServiceClass(IMailChimpAPI.class);
-		bean.setAddress("https://api.mailchimp.com/1.2/");
-		bean.setProvider(new MailChimpExceptionMapper());
-		svc = bean.create(IMailChimpAPI.class, new Object[]{});
-		bean.getInInterceptors().add(new LoggingInInterceptor());
-		bean.getOutInterceptors().add(new LoggingOutInterceptor());
+		XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
+		try {
+			config.setEnabledForExtensions(true);
+			config.setServerURL(new URL("http://api.mailchimp.com/1.2/"));
+		} catch (MalformedURLException mue) {
+			log.warn("MailChimp API URL was invalid.");
+		}
+		client = new XmlRpcClient();
+		client.setConfig(config);
 	}
 	
-	private Document convertAndCheck(Response r) throws MailChimpException {
-		Document d = null;
-		List<MailChimpError> errors = null;
+	@SuppressWarnings("unchecked")
+	private <T> T invoke(String method, Object[] params, String methodName) throws MailChimpException {
 		try {
-			d = mcParser.convertToDocument(r);
-			errors = mcParser.checkErrors(d);
+			Method m = ClassUtils.getPublicMethod(MailChimpParser.class, methodName, new Class[]{Object.class});
+			return (T)m.invoke(mp, client.execute(method, params));
 		} catch (Exception ex) {
-			log.error("Could not convert XML to document and check for errors.", ex);
-			throw new MailChimpException(999, "Could not convert XML to document and check for errors.", ex);
+			log.error("Could not invoke XML RPC client.", ex);
+			throw new MailChimpException("Could not invoke XML RPC client.", ex);
 		}
-		
-		if (errors != null && errors.size() > 0) {
-			MailChimpException mce = new MailChimpException(999, "Errors found.");
-			mce.setErrors(errors);
-			throw mce;
-		}
-		return d;
 	}
-
+	
 	@Override
 	public String keyAdd() throws MailChimpException {
-		Document ret = convertAndCheck(svc.keyAdd(FORMAT, "apikeyAdd", username, password, apiKey));
-		return null;
+		Object[] params = new Object[] { username, password, apiKey };
+		return invoke("apikeyAdd", params, "createApiKey");
 	}
 
 	@Override
 	public Boolean keyExpire() throws MailChimpException {
-		Document ret = convertAndCheck(svc.keyExpire(FORMAT, "apikeyExpire", username, password, apiKey));
-		return Boolean.TRUE;
+		Object[] params = new Object[] { username, password, apiKey };
+		return invoke("apikeyExpire", params, "expireApiKey");
 	}
 
 	@Override
-	public String keyList() throws MailChimpException {
-		Document ret = convertAndCheck(svc.keyList(FORMAT, "apikeys", username, password, apiKey, false));
-		return null;
+	public List<ApiKey> keyList() throws MailChimpException {
+		return keyList(true);
+	}
+	
+	@Override
+	public List<ApiKey> keyList(boolean includeExpired) throws MailChimpException {
+		Object[] params = new Object[] { username, password, apiKey, includeExpired };
+		return invoke("apikeys", params, "parseApiKeys");
+	}
+
+	@Override
+	public List<MailingList> getLists() throws MailChimpException {
+		Object[] params = new Object[] { apiKey };
+		return invoke("lists", params, "parseLists");
+	}
+
+	@Override
+	public Map<String, Date> getListMembers(String listId, MemberStatus memberStatus, Date since, Integer start, Integer limit) throws MailChimpException {
+		List<Object> p = new ArrayList<Object>();
+		p.add(apiKey);
+		p.add(listId);
+		p.add(memberStatus.getStatus());
+		if (since != null) {
+			p.add(MailChimpConstants.sdf.format(since));
+		}
+		if (start != null) {
+			p.add(start);
+		}
+		if (limit != null) {
+			p.add(limit);
+		}
+		return invoke("listMembers", p.toArray(), "parseListMembers");
+	}
+
+	@Override
+	public MemberInfo getMemberInfo(String listId, String emailAddress) throws MailChimpException {
+		Object[] params = new Object[] { apiKey, listId, emailAddress };
+		return invoke("listMemberInfo", params, "parseListMemberInfo");
 	}
 }

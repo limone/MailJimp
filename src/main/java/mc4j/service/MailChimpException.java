@@ -22,9 +22,25 @@ import java.util.List;
 import mc4j.dom.MailChimpError;
 
 public class MailChimpException extends Exception {
-	private final int statusCode;
+	private int statusCode;
 	private List<MailChimpError> errors = new ArrayList<MailChimpError>();
 	
+	public MailChimpException() {
+		super();
+	}
+
+	public MailChimpException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public MailChimpException(String message) {
+		super(message);
+	}
+
+	public MailChimpException(Throwable cause) {
+		super(cause);
+	}
+
 	public MailChimpException(int statusCode, String message) {
 		super(message);
 		this.statusCode = statusCode;
