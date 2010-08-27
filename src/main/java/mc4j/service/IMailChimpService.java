@@ -1,3 +1,19 @@
+/**
+ * Copyright 2010 Michael Laccetti
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package mc4j.service;
 
 import java.io.Serializable;
@@ -6,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import mc4j.dom.ApiKey;
+import mc4j.dom.EmailType;
 import mc4j.dom.MailingList;
 import mc4j.dom.MemberInfo;
 import mc4j.dom.MemberStatus;
@@ -43,10 +60,61 @@ public interface IMailChimpService extends Serializable {
 	 * 
 	 * @return Whether or not the API key was expired
 	 */
-	public Boolean keyExpire() throws MailChimpException;
+	public boolean keyExpire() throws MailChimpException;
 	
+	/**
+	 * Retrieve all mailing lists.
+	 * 
+	 * @return List of Mailing Lists
+	 * @throws MailChimpException
+	 */
 	public List<MailingList> getLists() throws MailChimpException;
+	
+	/**
+	 * Retrieve all members for specific mailing list.
+	 * @param listId
+	 * @param memberStatus
+	 * @param since
+	 * @param start
+	 * @param limit
+	 * @return
+	 * @throws MailChimpException
+	 */
 	public Map<String,Date> getListMembers(String listId, MemberStatus memberStatus, Date since, Integer start, Integer limit) throws MailChimpException;
+	
+	/**
+	 * Retrieve member info for a specific mailing list.
+	 * @param listId
+	 * @param emailAddress
+	 * @return
+	 * @throws MailChimpException
+	 */
 	public MemberInfo getMemberInfo(String listId, String emailAddress) throws MailChimpException;
-	public Boolean listSubscribe();
+	
+	/**
+	 * Subscribe a user to a mailing list.
+	 * @param listId
+	 * @param emailAddress
+	 * @param mergeVars
+	 * @param emailType
+	 * @param doubleOptin
+	 * @param updateExisting
+	 * @param replaceInterests
+	 * @param sendWelcome
+	 * @return
+	 * @throws MailChimpException
+	 */
+	public boolean listSubscribe(String listId, String emailAddress, Map<String,Object> mergeVars, EmailType emailType, boolean doubleOptin, boolean updateExisting, boolean replaceInterests, boolean sendWelcome) throws MailChimpException;
+	
+	/**
+	 * Unsubscribe a user from a mailing list.
+	 * @param listId
+	 * @param emailAddress
+	 * @param deleteMember
+	 * @param sendGoodbye
+	 * @param sendNotify
+	 * @return
+	 * @throws MailChimpException
+	 */
+	public boolean listUnsubscribe(String listId, String emailAddress, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailChimpException;
 }

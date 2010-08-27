@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import mc4j.dom.ApiKey;
+import mc4j.dom.EmailType;
 import mc4j.dom.MailingList;
 import mc4j.dom.MemberInfo;
 import mc4j.dom.MemberStatus;
@@ -128,7 +129,7 @@ public class MailChimpService implements IMailChimpService {
 	}
 
 	@Override
-	public Boolean keyExpire() throws MailChimpException {
+	public boolean keyExpire() throws MailChimpException {
 		Object[] params = new Object[] { username, password, apiKey };
 		return invoke("apikeyExpire", params, "expireApiKey");
 	}
@@ -175,7 +176,14 @@ public class MailChimpService implements IMailChimpService {
 	}
 
 	@Override
-	public Boolean listSubscribe() {
-		return null;
+	public boolean listSubscribe(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean doubleOptin, boolean updateExisting, boolean replaceInterests, boolean sendWelcome) throws MailChimpException {
+		Object[] params = new Object[] { apiKey, listId, emailAddress, mergeVars, emailType.getEmailType(), doubleOptin, updateExisting, replaceInterests, sendWelcome };
+		return invoke("listSubscribe", params, "parseListSubscribe");
+	}
+
+	@Override
+	public boolean listUnsubscribe(String listId, String emailAddress, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailChimpException {
+		Object[] params = new Object[] { apiKey, listId, emailAddress, deleteMember, sendGoodbye, sendNotify };
+		return invoke("listUnsubscribe", params, "parseListUnsubscribe");
 	}
 }

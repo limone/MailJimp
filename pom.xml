@@ -2,10 +2,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>me.limone.mc4j</groupId>
 	<artifactId>mc4j</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<name>MailChimp Java API</name>
 	<description>A Java library that wraps around the MailChimp web-based API.</description>
 	<url>http://github.com/mlaccetti/mc4j</url>
+	
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>4</version>
+	</parent>
+	
 	<developers>
 		<developer>
 			<id>mlaccetti</id>
@@ -16,10 +23,12 @@
 			<timezone>EST5EDT</timezone>
 		</developer>
 	</developers>
+	
 	<scm>
 		<connection>scm:git:git://github.com/mlaccetti/mc4j.git</connection>
 		<developerConnection>scm:git:git@github.com:mlaccetti/mc4j.git</developerConnection>
 	</scm>
+	
 	<licenses>
 		<license>
 			<name>The GNU General Public License, Version 3</name>
@@ -27,38 +36,39 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>4</version>
-	</parent>
+	
+	<properties>
+		<spring.version>3.0.4.RELEASE</spring.version>
+	</properties>
+	
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>3.0.2.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>3.0.2.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>3.0.2.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>3.0.2.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>3.0.2.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
+		
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -70,6 +80,7 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
+		
 		<!-- JAXRS -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -106,11 +117,8 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>1.3.1</version>
-		</dependency>
+		
+		<!-- XML RPC -->
 		<dependency>
 			<groupId>org.apache.xmlrpc</groupId>
 			<artifactId>xmlrpc-client</artifactId>
@@ -121,7 +129,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>3.0.2.RELEASE</version>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -131,6 +139,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<resources>
 			<resource>

@@ -1,10 +1,28 @@
+/**
+ * Copyright 2010 Michael Laccetti
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package mc4j.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mc4j.dom.ApiKey;
+import mc4j.dom.EmailType;
 import mc4j.dom.MailChimpError;
 import mc4j.dom.MailingList;
 import mc4j.dom.MemberInfo;
@@ -99,6 +117,26 @@ public class TestMailChimpService {
 		try {
 			MemberInfo content = mSvc.getMemberInfo("b0308c77a5", "michael@laccetti.com");
 			log.debug("Members info: {}", content);
+		} catch (MailChimpException mce) {
+			processError(mce);
+		}
+	}
+	
+	@Test
+	public void testListSubscribe() {
+		try {
+			boolean status = mSvc.listSubscribe("b0308c77a5", "test@laccetti.com", new HashMap<String,Object>(), EmailType.HTML, true, false, true, false);
+			log.debug("Subscription status: {}", status);
+		} catch (MailChimpException mce) {
+			processError(mce);
+		}
+	}
+	
+	@Test
+	public void testListUnsubscribe() {
+		try {
+			boolean status = mSvc.listUnsubscribe("b0308c77a5", "test@laccetti.com", true, false, true);
+			log.debug("Unsubscription status: {}", status);
 		} catch (MailChimpException mce) {
 			processError(mce);
 		}

@@ -15,6 +15,7 @@
 	<bean id="properties" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
 		<property name="locations">
 			<list>
+				<!-- Please pass in the config property as a VM parameter: -Dconfig=file:///etc/config -->
 				<value>${config}/mc4j.properties</value>
 			</list>
 		</property>
