@@ -2,7 +2,7 @@
 
 ##### About
 
-mc4j is a MailChimp library build in Java intended for use within Maven-enabled Spring-based applications.  The Maven part is not mandatory, of course - feel free to download the source and build yourself the library.  The Spring part is also not mandatory, as long as you deploy the library in a container that understands the `@PostConstruct` annotation, or you manually invoke `MailChimpService::init()` after construction.
+mc4j is a MailChimp library built in Java intended for use within Maven-enabled Spring-based applications.  The Maven part is not mandatory, of course - feel free to download the source and build yourself the library.  The Spring part is also not mandatory, as long as you deploy the library in a container that understands the `@PostConstruct` annotation, or you manually invoke `MailChimpService::init()` after construction.
 
 ##### Runtime Info
 
