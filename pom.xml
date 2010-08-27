@@ -6,13 +6,13 @@
 	<name>MailChimp Java API</name>
 	<description>A Java library that wraps around the MailChimp web-based API.</description>
 	<url>http://github.com/mlaccetti/mc4j</url>
-	
+
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
 		<version>4</version>
 	</parent>
-	
+
 	<developers>
 		<developer>
 			<id>mlaccetti</id>
@@ -23,12 +23,12 @@
 			<timezone>EST5EDT</timezone>
 		</developer>
 	</developers>
-	
+
 	<scm>
 		<connection>scm:git:git://github.com/mlaccetti/mc4j.git</connection>
 		<developerConnection>scm:git:git@github.com:mlaccetti/mc4j.git</developerConnection>
 	</scm>
-	
+
 	<licenses>
 		<license>
 			<name>The GNU General Public License, Version 3</name>
@@ -36,11 +36,11 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	
+
 	<properties>
 		<spring.version>3.0.4.RELEASE</spring.version>
 	</properties>
-	
+
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -68,7 +68,7 @@
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -80,7 +80,7 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
-		
+
 		<!-- JAXRS -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -117,14 +117,14 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- XML RPC -->
 		<dependency>
 			<groupId>org.apache.xmlrpc</groupId>
 			<artifactId>xmlrpc-client</artifactId>
 			<version>3.1.3</version>
 		</dependency>
-		
+
 		<!-- Test -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -173,6 +173,7 @@
 				</excludes>
 			</testResource>
 		</testResources>
+
 		<plugins>
 			<plugin>
 				<inherited>true</inherited>
@@ -191,6 +192,34 @@
 				<configuration>
 					<downloadSources>true</downloadSources>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
