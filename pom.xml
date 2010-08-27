@@ -160,6 +160,10 @@
 		<testResources>
 			<testResource>
 				<filtering>false</filtering>
+				<directory>src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<filtering>false</filtering>
 				<directory>src/test/java</directory>
 				<includes>
 					<include>**</include>

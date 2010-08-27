@@ -131,7 +131,7 @@ public class MailChimpService implements IMailChimpService {
 	@Override
 	public boolean keyExpire() throws MailChimpException {
 		Object[] params = new Object[] { username, password, apiKey };
-		return invoke("apikeyExpire", params, "expireApiKey");
+		return (Boolean)invoke("apikeyExpire", params, "expireApiKey");
 	}
 
 	@Override
@@ -178,12 +178,12 @@ public class MailChimpService implements IMailChimpService {
 	@Override
 	public boolean listSubscribe(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean doubleOptin, boolean updateExisting, boolean replaceInterests, boolean sendWelcome) throws MailChimpException {
 		Object[] params = new Object[] { apiKey, listId, emailAddress, mergeVars, emailType.getEmailType(), doubleOptin, updateExisting, replaceInterests, sendWelcome };
-		return invoke("listSubscribe", params, "parseListSubscribe");
+		return (Boolean)invoke("listSubscribe", params, "parseListSubscribe");
 	}
 
 	@Override
 	public boolean listUnsubscribe(String listId, String emailAddress, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailChimpException {
 		Object[] params = new Object[] { apiKey, listId, emailAddress, deleteMember, sendGoodbye, sendNotify };
-		return invoke("listUnsubscribe", params, "parseListUnsubscribe");
+		return (Boolean)invoke("listUnsubscribe", params, "parseListUnsubscribe");
 	}
 }
