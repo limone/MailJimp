@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--
+		We use this to inject the username, password and API key information into the bean directly.
+		Please note that you can also inject them directly via constructor args, if you desire - check out the bean
+		definition for a sample.
+
+		The properties file needs to contain the following:
+		mc.username=your_username
+		mc.password=your_password
+		mc.apiKey=your_api_key
+		mc.apiVersion=version_to_use
+	    mc.ssl=https (true|false)
+	-->
+	<context:property-placeholder location="classpath*:mc4j.properties"
+	                              ignore-resource-not-found="true"
+	                              ignore-unresolvable="true"/>
+	<context:annotation-config />
+	<context:component-scan base-package="mc4j" />
+
+	<bean name="mc" class="mc4j.service.impl.MailChimpService">
+		<!--
+			You can manually hardcode the credentials and API keys through the XML configuration, if you want
+		-->
+		<constructor-arg name="username" value="${mc.username}" />
+		<constructor-arg name="password" value="${mc.password}" />
+		<constructor-arg name="apiKey" value="${mc.apiKey}" />
+		<constructor-arg name="apiVersion" value="${mc.apiVersion}" />
+		<constructor-arg name="ssl" value="${mc.ssl}" />
+	</bean>
+</beans>

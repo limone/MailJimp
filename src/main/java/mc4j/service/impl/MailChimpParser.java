@@ -30,8 +30,10 @@ import mc4j.dom.ApiKey;
 import mc4j.dom.MailingList;
 import mc4j.dom.MemberInfo;
 import mc4j.service.MailChimpException;
+import mc4j.service.UnexpectedMailChimpResponseException;
 
 public class MailChimpParser {
+
 	private <T> void setVars(Map<String, Object> results, T obj) throws Exception {
 		Pattern p = Pattern.compile("set(\\w+)");
 		for (Method m : obj.getClass().getMethods()) {
@@ -45,7 +47,8 @@ public class MailChimpParser {
 						m.invoke(obj, value);
 					} else {
 						Class<?> param = m.getParameterTypes()[0];
-						if (param.isAssignableFrom(value.getClass())) {
+						if (param.isAssignableFrom(value.getClass()) ||
+								Boolean.class.isAssignableFrom(value.getClass())) {
 							m.invoke(obj, value);
 						} else {
 							m.invoke(obj, convert(param, value));
@@ -82,7 +85,8 @@ public class MailChimpParser {
 				for (T obj : expected.getEnumConstants()) {
 					if (obj.toString().equalsIgnoreCase((String) value)) { return obj; }
 				}
-				throw new MailChimpException(String.format("No enum constant found for value %s in enum %s.", value.toString(), expected.getSimpleName()));
+				throw new MailChimpException(String.format("No enum constant found for value %s in enum %s.",
+						value.toString(), expected.getSimpleName()));
 			} catch (Exception ex) {
 				throw new MailChimpException("Could not parse Enum.", ex);
 			}
@@ -121,8 +125,10 @@ public class MailChimpParser {
 			}
 			throw new MailChimpException("We expected a list, but the inbound element was not an array.");
 		}
+
 		throw new IllegalArgumentException(String.format("Could not convert from %s to %s.", value.getClass().getSimpleName(), expected.getSimpleName()));
 	}
+
 
 	public List<ApiKey> parseApiKeys(Object results) throws MailChimpException {
 		List<ApiKey> keys = new ArrayList<ApiKey>();
@@ -154,51 +160,118 @@ public class MailChimpParser {
 		throw new MailChimpException(String.format("Result was an unxpected type: %s.", results.getClass().getName()));
 	}
 
+	/**
+	 * This will parse all list information of the current account.
+	 *
+	 * @param results This is the Object created out of the xml-rpc-call to the MailChimp API.
+	 *
+	 * @return A list containing {@link MailingList MailingLists}.
+	 *
+	 * @throws MailChimpException If parsing goes wrong
+	 */
 	public List<MailingList> parseLists(Object results) throws MailChimpException {
-		List<MailingList> lists = new ArrayList<MailingList>();
-		if (results instanceof Object[]) {
-			for (Object o : (Object[]) results) {
-				if (o instanceof Map<?, ?>) {
-					@SuppressWarnings("unchecked")
-					Map<String, Object> m = (Map<String, Object>) o;
-					MailingList ml = new MailingList();
-					try {
-						setVars(m, ml);
-						lists.add(ml);
-					} catch (Exception ex) {
-						throw new MailChimpException("Could not set fields.", ex);
-					}
-				}
-			}
+		List<MailingList> lists;
+		if (results instanceof Object[]) { // api version 1.2
+			lists = new ArrayList<MailingList>();
+			_parseLists((Object[]) results, lists);
+		} else if (Map.class.isAssignableFrom( results.getClass() )) { // api version 1.3
+			@SuppressWarnings("unchecked")
+			Map<String, Object> r = (Map<String, Object>) results;
+			lists = new ArrayList<MailingList>((Integer) r.get("total"));
+			_parseLists((Object[]) r.get("data"), lists);
+		} else {
+			throw new UnexpectedMailChimpResponseException("Unsupported api version?");
 		}
 		return lists;
 	}
 
-	public Map<String, Date> parseListMembers(Object results) throws MailChimpException {
-		Map<String, Date> r = new HashMap<String, Date>();
-		if (results instanceof Object[]) {
-			for (Object o : (Object[]) results) {
-				if (o instanceof Map<?, ?>) {
-					@SuppressWarnings("unchecked")
-					Map<String, String> m = (Map<String, String>) o;
-					String email = m.get("email");
-					String timestamp = m.get("timestamp");
-					try {
-						r.put(email, MailChimpConstants.sdf.parse(timestamp));
-					} catch (ParseException pe) {
-						throw new MailChimpException("Could not parse member list timestamp.", pe);
-					}
+	private void _parseLists(Object[] results, List<MailingList> lists) throws MailChimpException {
+		for (Object o : results) {
+			if (o instanceof Map<?, ?>) {
+				@SuppressWarnings("unchecked")
+				Map<String, Object> m = (Map<String, Object>) o;
+				MailingList ml = new MailingList();
+				try {
+					setVars(m, ml);
+					lists.add(ml);
+				} catch (Exception ex) {
+					throw new MailChimpException("Could not set fields.", ex);
 				}
 			}
 		}
-		return r;
 	}
 
+	/**
+	 * This will parse all members of a list.
+	 *
+	 * @param results This is the Object created out of the xml-rpc-call to the MailChimp API.
+	 *
+	 * @return A map containing e-mail-addresses as keys and subscription dates as values.
+	 *
+	 * @throws MailChimpException If parsing goes wrong.
+	 */
+	public Map<String, Date> parseListMembers(Object results) throws MailChimpException {
+
+		Map<String, Date> members;
+
+		if (results instanceof Object[]) {
+
+			// api version 1.2
+			members = new HashMap<String, Date>();
+			_parseListMembers((Object[]) results, members);
+
+		} else if (Map.class.isAssignableFrom( results.getClass() )) {
+
+			// api version 1.3
+			@SuppressWarnings("unchecked")
+			Map<String, Object> r = (Map<String, Object>) results;
+			members = new HashMap<String, Date>((Integer) r.get("total"));
+			_parseListMembers((Object[]) r.get("data"), members);
+
+		} else {
+			throw new UnexpectedMailChimpResponseException("Unsupported api version?");
+		}
+		return members;
+	}
+
+	private void _parseListMembers(Object[] results, Map<String, Date> members) throws MailChimpException {
+		for (Object o : results) {
+			if (o instanceof Map<?, ?>) {
+				@SuppressWarnings("unchecked")
+				Map<String, String> m = (Map<String, String>) o;
+				String email = m.get("email");
+				String timestamp = m.get("timestamp");
+				try {
+					members.put(email, MailChimpConstants.sdf.parse(timestamp));
+				} catch (ParseException pe) {
+					throw new MailChimpException("Could not parse member list timestamp.", pe);
+				}
+			}
+		}
+	}
+
+	/**
+	 * This will parse all member information retrieved from the call to <code>listMemberInfo</code> of the
+	 * MailChimp API. We are silently ignoring any unsuccessful lookups (unknown email addresses or ids) as this
+	 * method is returning only one MemberInfo at a time.
+	 * This is because that was the was they did it back in the 1.2 days.
+	 *
+	 * @param results This is the Object created out of the xml-rpc-call to the MailChimp API.
+	 *
+	 * @return A {@link MemberInfo} containing - you guess it - the members info.
+	 *
+	 * @throws MailChimpException If parsing goes wrong.
+	 */
+	@SuppressWarnings("unchecked")
 	public MemberInfo parseListMemberInfo(Object results) throws MailChimpException {
 		if (results instanceof Map<?, ?>) {
 			MemberInfo mi = new MemberInfo();
-			@SuppressWarnings("unchecked")
 			Map<String, Object> m = (Map<String, Object>) results;
+
+			if(m.containsKey("data")) { // this is version 1.3
+				m = (Map<String, Object>) ((Object[])m.get("data"))[0];
+			}
+
 			try {
 				setVars(m, mi);
 				return mi;
