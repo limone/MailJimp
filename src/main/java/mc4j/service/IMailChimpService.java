@@ -105,7 +105,19 @@ public interface IMailChimpService extends Serializable {
 	 * @throws MailChimpException
 	 */
 	public boolean listSubscribe(String listId, String emailAddress, Map<String,Object> mergeVars, EmailType emailType, boolean doubleOptin, boolean updateExisting, boolean replaceInterests, boolean sendWelcome) throws MailChimpException;
-	
+
+	/**
+	 * Update a members info on a mailing list.
+	 * @param listId
+	 * @param emailAddress
+	 * @param mergeVars
+	 * @param emailType
+	 * @param replaceInterests
+	 * @return
+	 * @throws MailChimpException
+	 */
+	public boolean listUpdateMember(String listId, String emailAddress, Map<String,Object> mergeVars, EmailType emailType, boolean replaceInterests) throws MailChimpException;
+
 	/**
 	 * Unsubscribe a user from a mailing list.
 	 * @param listId
@@ -117,4 +129,5 @@ public interface IMailChimpService extends Serializable {
 	 * @throws MailChimpException
 	 */
 	public boolean listUnsubscribe(String listId, String emailAddress, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailChimpException;
+
 }

@@ -254,7 +254,7 @@ public class MailChimpParser {
 	 * This will parse all member information retrieved from the call to <code>listMemberInfo</code> of the
 	 * MailChimp API. We are silently ignoring any unsuccessful lookups (unknown email addresses or ids) as this
 	 * method is returning only one MemberInfo at a time.
-	 * This is because that was the was they did it back in the 1.2 days.
+	 * This is because that was the way they did it back in the 1.2 days.
 	 *
 	 * @param results This is the Object created out of the xml-rpc-call to the MailChimp API.
 	 *
@@ -279,20 +279,33 @@ public class MailChimpParser {
 				throw new MailChimpException("Could not set fields.", ex);
 			}
 		}
-		throw new MailChimpException(String.format("Result from MailChimp API was not of the expected type (instead, it was %s).", results.getClass().getSimpleName()));
+		throw new MailChimpException(String.format("Result from MailChimp API was not of the expected type (instead, it was %s).",
+				results.getClass().getSimpleName()));
 	}
 	
 	public boolean parseListSubscribe(Object results) throws MailChimpException {
 		if (results instanceof Boolean) {
 			return (Boolean)results;
 		}
-		throw new MailChimpException(String.format("List subscription result type was not boolean (was: %s).", results.getClass().getSimpleName()));
+		return throwWrongTypeException(results, "List subscription result type was not boolean (was: %s).");
 	}
 	
 	public boolean parseListUnsubscribe(Object results) throws MailChimpException {
 		if (results instanceof Boolean) {
 			return (Boolean)results;
 		}
-		throw new MailChimpException(String.format("List unsubscription result type was not boolean (was: %s).", results.getClass().getSimpleName()));
+		return throwWrongTypeException(results, "List unsubscription result type was not boolean (was: %s).");
+	}
+
+	public boolean parseListUpdateMember(Object results) throws MailChimpException {
+		if (results instanceof Boolean) {
+			return (Boolean)results;
+		}
+		return throwWrongTypeException(results, "List update member result type was not boolean (was: %s).");
+	}
+
+	private boolean throwWrongTypeException(Object results, final String msg) throws MailChimpException {
+		throw new MailChimpException(String.format(msg,
+				(null != results ? results.getClass().getSimpleName() : results )));
 	}
 }

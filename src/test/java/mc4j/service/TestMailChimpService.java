@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -47,6 +48,7 @@ import static org.junit.Assert.fail;
 @Configurable
 public class TestMailChimpService {
 
+	private static final String TEST_EMAIL_ADDRESS = "test@laccetti.com";
 	private transient final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
@@ -135,18 +137,37 @@ public class TestMailChimpService {
 	@Test
 	public void testListSubscribe() {
 		try {
-			boolean status = mSvc.listSubscribe(listId, "test@laccetti.com", new HashMap<String,Object>(),
+			boolean status = mSvc.listSubscribe(listId, TEST_EMAIL_ADDRESS, new HashMap<String, Object>(),
 					EmailType.HTML, false, true, true, false);
 			log.debug("Subscription status: {}", status);
 		} catch (MailChimpException mce) {
 			processError(mce);
 		}
 	}
-	
+
+	/**
+	 * Only works if {@link #testListSubscribe()} ran before!
+	 */
+	@Test
+	public void testUpdateMember() {
+		try {
+			final HashMap<String, Object> mergeVars = new HashMap<String, Object>();
+			mergeVars.put("FNAME", "Test");
+			boolean status = mSvc.listUpdateMember(listId, TEST_EMAIL_ADDRESS, mergeVars,
+					EmailType.HTML, true);
+			log.debug("Update member info: {}", status);
+			MemberInfo content = mSvc.getMemberInfo(listId, TEST_EMAIL_ADDRESS);
+			log.debug("Members info: {}", content);
+			assertEquals( "Test", content.getMerges().get("FNAME"));
+		} catch (MailChimpException mce) {
+			processError(mce);
+		}
+	}
+
 	@Test
 	public void testListUnsubscribe() {
 		try {
-			boolean status = mSvc.listUnsubscribe(listId, "test@laccetti.com", true, false, false);
+			boolean status = mSvc.listUnsubscribe(listId, TEST_EMAIL_ADDRESS, true, false, false);
 			log.debug("Unsubscription status: {}", status);
 		} catch (MailChimpException mce) {
 			processError(mce);

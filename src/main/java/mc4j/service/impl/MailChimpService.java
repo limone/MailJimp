@@ -236,4 +236,10 @@ public class MailChimpService implements IMailChimpService {
 		Object[] params = new Object[] { apiKey, listId, emailAddress, deleteMember, sendGoodbye, sendNotify };
 		return (Boolean)invoke("listUnsubscribe", params, "parseListUnsubscribe");
 	}
+
+	@Override
+	public boolean listUpdateMember(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean replaceInterests) throws MailChimpException {
+		Object[] params = new Object[] { apiKey, listId, emailAddress, mergeVars, emailType.getEmailType(), replaceInterests };
+		return (Boolean)invoke("listUpdateMember", params, "parseListUpdateMember");
+	}
 }
