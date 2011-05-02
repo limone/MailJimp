@@ -7,7 +7,7 @@ The Maven part is not mandatory, of course - feel free to download the source an
 
 #### Runtime Info
 
-To run the service in a Spring-based application you have have to do two things:
+To run the service in a Spring-based application you have to do two things:
 
 1. Integrate the config file `mc4j-spring-config.xml` in your app.It is part of the distro an can be found in the classpath.
 
