@@ -21,12 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mc4j.dom.ApiKey;
-import mc4j.dom.EmailType;
-import mc4j.dom.MailChimpError;
-import mc4j.dom.MailingList;
-import mc4j.dom.MemberInfo;
-import mc4j.dom.MemberStatus;
+import mc4j.dom.*;
 import mc4j.service.impl.MailChimpService;
 
 import org.junit.Ignore;
@@ -159,6 +154,24 @@ public class TestMailChimpService {
 			MemberInfo content = mSvc.getMemberInfo(listId, TEST_EMAIL_ADDRESS);
 			log.debug("Members info: {}", content);
 			assertEquals( "Test", content.getMerges().get("FNAME"));
+		} catch (MailChimpException mce) {
+			processError(mce);
+		}
+	}
+
+	@Test
+	public void testBatchSubscribe() throws Exception {
+		try {
+			final HashMap<String, Object> user1 = new HashMap<String, Object>();
+			final HashMap<String, Object> user2 = new HashMap<String, Object>();
+			user1.put("EMAIL", "Test1@gorilla-concept.de");
+			user1.put("EMAIL_TYPE", EmailType.HTML );
+			user2.put("EMAIL", "Test2 at gorilla-concept.de"); // invalid!
+			user2.put("EMAIL_TYPE", EmailType.TEXT );
+			final Object[] batch = new Object[]{user1, user2};
+
+			BatchResult result = mSvc.listBatchSubscribe(listId, batch, false, true, true );
+			log.debug("Batch subscribe: {}", result);
 		} catch (MailChimpException mce) {
 			processError(mce);
 		}

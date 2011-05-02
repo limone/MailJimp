@@ -26,11 +26,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import mc4j.dom.ApiKey;
-import mc4j.dom.EmailType;
-import mc4j.dom.MailingList;
-import mc4j.dom.MemberInfo;
-import mc4j.dom.MemberStatus;
+import mc4j.dom.*;
 import mc4j.service.IMailChimpService;
 import mc4j.service.MailChimpException;
 
@@ -203,7 +199,7 @@ public class MailChimpService implements IMailChimpService {
 		p.add(listId);
 		p.add(memberStatus.getStatus());
 		if (since != null) {
-			p.add(MailChimpConstants.sdf.format(since));
+			p.add(MailChimpConstants.SDF.format(since));
 		}
 		if (start != null) {
 			p.add(start);
@@ -216,7 +212,6 @@ public class MailChimpService implements IMailChimpService {
 
 	@Override
 	public MemberInfo getMemberInfo(String listId, String emailAddress) throws MailChimpException {
-		System.out.println("emailAddress = " + emailAddress);
 		Object address = emailAddress;
 		if("1.3".equals(apiVersion)) {
 			address = new Object[]{address};
@@ -229,6 +224,17 @@ public class MailChimpService implements IMailChimpService {
 	public boolean listSubscribe(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean doubleOptin, boolean updateExisting, boolean replaceInterests, boolean sendWelcome) throws MailChimpException {
 		Object[] params = new Object[] { apiKey, listId, emailAddress, mergeVars, emailType.getEmailType(), doubleOptin, updateExisting, replaceInterests, sendWelcome };
 		return (Boolean)invoke("listSubscribe", params, "parseListSubscribe");
+	}
+
+	@Override
+	public BatchResult listBatchSubscribe(String listId,
+	                                      Object[] batch,
+	                                      boolean doubleOptin,
+	                                      boolean updateExisting,
+	                                      boolean replaceInterests)
+			throws MailChimpException {
+		Object[] params = new Object[] { apiKey, listId, batch, doubleOptin, updateExisting, replaceInterests };
+		return (BatchResult) invoke("listBatchSubscribe", params, "parseListBatchSubscribe");
 	}
 
 	@Override
