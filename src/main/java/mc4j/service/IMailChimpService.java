@@ -21,15 +21,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import mc4j.dom.ApiKey;
-import mc4j.dom.EmailType;
-import mc4j.dom.MailingList;
-import mc4j.dom.MemberInfo;
-import mc4j.dom.MemberStatus;
+import mc4j.dom.*;
 
 /**
- * All of the functionality that is exposed by the MailChimp API.
- * 
+ * All of the functionality that is exposed by the <a href="http://apidocs.mailchimp.com/1.3/index.php"
+ * title="MailChimp APi">MailChimp API</a>.
+ *
  * @author Michael Laccetti
  */
 public interface IMailChimpService extends Serializable {
@@ -105,7 +102,43 @@ public interface IMailChimpService extends Serializable {
 	 * @throws MailChimpException
 	 */
 	public boolean listSubscribe(String listId, String emailAddress, Map<String,Object> mergeVars, EmailType emailType, boolean doubleOptin, boolean updateExisting, boolean replaceInterests, boolean sendWelcome) throws MailChimpException;
-	
+
+	/**
+	 * Batch subscribe a user to a mailing list. See <a href="http://apidocs.mailchimp.com/1.3/listbatchsubscribe.func.php"
+	 * title="MailChimp API">MailChimp API</a> for more info.
+	 *
+	 *
+	 * @param listId
+	 * @param batch
+	 * @param doubleOptin
+	 * @param updateExisting
+	 * @param replaceInterests
+	 *
+	 * @return The result of this call. Containing add, update and error counts. In case of errors contains additional
+	 * information.
+	 *
+	 * @throws MailChimpException
+	 */
+	public BatchResult listBatchSubscribe(String listId,
+	                                      Object[] batch,
+	                                      boolean doubleOptin,
+	                                      boolean updateExisting,
+	                                      boolean replaceInterests)
+			throws MailChimpException;
+
+	/**
+	 * Update a members info on a mailing list.
+	 *
+	 * @param listId
+	 * @param emailAddress
+	 * @param mergeVars
+	 * @param emailType
+	 * @param replaceInterests
+	 * @return
+	 * @throws MailChimpException
+	 */
+	public boolean listUpdateMember(String listId, String emailAddress, Map<String,Object> mergeVars, EmailType emailType, boolean replaceInterests) throws MailChimpException;
+
 	/**
 	 * Unsubscribe a user from a mailing list.
 	 * @param listId
@@ -117,4 +150,5 @@ public interface IMailChimpService extends Serializable {
 	 * @throws MailChimpException
 	 */
 	public boolean listUnsubscribe(String listId, String emailAddress, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailChimpException;
+
 }
