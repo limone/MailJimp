@@ -16,9 +16,6 @@ package mc4j.dom;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Represents the response to an batch operation like {@link mc4j.service.IMailChimpService#listBatchSubscribe(String, Object[], boolean, boolean, boolean)}.
  *

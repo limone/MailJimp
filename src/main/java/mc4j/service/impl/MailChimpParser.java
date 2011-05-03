@@ -330,7 +330,8 @@ public class MailChimpParser {
 	private BatchResult _parseBatchResult(Object results) throws MailChimpException {
 		if (results instanceof Map<?, ?>) {
 			BatchResult br = new BatchResult();
-			Map<String, Object> m = (Map<String, Object>) results;
+			@SuppressWarnings("unchecked")
+      Map<String, Object> m = (Map<String, Object>) results;
 
 			try {
 				setVars(m, br);
@@ -357,7 +358,7 @@ public class MailChimpParser {
 		throw new MailChimpException( formatErrorMsg(results, "List unsubscription result type was not boolean (was: %s)."));
 	}
 
-	private String formatErrorMsg(Object results, final String msg) throws MailChimpException {
+	private String formatErrorMsg(Object results, final String msg) {
 		return String.format(msg, (null != results ? results.getClass().getSimpleName() : results ));
 	}
 }

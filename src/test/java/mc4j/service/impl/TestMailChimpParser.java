@@ -80,7 +80,8 @@ public class TestMailChimpParser {
 			return id;
 		}
 
-		public void setId(Long id) {
+		@SuppressWarnings("unused")
+    public void setId(Long id) {
 			this.id = id;
 		}
 
@@ -88,7 +89,8 @@ public class TestMailChimpParser {
 			return values;
 		}
 
-		public void setValues(SimpleValues values) {
+		@SuppressWarnings("unused")
+    public void setValues(SimpleValues values) {
 			this.values = values;
 		}
 	}
@@ -128,7 +130,8 @@ public class TestMailChimpParser {
 			return id;
 		}
 
-		public void setId(String id) {
+		@SuppressWarnings("unused")
+    public void setId(String id) {
 			this.id = id;
 		}
 
@@ -136,7 +139,8 @@ public class TestMailChimpParser {
 			return mergeVars;
 		}
 
-		public void setMergeVars(Map<String, Object> mergeVars) {
+		@SuppressWarnings("unused")
+    public void setMergeVars(Map<String, Object> mergeVars) {
 			this.mergeVars = mergeVars;
 		}
 	}
@@ -178,7 +182,7 @@ public class TestMailChimpParser {
 		simpleValuesWrapperMap.put("id", 23l);
 		simpleValuesWrapperMap.put("values", createSimpleValuesMap(42));
 
-		parser.setVars(simpleValuesWrapperMap, svw );
+		parser.setVars(simpleValuesWrapperMap, svw);
 
 		assertEquals(23l, svw.getId());
 		assertSimpleValues(svw.getValues(), 42);

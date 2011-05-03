@@ -12,4 +12,5 @@ package mc4j.dom;
  * Time: 13:06
  */
 public interface IParsableProperty {
+  // empty
 }
