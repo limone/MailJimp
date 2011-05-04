@@ -3,3 +3,4 @@ target/*
 .pmd
 .classpath
 .project
+.DS_Store
