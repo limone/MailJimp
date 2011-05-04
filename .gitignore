@@ -1,6 +1,6 @@
-target
-.settings
-.pmd
-.classpath
-.project
-.DS_Store
+**/target
+**/.settings
+**/.pmd
+**/.classpath
+**/.project
+**/.DS_Store
