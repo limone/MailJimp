@@ -37,6 +37,7 @@ import mc4j.service.UnexpectedMailChimpResponseException;
 import mc4j.util.ParserHint;
 import mc4j.util.ParserUtils;
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class MailChimpParser {
 
 	private static final Pattern SETTER_PATTERN = Pattern.compile("set(\\w+)");
@@ -145,6 +146,8 @@ public class MailChimpParser {
 		if (expected.equals(Integer.class)) {
 			if (value.getClass().equals(Double.class)) {
 				return (T) Integer.valueOf(((Double) value).intValue());
+			} else if (value.getClass().equals(String.class)) {
+				return (T) Integer.valueOf(((String) value));
 			}
 		}
 		
@@ -172,27 +175,27 @@ public class MailChimpParser {
 	}
 
 	// debugging
-	private void dumpResults(Map<String, Object> results) {
-		for( String key : results.keySet() ) {
-			final Object value = results.get(key);
-			if( Map.class.isAssignableFrom(value.getClass())) {
-				System.out.format("\n%s::", key);
-				dumpResults((Map<String, Object>) value);
-				System.out.println("::");
-			} else if( value.getClass().isArray()) {
-				System.out.format("\n%s(%s[]}::", key, value.getClass().getComponentType());
-				Object[] array = (Object[]) value;
-				for (int i = 0; i < array.length; i++) {
-					Object o = array[i];
-					System.out.println("=> " + o);
-				}
-			} else {
-				System.out.format("\n%s\t%s", key, value);
-			}
-		}
-		System.out.print('\n');
-	}
-
+//	private void dumpResults(Map<String, Object> results) {
+//		for( String key : results.keySet() ) {
+//			final Object value = results.get(key);
+//			if( Map.class.isAssignableFrom(value.getClass())) {
+//				System.out.format("\n%s::", key);
+//				dumpResults((Map<String, Object>) value);
+//				System.out.println("::");
+//			} else if( value.getClass().isArray()) {
+//				System.out.format("\n%s(%s[]}::", key, value.getClass().getComponentType());
+//				Object[] array = (Object[]) value;
+//				for (int i = 0; i < array.length; i++) {
+//					Object o = array[i];
+//					System.out.println("=> " + o);
+//				}
+//			} else {
+//				System.out.format("\n%s\t%s", key, value);
+//			}
+//		}
+//		System.out.print('\n');
+//	}
+//
 
 
 	public List<ApiKey> parseApiKeys(Object results) throws MailChimpException {
