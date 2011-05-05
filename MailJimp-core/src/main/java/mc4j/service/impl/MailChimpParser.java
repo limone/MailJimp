@@ -1,19 +1,19 @@
 /*
  * Copyright 2010-2011 Michael Laccetti
  * 
- * This file is part of MailChimp4J.
+ * This file is part of MailJimp.
  * 
- * MailChimp4J is free software: you can redistribute it and/or modify
+ * MailJimp is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, version 3 of the License.
  * 
- * MailChimp4J is distributed in the hope that it will be useful,
+ * MailJimp is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with MailChimp4J.  If not, see <http://www.gnu.org/licenses/>.
+ * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
  */
 package mc4j.service.impl;
 
@@ -34,65 +34,78 @@ import mc4j.dom.list.MemberInfo;
 import mc4j.dom.security.ApiKey;
 import mc4j.service.MailChimpException;
 import mc4j.service.UnexpectedMailChimpResponseException;
+import mc4j.util.ParserHint;
+import mc4j.util.ParserUtils;
 
 public class MailChimpParser {
 
+	private static final Pattern SETTER_PATTERN = Pattern.compile("set(\\w+)");
+
 	// package visible to make it testable
 	<T> void setVars(Map<String, Object> results, T obj) throws Exception {
-		Pattern p = Pattern.compile("set(\\w+)");
+		// check for any hints
+		Map<String, ParserHint> hints = null;
+		if( IHasParserHints.class.isAssignableFrom(obj.getClass())) {
+			hints = ((IHasParserHints)obj).getHints();
+		}
+
+
 		for (Method m : obj.getClass().getMethods()) {
-			if (m.getName().startsWith("set") && m.getParameterTypes().length == 1) {
-				Matcher matcher = p.matcher(m.getName());
- 				if (matcher.matches()) {
-					String key = matcher.group(1);
-					key = convert(key);
-					Object value = results.get(key);
-					if (value == null) {
-						m.invoke(obj, value);
-					} else {
-						try {
-							Class<?> param = m.getParameterTypes()[0];
-							if (param.isAssignableFrom(value.getClass()) ||
-									Boolean.class.isAssignableFrom(value.getClass())) {
-								m.invoke(obj, value);
-							} else if( value.getClass().isArray() && param.isArray() ) {
-								Object[] array = (Object[]) value;
-								Object[] typedArray = (Object[]) Array.newInstance(param.getComponentType(), array.length);
-								for (int i = 0; i < array.length; i++) {
-									Object o = array[i];
-									typedArray[i] = convert(param.getComponentType(), o);
-								}
-								// we have to wrap the array in another array to prevent an IllegalArgumentException
-								m.invoke(obj, new Object[]{typedArray});
-							} else {
-								m.invoke(obj, convert(param, value));
+			Matcher matcher = SETTER_PATTERN.matcher(m.getName());
+			if (matcher.matches() && m.getParameterTypes().length == 1) {
+				String key = ParserUtils.convertKey(matcher.group(1));
+
+				Object value = findValue(results, key, hints);
+
+				// convert and set the value
+				if (value == null) {
+					m.invoke(obj, value);
+				} else {
+					try {
+						Class<?> param = m.getParameterTypes()[0];
+						if (param.isAssignableFrom(value.getClass()) ||
+								Boolean.class.isAssignableFrom(value.getClass())) {
+							m.invoke(obj, value);
+						} else if( value.getClass().isArray() && param.isArray() ) {
+							Object[] array = (Object[]) value;
+							Object[] typedArray = (Object[]) Array.newInstance(param.getComponentType(), array.length);
+							for (int i = 0; i < array.length; i++) {
+								Object o = array[i];
+								typedArray[i] = convert(param.getComponentType(), o);
 							}
-						} catch( IllegalArgumentException e) {
-							//noinspection MalformedFormatString
-							throw new IllegalArgumentException(
-									String.format("Error setting %1$s. %n%2$s", key, e.getMessage(), e));
+							// we have to wrap the array in another array to prevent an IllegalArgumentException
+							m.invoke(obj, new Object[]{typedArray});
+						} else {
+							m.invoke(obj, convert(param, value));
 						}
+					} catch( IllegalArgumentException e) {
+						//noinspection MalformedFormatString
+						throw new IllegalArgumentException(
+								String.format("Error setting %1$s. %n%2$s", key, e.getMessage(), e));
 					}
 				}
 			}
 		}
 	}
 
-	private String convert(String name) {
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < name.length(); i++) {
-			char c = name.charAt(i);
-			if (Character.isUpperCase(c) && i > 0) {
-				sb.append("_").append(Character.toLowerCase(c));
-			} else {
-				sb.append(Character.toLowerCase(c));
+	private Object findValue(Map<String, Object> results, String key, Map<String, ParserHint> hints ) {
+		Object value = results.get(key);
+		if( null == value && null != hints && hints.containsKey(key)) {
+			ParserHint hint = hints.get(key);
+			String[] steps = hint.getSteps();
+			String step;
+			Map<String, Object> map = results;
+			for (int i = 0, j = steps.length; i < steps.length; i++) {
+				step = steps[i];
+				if(i+1==j) {
+					value = map.get(step);
+				} else {
+					//noinspection unchecked
+					map = (Map<String, Object>) map.get(step);
+				}
 			}
 		}
-		String result = sb.toString();
-		if (result.equalsIgnoreCase("api_key")) {
-			result = "apikey";
-		}
-		return result;
+		return value;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -157,6 +170,29 @@ public class MailChimpParser {
 
 		throw new IllegalArgumentException(String.format("Could not convert from %s to %s.", value.getClass().getSimpleName(), expected.getSimpleName()));
 	}
+
+	// debugging
+	private void dumpResults(Map<String, Object> results) {
+		for( String key : results.keySet() ) {
+			final Object value = results.get(key);
+			if( Map.class.isAssignableFrom(value.getClass())) {
+				System.out.format("\n%s::", key);
+				dumpResults((Map<String, Object>) value);
+				System.out.println("::");
+			} else if( value.getClass().isArray()) {
+				System.out.format("\n%s(%s[]}::", key, value.getClass().getComponentType());
+				Object[] array = (Object[]) value;
+				for (int i = 0; i < array.length; i++) {
+					Object o = array[i];
+					System.out.println("=> " + o);
+				}
+			} else {
+				System.out.format("\n%s\t%s", key, value);
+			}
+		}
+		System.out.print('\n');
+	}
+
 
 
 	public List<ApiKey> parseApiKeys(Object results) throws MailChimpException {
