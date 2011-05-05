@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with MailChimp4J.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mc4j.dom;
+package mc4j.dom.security;
 
 import java.util.Date;
 

@@ -23,6 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import mc4j.dom.*;
+import mc4j.dom.list.MailingList;
+import mc4j.dom.list.MemberInfo;
+import mc4j.dom.list.MemberStatus;
+import mc4j.dom.security.ApiKey;
 import mc4j.service.impl.MailChimpService;
 
 import org.junit.Ignore;

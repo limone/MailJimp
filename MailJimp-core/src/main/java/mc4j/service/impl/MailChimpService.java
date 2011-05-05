@@ -28,6 +28,10 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import mc4j.dom.*;
+import mc4j.dom.list.MailingList;
+import mc4j.dom.list.MemberInfo;
+import mc4j.dom.list.MemberStatus;
+import mc4j.dom.security.ApiKey;
 import mc4j.service.IMailChimpService;
 import mc4j.service.MailChimpException;
 

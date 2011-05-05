@@ -29,6 +29,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mc4j.dom.*;
+import mc4j.dom.list.MailingList;
+import mc4j.dom.list.MemberInfo;
+import mc4j.dom.security.ApiKey;
 import mc4j.service.MailChimpException;
 import mc4j.service.UnexpectedMailChimpResponseException;
 
