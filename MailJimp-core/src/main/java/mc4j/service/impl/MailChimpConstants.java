@@ -19,6 +19,16 @@ package mc4j.service.impl;
 
 import java.text.SimpleDateFormat;
 
+/**
+ * Handy constants, which are used in this project or by projects using this one.
+ */
+// suppressing this warnings as those constance are to be used by other projects.
+@SuppressWarnings({"UnusedDeclaration"})
 public interface MailChimpConstants {
 	SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+	String FNAME = "FNAME";
+	String LNAME = "LNAME";
+	String EMAIL = "EMAIL";
+	String EMAIL_TYPE = "EMAIL_TYPE";
 }
