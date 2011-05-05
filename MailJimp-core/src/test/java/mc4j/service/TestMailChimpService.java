@@ -94,7 +94,7 @@ public class TestMailChimpService {
 	}
 
 	@Test
-	@Ignore("This will disable your api key an all following tests will fail. Use with caution.")
+	@Ignore("This will disable your api key and all following tests will fail. Use with caution.")
 	public void testKeyExpire() {
 		try {
 			Boolean content = mSvc.keyExpire();
