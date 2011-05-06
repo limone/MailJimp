@@ -32,7 +32,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Central entry point for all incoming MailChimp callbacks.
  *
+ * TODO
  *
  * Author: Eike Hirsch (me at eike-hirsch dot net)
  * Date: 03.05.11
@@ -43,22 +45,33 @@ public class WebHookController {
 
 	private static Pattern DATA_PATTERN = Pattern.compile("data\\[(\\w+)\\](\\[(\\w+)\\](\\[(\\d+)\\]\\[(\\w+)\\])?)?");
 	private static int INDEX_PARAM_NAME = 1;
-	private static int INDEX_MERGES_NAME = 3;
-	private static int INDEX_GROUP_INDEX = 5;
-	private static int INDEX_GROUP_PARAM = 6;
+	private static int INDEX_MAPPED_PARAM_NAME = 3;
+	private static int INDEX_MAPPED_ARRAY_INDEX = 5;
+	private static int INDEX_MAPPED_ARRAY_PARAM_NAME = 6;
 
 	@Autowired
 	private IWebHookAdapter webHookAdapter;
 
-	// as our core module can be run without spring in place, we can not auto wire the parser in.
+	// as our core module can be run without spring in place, we can not auto wire the parser.
 	private MailChimpParser parser = new MailChimpParser();
 
 
+	/**
+	 * WebHook for the subscribe callback. This will call
+	 * {@link IWebHookAdapter#userSubscribed(mc4j.dom.list.MemberInfo)}.
+	 *
+	 * @param request The request containing all the data.
+	 *
+	 * @return A simple string MailChimp doesn't care what the answer looks like as long as it's a 2xx status code.
+	 *
+	 * @throws MailChimpException if parsing fails.
+	 */
 	@RequestMapping(params = "type=subscribe")
 	public @ResponseBody String subscribe(WebRequest request) throws MailChimpException {
 		webHookAdapter.userSubscribed(parser.parseListMemberInfo(parseRequest(request)));
 		return "Copy that!";
 	}
+
 
 	// Watch out! This is going to be dirty! You have been warned.
 	private Map<String, Object> parseRequest(WebRequest request) {
@@ -71,20 +84,20 @@ public class WebHookController {
 				String key = matcher.group(INDEX_PARAM_NAME);
 				Object value = parameterMap.get(parameterKey)[0];
 
-				if( null == matcher.group(INDEX_MERGES_NAME)) {
+				if( null == matcher.group(INDEX_MAPPED_PARAM_NAME)) {
 					// simple values
 					convertible.put(key, value);
-				} else if( null == matcher.group(INDEX_GROUP_INDEX)) {
+				} else if( null == matcher.group(INDEX_MAPPED_ARRAY_INDEX)) {
 					// mapped values
-					Map<String, Object> map = getMapProperty(convertible, key);
-					map.put(matcher.group(INDEX_MERGES_NAME), value );
+					Map<String, Object> map = getMapParam(convertible, key);
+					map.put(matcher.group(INDEX_MAPPED_PARAM_NAME), value );
 				} else {
 					// merge values in an array
 					// If you like good coding don't read on!
-					Map<String, Object> map = getMapProperty(convertible, key);
+					Map<String, Object> map = getMapParam(convertible, key);
 					// now check for the array
-					String arrayKey = matcher.group(INDEX_MERGES_NAME);
-					int arrayIndex = Integer.valueOf( matcher.group(INDEX_GROUP_INDEX));
+					String arrayKey = matcher.group(INDEX_MAPPED_PARAM_NAME);
+					int arrayIndex = Integer.valueOf( matcher.group(INDEX_MAPPED_ARRAY_INDEX));
 					if( null == map.get(arrayKey)) {
 						map.put(arrayKey, new Object[]{});
 					}
@@ -99,7 +112,7 @@ public class WebHookController {
 					}
 					map.put(arrayKey, array);
 					//noinspection unchecked
-					((Map<String, Object>) array[arrayIndex]).put(matcher.group(INDEX_GROUP_PARAM), value);
+					((Map<String, Object>) array[arrayIndex]).put(matcher.group(INDEX_MAPPED_ARRAY_PARAM_NAME), value);
 				}
 
 			}
@@ -108,7 +121,7 @@ public class WebHookController {
 	}
 
 	@SuppressWarnings({"unchecked"})
-	private Map<String, Object> getMapProperty(Map<String, Object> convertible, String key) {
+	private Map<String, Object> getMapParam(Map<String, Object> convertible, String key) {
 		if( !convertible.containsKey(key)) {
 			convertible.put(key, new HashMap<String, Object>());
 		}
