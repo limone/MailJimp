@@ -96,7 +96,7 @@ public class TestWebHooks {
 		MemberInfo memberInfo = data.getMemberInfo();
 		assertNotNull(memberInfo);
 		assertEquals("me@eike-hirsch.net", memberInfo.getEmail());
-		assertEquals("Eike", memberInfo.getMerges().get(MailChimpConstants.FNAME));
+		assertEquals("Eike", memberInfo.getMerges().get(MailChimpConstants.MERGE_FNAME));
 		assertEquals("VALUE1, VALUE2", memberInfo.getGroupings()[0].getGroups());
 	}
 
