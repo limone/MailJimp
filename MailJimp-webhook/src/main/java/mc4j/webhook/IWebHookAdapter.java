@@ -18,13 +18,14 @@
 
 package mc4j.webhook;
 
+import mc4j.dom.WebHookData;
 import mc4j.dom.list.MemberInfo;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * This is the gateway to your application. Implement this interface and make the class available in your
- * application context. The {@link WebHookController} will auto wire the adapter so make sure to configure only one
+ * application context. The {@link WebHookController} will auto wire the adapter. So make sure to configure only one
  * implementation of this interface. Otherwise Spring will not be able to choose the right one for you.
  *
  *
@@ -35,11 +36,11 @@ import javax.servlet.http.HttpServletRequest;
 public interface IWebHookAdapter {
 
 	/**
-	 * Checks this request if it contains the secret key and value you configured. To use this feature you have to
+	 * Checks if this request contains the secret key and value you configured. To use this feature you have to
 	 * manually add a secret parameter to the WebHooks url. You can do so at the list tools section in you MailChimp
 	 * account. Simply add something like <code>?secretKey=secretValue</code> to the url.
-	 * The name of the parameter can be configured in the mc4j.properties file. The key is <code>mc.mc4j.webhook.secrectKey
-	 * </code>.
+	 * The name of the parameter can be configured in the mc4j.properties file. The key is
+	 * <code>mc.mc4j.webhook.secrectKey</code>.
 	 *
 	 * @param request The request to be tested.
 	 *
@@ -47,8 +48,84 @@ public interface IWebHookAdapter {
 	 */
 	boolean isValidRequest(HttpServletRequest request);
 
+	/**
+	 * Called every time a new user subscribed to a list.
+	 *
+	 * This callback contains a MemberInfo object.
+	 *
+	 * See <a href="http://http://apidocs.mailchimp.com/webhooks/" title="WebHook API docs">WebHook API docs</a> for
+	 * instructions on how to get a complete list of all keys.
+	 *
+	 * @param data all the data containing {@link MemberInfo}:
+	 */
+	void userSubscribed(WebHookData data);
 
-	void userSubscribed(MemberInfo memberInfo); // TODO: listId? Even more info?
+	/**
+	 * Called every time a user has unsubscribed from a list.
+	 *
+	 * This callback contains a MemberInfo object.
+	 *
+	 * Additional raw data keys:
+	 * <ul>
+	 *     <li>action (describes whether it was via a <code>delete</code> or actual <code>unsub</code>)</li>
+	 *     <li>reason (hard|manual|?)</li>
+	 *     <li>campaign_id</li>
+	 * </ul>
+	 *
+	 * See <a href="http://http://apidocs.mailchimp.com/webhooks/" title="WebHook API docs">WebHook API docs</a> for
+	 * instructions on how to get a complete list.
+	 *
+	 * @param data all the data containing {@link MemberInfo}:
+	 */
+	void userUnsubscribed(WebHookData data);
 
-	// TODO: more to come
+	/**
+	 * A user updated her/his profile.
+	 *
+	 * This callback contains a MemberInfo object.
+	 *
+	 * See <a href="http://http://apidocs.mailchimp.com/webhooks/" title="WebHook API docs">WebHook API docs</a> for
+	 * instructions on how to get a complete list.
+	 *
+	 * @param data all the data containing {@link MemberInfo}:
+	 */
+	void profileUpdated(WebHookData data);
+
+	/**
+	 * Called whenever a users eMail address changed.
+	 *
+	 * Available raw data keys:
+	 * <ul>
+	 *     <li>list_id</li>
+	 *     <li>new_id</li>
+	 *     <li>new_email</li>
+	 *     <li>old_email</li>
+	 * </ul>
+	 *
+	 * See <a href="http://http://apidocs.mailchimp.com/webhooks/" title="WebHook API docs">WebHook API docs</a> for
+	 * instructions on how to get a complete list.
+	 *
+	 * @param data No MemberInfo but the above keys.
+	 */
+	void eMailUpdated(WebHookData data);
+
+	/**
+	 * Called for a cleaned account.
+	 *
+	 * Available raw data keys:
+	 * <ul>
+	 *     <li>list_id</li>
+	 *     <li>campaign_id</li>
+	 *     <li>reason (Reason will be one of "hard" (for hard bounces) or "abuse")</li>
+	 *     <li>email</li>
+	 * </ul>
+	 *
+	 * See <a href="http://http://apidocs.mailchimp.com/webhooks/" title="WebHook API docs">WebHook API docs</a> for
+	 * instructions on how to get a complete list.
+	 *
+	 * @param data No MemberInfo but the above keys.
+	 *
+	 *
+	 */
+	void cleaned(WebHookData data);
 }

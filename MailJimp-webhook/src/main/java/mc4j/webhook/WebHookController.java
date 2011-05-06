@@ -18,7 +18,10 @@
 
 package mc4j.webhook;
 
+import mc4j.dom.WebHookData;
+import mc4j.dom.WebHookType;
 import mc4j.service.MailChimpException;
+import mc4j.service.impl.MailChimpConstants;
 import mc4j.service.impl.MailChimpParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -34,7 +38,8 @@ import java.util.regex.Pattern;
 /**
  * Central entry point for all incoming MailChimp callbacks.
  *
- * TODO
+ * The controller will simply parse the request as good as it can and dispatch the call to the corresponding method of
+ * the {@link IWebHookAdapter}.
  *
  * Author: Eike Hirsch (me at eike-hirsch dot net)
  * Date: 03.05.11
@@ -57,24 +62,108 @@ public class WebHookController {
 
 
 	/**
-	 * WebHook for the subscribe callback. This will call
-	 * {@link IWebHookAdapter#userSubscribed(mc4j.dom.list.MemberInfo)}.
+	 * WebHook for the subscribe callbacks. This will call
+	 * {@link IWebHookAdapter#userSubscribed(mc4j.dom.WebHookData)}.
 	 *
 	 * @param request The request containing all the data.
 	 *
 	 * @return A simple string MailChimp doesn't care what the answer looks like as long as it's a 2xx status code.
 	 *
-	 * @throws MailChimpException if parsing fails.
+	 * @throws Exception if parsing fails.
 	 */
 	@RequestMapping(params = "type=subscribe")
-	public @ResponseBody String subscribe(WebRequest request) throws MailChimpException {
-		webHookAdapter.userSubscribed(parser.parseListMemberInfo(parseRequest(request)));
+	public @ResponseBody String subscribe(WebRequest request) throws Exception {
+		WebHookData data = new WebHookData(WebHookType.SUBSCRIBE);
+		webHookAdapter.userSubscribed( buildData(request, data) );
 		return "Copy that!";
+	}
+
+	/**
+	 * WebHook for the unsubscribe callbacks. This will call
+	 * {@link IWebHookAdapter#userUnsubscribed(mc4j.dom.WebHookData)}.
+	 *
+	 * @param request The request containing all the data.
+	 *
+	 * @return A simple string MailChimp doesn't care what the answer looks like as long as it's a 2xx status code.
+	 *
+	 * @throws Exception if parsing fails.
+	 */
+	@RequestMapping(params = "type=unsubscribe")
+	public @ResponseBody String unsubscribe(WebRequest request) throws Exception {
+		WebHookData data = new WebHookData(WebHookType.UNSUBSCRIBE);
+		webHookAdapter.userUnsubscribed(buildData(request, data));
+		return "Ten four!";
+	}
+
+	/**
+	 * WebHook for the subscribe callbacks. This will call
+	 * {@link IWebHookAdapter#userSubscribed(mc4j.dom.WebHookData)}.
+	 *
+	 * @param request The request containing all the data.
+	 *
+	 * @return A simple string MailChimp doesn't care what the answer looks like as long as it's a 2xx status code.
+	 *
+	 * @throws Exception if parsing fails.
+	 */
+	@RequestMapping(params = "type=profile")
+	public @ResponseBody String profile(WebRequest request) throws Exception {
+		WebHookData data = new WebHookData(WebHookType.UPDATE_PROFILE);
+		webHookAdapter.profileUpdated(buildData(request, data));
+		return "Roger that!";
+	}
+
+	/**
+	 * WebHook for the subscribe callbacks. This will call
+	 * {@link IWebHookAdapter#userSubscribed(mc4j.dom.WebHookData)}.
+	 *
+	 * @param request The request containing all the data.
+	 *
+	 * @return A simple string MailChimp doesn't care what the answer looks like as long as it's a 2xx status code.
+	 *
+	 * @throws Exception if parsing fails.
+	 */
+	@RequestMapping(params = "type=upemail")
+	public @ResponseBody String upemail(WebRequest request) throws Exception {
+		WebHookData data = new WebHookData(WebHookType.UPDATE_EMAIL);
+		webHookAdapter.eMailUpdated(buildData(request, data));
+		return "Understood!";
+	}
+
+	/**
+	 * WebHook for the subscribe callbacks. This will call
+	 * {@link IWebHookAdapter#userSubscribed(mc4j.dom.WebHookData)}.
+	 *
+	 * @param request The request containing all the data.
+	 *
+	 * @return A simple string MailChimp doesn't care what the answer looks like as long as it's a 2xx status code.
+	 *
+	 * @throws Exception if parsing fails.
+	 */
+	@RequestMapping(params = "type=cleaned")
+	public @ResponseBody String cleaned(WebRequest request) throws Exception {
+		WebHookData data = new WebHookData(WebHookType.CLEANED);
+		webHookAdapter.cleaned(buildData(request, data));
+		return "OK!";
+	}
+
+
+
+	private WebHookData buildData(WebRequest request, final WebHookData data)
+			throws ParseException, MailChimpException {
+		data.setFiredAt(MailChimpConstants.SDF.parse(request.getParameter("fired_at")));
+		data.setRawData(parseRequest(request));
+		if( WebHookType.SUBSCRIBE == data.getType() ||
+				WebHookType.UNSUBSCRIBE == data.getType() ||
+				WebHookType.UPDATE_PROFILE == data.getType() ) {
+			data.setMemberInfo( parser.parseListMemberInfo(data.getRawData()));
+		}
+		return data;
 	}
 
 
 	// Watch out! This is going to be dirty! You have been warned.
 	private Map<String, Object> parseRequest(WebRequest request) {
+
 		Map<String,String[]> parameterMap = request.getParameterMap();
 		Map<String,Object> convertible = new HashMap<String, Object>();
 

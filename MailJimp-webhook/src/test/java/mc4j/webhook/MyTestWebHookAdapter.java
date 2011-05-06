@@ -18,13 +18,15 @@
 
 package mc4j.webhook;
 
-import mc4j.dom.list.MemberInfo;
-import mc4j.service.impl.MailChimpConstants;
+import mc4j.dom.WebHookData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -39,6 +41,16 @@ public class MyTestWebHookAdapter implements IWebHookAdapter {
 
 	private static final Logger LOG = LoggerFactory.getLogger( MyTestWebHookAdapter.class );
 
+	private List<String> called = new ArrayList<String>();
+	private WebHookData data;
+
+	public boolean wasCalled( String methodName ) {
+		return called.contains(methodName);
+	}
+
+	public void resetCalled() {
+		called.clear();
+	}
 
 	@Override
 	public boolean isValidRequest(HttpServletRequest request) {
@@ -46,11 +58,36 @@ public class MyTestWebHookAdapter implements IWebHookAdapter {
 	}
 
 	@Override
-	public void userSubscribed(MemberInfo memberInfo) {
-		assertNotNull(memberInfo);
+	public void userSubscribed(WebHookData data) {
+		called.add("userSubscribed");
+		this.data = data;
+	}
 
-		assertEquals("me@eike-hirsch.net", memberInfo.getEmail());
-		assertEquals("Eike", memberInfo.getMerges().get(MailChimpConstants.FNAME));
-		assertEquals("VALUE1, VALUE2", memberInfo.getGroupings()[0].getGroups());
+	@Override
+	public void userUnsubscribed(WebHookData data) {
+		called.add("userUnsubscribed");
+		this.data = data;
+	}
+
+	@Override
+	public void profileUpdated(WebHookData data) {
+		called.add("profileUpdated");
+		this.data = data;
+	}
+
+	@Override
+	public void eMailUpdated(WebHookData data) {
+		called.add("eMailUpdated");
+		this.data = data;
+	}
+
+	@Override
+	public void cleaned(WebHookData data) {
+		called.add("cleaned");
+		this.data = data;
+	}
+
+	public WebHookData getData() {
+		return data;
 	}
 }
