@@ -20,6 +20,7 @@ package mc4j.webhook;
 
 import mc4j.dom.WebHookData;
 import mc4j.dom.list.MemberInfo;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,11 +37,9 @@ import javax.servlet.http.HttpServletRequest;
 public interface IWebHookAdapter {
 
 	/**
-	 * Checks if this request contains the secret key and value you configured. To use this feature you have to
-	 * manually add a secret parameter to the WebHooks url. You can do so at the list tools section in you MailChimp
-	 * account. Simply add something like <code>?secretKey=secretValue</code> to the url.
-	 * The name of the parameter can be configured in the mc4j.properties file. The key is
-	 * <code>mc.mc4j.webhook.secrectKey</code>.
+	 * Checks if this request is secure. It's a good idea to manually add a secret parameter to the WebHooks url and
+	 * test that parameter and it's value here. You can always add a parameter at the list tools section in you
+	 * MailChimp account. Simply add something like <code>?secretKey=secretValue</code> to the url.
 	 *
 	 * @param request The request to be tested.
 	 *

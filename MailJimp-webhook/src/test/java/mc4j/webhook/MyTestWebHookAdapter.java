@@ -54,6 +54,7 @@ public class MyTestWebHookAdapter implements IWebHookAdapter {
 
 	@Override
 	public boolean isValidRequest(HttpServletRequest request) {
+		called.add("isValidRequest");
 		return true;
 	}
 

@@ -24,6 +24,7 @@ import mc4j.service.MailChimpException;
 import mc4j.service.impl.MailChimpConstants;
 import mc4j.service.impl.MailChimpParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
