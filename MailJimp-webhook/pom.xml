@@ -38,5 +38,10 @@
 			<artifactId>mailjimp-core</artifactId>
 			<version>${parent.version}</version>
 		</dependency>
+		<!-- extra spring dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
 	</dependencies>
 </project>
