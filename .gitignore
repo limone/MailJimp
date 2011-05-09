@@ -1,4 +1,4 @@
-**/target
+target/
 **/.settings
 **/.pmd
 **/.classpath
@@ -6,3 +6,4 @@
 **/.DS_Store
 **/*.iml
 **/.idea
+bin/
