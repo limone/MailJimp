@@ -30,4 +30,6 @@ public interface MailChimpConstants extends Serializable {
   String           MERGE_LNAME      = "LNAME";
   String           MERGE_EMAIL      = "EMAIL";
   String           MERGE_EMAIL_TYPE = "EMAIL_TYPE";
+  String           MERGE_GROUPINGS  = "GROUPINGS";
+  String           MERGE_GROUPS     = "groups";
 }
