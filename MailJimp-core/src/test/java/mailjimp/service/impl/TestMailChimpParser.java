@@ -231,7 +231,7 @@ public class TestMailChimpParser {
     assertNull(mv.getId());
     assertThat(mv.getMergeVars(), hasEntry("my_int", (Object) 33));
     assertThat(mv.getMergeVars(), hasEntry("my_bool", (Object) true));
-    assertThat(mv.getMergeVars(), hasEntry("my_string", (Object) "mc4j33"));
+    assertThat(mv.getMergeVars(), hasEntry("my_string", (Object) "mailjimp33"));
   }
 
   @Test
