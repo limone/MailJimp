@@ -15,33 +15,34 @@
   ~ You should have received a copy of the GNU Lesser General Public License
   ~ along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
             http://maven.apache.org/POM/4.0.0
             http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>mailjimp-webhook</artifactId>
-	<name>MailChimp Java API - Webhook</name>
-	<description>A Java library that wraps around the MailChimp web-based API a.k.a WebHooks.</description>
-	<url>http://github.com/mlaccetti/MailJimp</url>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>mailjimp-webhook</artifactId>
+  <name>MailChimp Java API - Webhook</name>
+  <description>A Java library that wraps around the MailChimp web-based API a.k.a WebHooks.</description>
 
-	<parent>
-		<groupId>net.mailjimp</groupId>
-		<artifactId>mailjimp-parent</artifactId>
-		<version>0.2-SNAPSHOT</version>
-		<relativePath>../MailJimp-parent</relativePath>
-	</parent>
-	<dependencies>
-		<dependency>
-			<groupId>net.mailjimp</groupId>
-			<artifactId>mailjimp-core</artifactId>
-			<version>${parent.version}</version>
-		</dependency>
-		<!-- extra spring dependencies -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
-	</dependencies>
+  <parent>
+    <groupId>net.mailjimp</groupId>
+    <artifactId>mailjimp-parent</artifactId>
+    <version>0.2-SNAPSHOT</version>
+    <relativePath>../MailJimp-parent</relativePath>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>net.mailjimp</groupId>
+      <artifactId>mailjimp-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!-- extra spring dependencies -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+  </dependencies>
 </project>

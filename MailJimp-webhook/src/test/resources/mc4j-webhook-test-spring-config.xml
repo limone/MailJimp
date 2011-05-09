@@ -24,7 +24,7 @@
             http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-	<import resource="classpath:/mc4j-spring-config.xml" />
+	<import resource="classpath:/mailjimp-spring-config.xml" />
 
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 </beans>
