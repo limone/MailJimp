@@ -20,7 +20,6 @@ package mc4j.webhook;
 
 import mc4j.dom.WebHookData;
 import mc4j.dom.list.MemberInfo;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,9 +29,9 @@ import javax.servlet.http.HttpServletRequest;
  * implementation of this interface. Otherwise Spring will not be able to choose the right one for you.
  *
  *
- * @author: Eike Hirsch (me at eike-hirsch dot net)
- * Date: 03.05.11
- * Time: 09:32
+ * @author Eike Hirsch (me at eike-hirsch dot net)
+ *         Date: 03.05.11
+ *         Time: 09:32
  */
 public interface IWebHookAdapter {
 
