@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2010-2011 Michael Laccetti
+  ~
+  ~ This file is part of MailJimp.
+  ~
+  ~ MailJimp is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Lesser General Public License as published by
+  ~ the Free Software Foundation, version 3 of the License.
+  ~
+  ~ MailJimp is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Lesser General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Lesser General Public License
+  ~ along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
+  -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:context="http://www.springframework.org/schema/context"
   xsi:schemaLocation="
@@ -8,8 +25,13 @@
             http://www.springframework.org/schema/context/spring-context.xsd">
 
   <import resource="mailjimp-spring-config.xml" />
-  <!-- Set up some extra properties for the tests. You will need some extra information and setup in your MailChimp account 
-    to run the integration tests. The properties file needs to contain the following: mj.test.listId=a_list_id_you_like_to_test 
-    mj.test.subscribedUserEMailAddress=an_email_address_of_an_subscribed_user_of_that_list -->
+
+  <!-- Set up some extra properties for the tests. You will need some extra
+       information and setup in your MailChimp account to run the integration
+       tests. The properties file needs to contain the following:
+
+    mj.test.listId=a_list_id_you_like_to_test
+    mj.test.subscribedUserEMailAddress=an_email_address_of_an_subscribed_user_of_that_list
+  -->
   <context:property-placeholder location="classpath:mailjimp-test.properties" />
 </beans>
