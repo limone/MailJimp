@@ -35,46 +35,52 @@ import mailjimp.dom.security.ApiKey;
  * 
  * @author Michael Laccetti
  */
-public interface IMailChimpService extends Serializable {
+public interface IMailJimpService extends Serializable {
   /**
    * Retrieve a list of all MailChimp API Keys for this User - expired keys
    * included.
    * 
    * @return List of keys
    */
-  public List<ApiKey> keyList() throws MailChimpException;
+  public List<ApiKey> keyList() throws MailJimpException;
 
   /**
    * Retrieve a list of all MailChimp API Keys for this user -
    * including/excluding expired keys.
    * 
+   * Please note that if you have not provided your username and password, this method will return an empty list.
+   * 
    * @param includeExpired
    * @return
-   * @throws MailChimpException
+   * @throws MailJimpException
    */
-  public List<ApiKey> keyList(boolean includeExpired) throws MailChimpException;
+  public List<ApiKey> keyList(boolean includeExpired) throws MailJimpException;
 
   /**
    * Add an API Key to your account.
    * 
+   * Please note that if you have not provided your username and password, this method will return null.
+   * 
    * @return Newly generated key
    */
-  public String keyAdd() throws MailChimpException;
+  public String keyAdd() throws MailJimpException;
 
   /**
-   * Expire a Specific API Key.
+   * Expire a Specific API Key
+   * 
+   * Please note that if you have not provided your username and password, this method will return false.
    * 
    * @return Whether or not the API key was expired
    */
-  public boolean keyExpire() throws MailChimpException;
+  public boolean keyExpire() throws MailJimpException;
 
   /**
    * Retrieve all mailing lists.
    * 
    * @return List of Mailing Lists
-   * @throws MailChimpException
+   * @throws MailJimpException
    */
-  public List<MailingList> getLists() throws MailChimpException;
+  public List<MailingList> getLists() throws MailJimpException;
 
   /**
    * Retrieve all members for specific mailing list.
@@ -85,9 +91,9 @@ public interface IMailChimpService extends Serializable {
    * @param start
    * @param limit
    * @return
-   * @throws MailChimpException
+   * @throws MailJimpException
    */
-  public Map<String, Date> getListMembers(String listId, MemberStatus memberStatus, Date since, Integer start, Integer limit) throws MailChimpException;
+  public Map<String, Date> getListMembers(String listId, MemberStatus memberStatus, Date since, Integer start, Integer limit) throws MailJimpException;
 
   /**
    * Retrieve member info for a specific mailing list.
@@ -95,9 +101,9 @@ public interface IMailChimpService extends Serializable {
    * @param listId
    * @param emailAddress
    * @return
-   * @throws MailChimpException
+   * @throws MailJimpException
    */
-  public MemberInfo getMemberInfo(String listId, String emailAddress) throws MailChimpException;
+  public MemberInfo getMemberInfo(String listId, String emailAddress) throws MailJimpException;
 
   /**
    * Subscribe a user to a mailing list.
@@ -111,9 +117,9 @@ public interface IMailChimpService extends Serializable {
    * @param replaceInterests
    * @param sendWelcome
    * @return
-   * @throws MailChimpException
+   * @throws MailJimpException
    */
-  public boolean listSubscribe(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean doubleOptin, boolean updateExisting, boolean replaceInterests, boolean sendWelcome) throws MailChimpException;
+  public boolean listSubscribe(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean doubleOptin, boolean updateExisting, boolean replaceInterests, boolean sendWelcome) throws MailJimpException;
 
   /**
    * Batch subscribe a user to a mailing list. See <a
@@ -130,9 +136,9 @@ public interface IMailChimpService extends Serializable {
    * @return The result of this call. Containing add, update and error counts.
    *         In case of errors contains additional information.
    * 
-   * @throws MailChimpException
+   * @throws MailJimpException
    */
-  public BatchResult listBatchSubscribe(String listId, Object[] batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailChimpException;
+  public BatchResult listBatchSubscribe(String listId, Object[] batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailJimpException;
 
   /**
    * Update a members info on a mailing list.
@@ -143,9 +149,9 @@ public interface IMailChimpService extends Serializable {
    * @param emailType
    * @param replaceInterests
    * @return
-   * @throws MailChimpException
+   * @throws MailJimpException
    */
-  public boolean listUpdateMember(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean replaceInterests) throws MailChimpException;
+  public boolean listUpdateMember(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean replaceInterests) throws MailJimpException;
 
   /**
    * Unsubscribe a user from a mailing list.
@@ -156,7 +162,7 @@ public interface IMailChimpService extends Serializable {
    * @param sendGoodbye
    * @param sendNotify
    * @return
-   * @throws MailChimpException
+   * @throws MailJimpException
    */
-  public boolean listUnsubscribe(String listId, String emailAddress, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailChimpException;
+  public boolean listUnsubscribe(String listId, String emailAddress, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailJimpException;
 }

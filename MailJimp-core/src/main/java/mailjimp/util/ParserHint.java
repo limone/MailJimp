@@ -18,7 +18,7 @@
 package mailjimp.util;
 
 /**
- * Helping the {@link mailjimp.service.impl.MailChimpParser parser} to find nested properties.
+ * Helping the {@link mailjimp.service.impl.MailJimpParser parser} to find nested properties.
  *
  * @author Eike Hirsch (me at eike-hirsch dot net)
  *         Date: 05.05.11

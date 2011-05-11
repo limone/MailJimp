@@ -19,9 +19,9 @@ package mailjimp.webhook;
 
 import mailjimp.dom.WebHookData;
 import mailjimp.dom.WebHookType;
-import mailjimp.service.MailChimpException;
-import mailjimp.service.impl.MailChimpConstants;
-import mailjimp.service.impl.MailChimpParser;
+import mailjimp.service.MailJimpException;
+import mailjimp.service.impl.MailJimpConstants;
+import mailjimp.service.impl.MailJimpParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,7 +57,7 @@ public class WebHookController {
   private IWebHookAdapter webHookAdapter;
   // as our core module can be run without spring in place, we can not auto wire
   // the parser.
-  private MailChimpParser parser                        = new MailChimpParser();
+  private MailJimpParser parser                        = new MailJimpParser();
 
   /**
    * WebHook for the subscribe callbacks. This will call
@@ -164,8 +164,8 @@ public class WebHookController {
     return "OK!";
   }
 
-  private WebHookData buildData(WebRequest request, final WebHookData data) throws ParseException, MailChimpException {
-    data.setFiredAt(MailChimpConstants.SDF.parse(request.getParameter("fired_at")));
+  private WebHookData buildData(WebRequest request, final WebHookData data) throws ParseException, MailJimpException {
+    data.setFiredAt(MailJimpConstants.SDF.parse(request.getParameter("fired_at")));
     data.setRawData(parseRequest(request));
     if (WebHookType.SUBSCRIBE == data.getType() || WebHookType.UNSUBSCRIBE == data.getType() || WebHookType.UPDATE_PROFILE == data.getType()) {
       data.setMemberInfo(parser.parseListMemberInfo(data.getRawData()));

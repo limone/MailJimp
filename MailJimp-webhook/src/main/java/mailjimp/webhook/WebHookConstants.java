@@ -17,14 +17,14 @@
  */
 package mailjimp.webhook;
 
-import mailjimp.service.impl.MailChimpConstants;
+import mailjimp.service.impl.MailJimpConstants;
 
 /**
  * Collection of special keys used in the raw data of the callbacks.
  * 
  * @author Eike Hirsch (me at eike-hirsch dot net) Date: 06.05.11 Time: 15:47
  */
-public interface WebHookConstants extends MailChimpConstants {
+public interface WebHookConstants extends MailJimpConstants {
   String REASON    = "reason";
   String OLD_EMAIL = "old_email";
   String NEW_EMAIL = "new_email";

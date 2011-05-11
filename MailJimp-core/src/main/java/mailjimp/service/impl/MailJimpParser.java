@@ -33,13 +33,13 @@ import mailjimp.dom.*;
 import mailjimp.dom.list.MailingList;
 import mailjimp.dom.list.MemberInfo;
 import mailjimp.dom.security.ApiKey;
-import mailjimp.service.MailChimpException;
-import mailjimp.service.UnexpectedMailChimpResponseException;
+import mailjimp.service.MailJimpException;
+import mailjimp.service.UnexpectedMailJimpResponseException;
 import mailjimp.util.ParserHint;
 import mailjimp.util.ParserUtils;
 
 @SuppressWarnings("serial")
-public class MailChimpParser implements Serializable {
+public class MailJimpParser implements Serializable {
   private static final Pattern SETTER_PATTERN = Pattern.compile("set(\\w+)");
 
   /**
@@ -119,18 +119,18 @@ public class MailChimpParser implements Serializable {
         for (T obj : expected.getEnumConstants()) {
           if (obj.toString().equalsIgnoreCase((String) value)) { return obj; }
         }
-        throw new MailChimpException(String.format("No enum constant found for value %s in enum %s.", value.toString(), expected.getSimpleName()));
+        throw new MailJimpException(String.format("No enum constant found for value %s in enum %s.", value.toString(), expected.getSimpleName()));
       } catch (Exception ex) {
-        throw new MailChimpException("Could not parse Enum.", ex);
+        throw new MailJimpException("Could not parse Enum.", ex);
       }
     }
     if (expected.equals(Date.class) && value.getClass().equals(String.class)) {
       try {
         String s = (String) value;
         if (s.length() == 0) { return null; }
-        return (T) MailChimpConstants.SDF.parse((String) value);
+        return (T) MailJimpConstants.SDF.parse((String) value);
       } catch (ParseException pe) {
-        throw new MailChimpException("Could not convert date.", pe);
+        throw new MailJimpException("Could not convert date.", pe);
       }
     }
     if (expected.equals(Double.class)) {
@@ -151,10 +151,10 @@ public class MailChimpParser implements Serializable {
           T obj = expected.newInstance();
           setVars((Map<String, Object>) value, obj);
         } catch (Exception ex) {
-          throw new MailChimpException("Could not process nested collection.", ex);
+          throw new MailJimpException("Could not process nested collection.", ex);
         }
       }
-      throw new MailChimpException("We expected a list, but the inbound element was not an array.");
+      throw new MailJimpException("We expected a list, but the inbound element was not an array.");
     }
     // TODO: how to check for complex types in a more general way?
     if (IParsableProperty.class.isAssignableFrom(expected) && Map.class.isAssignableFrom(value.getClass())) {
@@ -188,7 +188,7 @@ public class MailChimpParser implements Serializable {
   // System.out.print('\n');
   // }
   //
-  public List<ApiKey> parseApiKeys(Object results) throws MailChimpException {
+  public List<ApiKey> parseApiKeys(Object results) throws MailJimpException {
     List<ApiKey> keys = new ArrayList<ApiKey>();
     if (results instanceof Object[]) {
       for (Object o : (Object[]) results) {
@@ -199,7 +199,7 @@ public class MailChimpParser implements Serializable {
           try {
             setVars(m, ak);
           } catch (Exception ex) {
-            throw new MailChimpException("Could not set fields.", ex);
+            throw new MailJimpException("Could not set fields.", ex);
           }
           keys.add(ak);
         }
@@ -208,14 +208,14 @@ public class MailChimpParser implements Serializable {
     return keys;
   }
 
-  public String createApiKey(Object results) throws MailChimpException {
+  public String createApiKey(Object results) throws MailJimpException {
     if (results instanceof String) { return (String) results; }
-    throw new MailChimpException(String.format("Result was an unxpected type: %s.", results.getClass().getName()));
+    throw new MailJimpException(String.format("Result was an unxpected type: %s.", results.getClass().getName()));
   }
 
-  public Boolean expireApiKey(Object results) throws MailChimpException {
+  public Boolean expireApiKey(Object results) throws MailJimpException {
     if (results instanceof Boolean) { return (Boolean) results; }
-    throw new MailChimpException(String.format("Result was an unxpected type: %s.", results.getClass().getName()));
+    throw new MailJimpException(String.format("Result was an unxpected type: %s.", results.getClass().getName()));
   }
 
   /**
@@ -227,10 +227,10 @@ public class MailChimpParser implements Serializable {
    * 
    * @return A list containing {@link MailingList MailingLists}.
    * 
-   * @throws MailChimpException
+   * @throws MailJimpException
    *           If parsing goes wrong
    */
-  public List<MailingList> parseLists(Object results) throws MailChimpException {
+  public List<MailingList> parseLists(Object results) throws MailJimpException {
     List<MailingList> lists;
     if (results instanceof Object[]) { // api version 1.2
       lists = new ArrayList<MailingList>();
@@ -242,12 +242,12 @@ public class MailChimpParser implements Serializable {
       lists = new ArrayList<MailingList>((Integer) r.get("total"));
       _parseLists((Object[]) r.get("data"), lists);
     } else {
-      throw new UnexpectedMailChimpResponseException("Unsupported api version?");
+      throw new UnexpectedMailJimpResponseException("Unsupported api version?");
     }
     return lists;
   }
 
-  private void _parseLists(Object[] results, List<MailingList> lists) throws MailChimpException {
+  private void _parseLists(Object[] results, List<MailingList> lists) throws MailJimpException {
     for (Object o : results) {
       if (o instanceof Map<?, ?>) {
         @SuppressWarnings("unchecked")
@@ -257,7 +257,7 @@ public class MailChimpParser implements Serializable {
           setVars(m, ml);
           lists.add(ml);
         } catch (Exception ex) {
-          throw new MailChimpException("Could not set fields.", ex);
+          throw new MailJimpException("Could not set fields.", ex);
         }
       }
     }
@@ -273,10 +273,10 @@ public class MailChimpParser implements Serializable {
    * @return A map containing e-mail-addresses as keys and subscription dates as
    *         values.
    * 
-   * @throws MailChimpException
+   * @throws MailJimpException
    *           If parsing goes wrong.
    */
-  public Map<String, Date> parseListMembers(Object results) throws MailChimpException {
+  public Map<String, Date> parseListMembers(Object results) throws MailJimpException {
     Map<String, Date> members;
     if (results instanceof Object[]) {
       // api version 1.2
@@ -289,12 +289,12 @@ public class MailChimpParser implements Serializable {
       members = new HashMap<String, Date>((Integer) r.get("total"));
       _parseListMembers((Object[]) r.get("data"), members);
     } else {
-      throw new UnexpectedMailChimpResponseException("Unsupported api version?");
+      throw new UnexpectedMailJimpResponseException("Unsupported api version?");
     }
     return members;
   }
 
-  private void _parseListMembers(Object[] results, Map<String, Date> members) throws MailChimpException {
+  private void _parseListMembers(Object[] results, Map<String, Date> members) throws MailJimpException {
     for (Object o : results) {
       if (o instanceof Map<?, ?>) {
         @SuppressWarnings("unchecked")
@@ -302,9 +302,9 @@ public class MailChimpParser implements Serializable {
         String email = m.get("email");
         String timestamp = m.get("timestamp");
         try {
-          members.put(email, MailChimpConstants.SDF.parse(timestamp));
+          members.put(email, MailJimpConstants.SDF.parse(timestamp));
         } catch (ParseException pe) {
-          throw new MailChimpException("Could not parse member list timestamp.", pe);
+          throw new MailJimpException("Could not parse member list timestamp.", pe);
         }
       }
     }
@@ -323,11 +323,11 @@ public class MailChimpParser implements Serializable {
    * 
    * @return A {@link MemberInfo} containing - you guess it - the members info.
    * 
-   * @throws MailChimpException
+   * @throws MailJimpException
    *           If parsing goes wrong.
    */
   @SuppressWarnings("unchecked")
-  public MemberInfo parseListMemberInfo(Object results) throws MailChimpException {
+  public MemberInfo parseListMemberInfo(Object results) throws MailJimpException {
     if (results instanceof Map<?, ?>) {
       MemberInfo mi = new MemberInfo();
       Map<String, Object> m = (Map<String, Object>) results;
@@ -338,18 +338,18 @@ public class MailChimpParser implements Serializable {
         setVars(m, mi);
         return mi;
       } catch (Exception ex) {
-        throw new MailChimpException("Could not set fields.", ex);
+        throw new MailJimpException("Could not set fields.", ex);
       }
     }
-    throw new MailChimpException(formatErrorMsg(results, "Result from MailChimp API was not of the expected type (instead, it was %s)."));
+    throw new MailJimpException(formatErrorMsg(results, "Result from MailChimp API was not of the expected type (instead, it was %s)."));
   }
 
-  public boolean parseListSubscribe(Object results) throws MailChimpException {
+  public boolean parseListSubscribe(Object results) throws MailJimpException {
     if (results instanceof Boolean) { return (Boolean) results; }
-    throw new MailChimpException(formatErrorMsg(results, "List subscription result type was not boolean (was: %s)."));
+    throw new MailJimpException(formatErrorMsg(results, "List subscription result type was not boolean (was: %s)."));
   }
 
-  public BatchResult parseListBatchSubscribe(Object results) throws MailChimpException {
+  public BatchResult parseListBatchSubscribe(Object results) throws MailJimpException {
     return _parseBatchResult(results);
   }
 
@@ -360,10 +360,10 @@ public class MailChimpParser implements Serializable {
    *          Guess what!
    * 
    * @return The parsed result.
-   * @throws mailjimp.service.MailChimpException
+   * @throws mailjimp.service.MailJimpException
    *           if something goes wrong.
    */
-  private BatchResult _parseBatchResult(Object results) throws MailChimpException {
+  private BatchResult _parseBatchResult(Object results) throws MailJimpException {
     if (results instanceof Map<?, ?>) {
       BatchResult br = new BatchResult();
       @SuppressWarnings("unchecked")
@@ -372,20 +372,20 @@ public class MailChimpParser implements Serializable {
         setVars(m, br);
         return br;
       } catch (Exception ex) {
-        throw new MailChimpException("Could not set fields.", ex);
+        throw new MailJimpException("Could not set fields.", ex);
       }
     }
-    throw new MailChimpException(formatErrorMsg(results, "List batch subscription result was not of the expected type (instead, it was %s)."));
+    throw new MailJimpException(formatErrorMsg(results, "List batch subscription result was not of the expected type (instead, it was %s)."));
   }
 
-  public boolean parseListUpdateMember(Object results) throws MailChimpException {
+  public boolean parseListUpdateMember(Object results) throws MailJimpException {
     if (results instanceof Boolean) { return (Boolean) results; }
-    throw new MailChimpException(formatErrorMsg(results, "List update member result type was not boolean (was: %s)."));
+    throw new MailJimpException(formatErrorMsg(results, "List update member result type was not boolean (was: %s)."));
   }
 
-  public boolean parseListUnsubscribe(Object results) throws MailChimpException {
+  public boolean parseListUnsubscribe(Object results) throws MailJimpException {
     if (results instanceof Boolean) { return (Boolean) results; }
-    throw new MailChimpException(formatErrorMsg(results, "List unsubscription result type was not boolean (was: %s)."));
+    throw new MailJimpException(formatErrorMsg(results, "List unsubscription result type was not boolean (was: %s)."));
   }
 
   private String formatErrorMsg(Object results, final String msg) {

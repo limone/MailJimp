@@ -11,18 +11,22 @@
     We use this to inject the username, password and API key information into the bean directly. Please note that you 
     can also inject them directly via constructor args, if you desire - check out the bean definition for a sample. The properties 
     file needs to contain the following: 
+    
       mj.username=your_username
       mj.password=your_password
       mj.apiKey=your_api_key
       mj.apiVersion=version_to_use 
-      mj.ssl=https (true|false)
+      mj.ssl=(true|false)
+      
+    Please note that the username and password are not mandatory - you can pass in null/empty strings.  This just means that
+    any of the security-related API functionality will not be enabled.
   -->
   <context:property-placeholder location="classpath*:mailjimp.properties"
     ignore-resource-not-found="true" ignore-unresolvable="true" />
   <context:annotation-config />
   <context:component-scan base-package="mailjimp" />
 
-  <bean name="mailJimpService" class="mailjimp.service.impl.MailChimpService">
+  <bean name="mailJimpService" class="mailjimp.service.impl.MailJimpService">
     <!-- You can manually hardcode the credentials and API keys through the XML configuration, if you want -->
     <constructor-arg name="username" value="${mj.username}" />
     <constructor-arg name="password" value="${mj.password}" />

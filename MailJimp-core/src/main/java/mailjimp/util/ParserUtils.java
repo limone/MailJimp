@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Collection tools needed inside and outside of the {@link mailjimp.service.impl.MailChimpParser}.
+ * Collection tools needed inside and outside of the {@link mailjimp.service.impl.MailJimpParser}.
  *
  * @author Eike Hirsch (me at eike-hirsch dot net)
  *         Date: 05.05.11

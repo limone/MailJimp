@@ -20,7 +20,7 @@ package mailjimp.dom;
 import java.io.Serializable;
 
 /**
- * Marker interface to show the {@link mailjimp.service.impl.MailChimpParser}
+ * Marker interface to show the {@link mailjimp.service.impl.MailJimpParser}
  * that the implementing class should be parsed.
  * 
  * The parser will throw an exception if it has to try to set a complex type

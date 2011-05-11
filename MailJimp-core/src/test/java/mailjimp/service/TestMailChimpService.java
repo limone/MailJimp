@@ -27,8 +27,8 @@ import mailjimp.dom.list.MailingList;
 import mailjimp.dom.list.MemberInfo;
 import mailjimp.dom.list.MemberStatus;
 import mailjimp.dom.security.ApiKey;
-import mailjimp.service.MailChimpException;
-import mailjimp.service.impl.MailChimpService;
+import mailjimp.service.MailJimpException;
+import mailjimp.service.impl.MailJimpService;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -52,7 +52,7 @@ public class TestMailChimpService {
   private transient final Logger log                = LoggerFactory.getLogger(getClass());
   
   @Autowired
-  private MailChimpService       mSvc;
+  private MailJimpService       mSvc;
   
   @Value("${mj.test.listId}")
   private String                 listId;
@@ -60,10 +60,10 @@ public class TestMailChimpService {
   @Value("${mj.test.subscribedUserEMailAddress}")
   private String                 subscribedUserEMailAddress;
 
-  private void processError(MailChimpException mce) {
+  private void processError(MailJimpException mce) {
     log.error("Exception while trying to process MailChimp call.");
     if (mce.getErrors() != null && mce.getErrors().size() > 0) {
-      for (MailChimpError e : mce.getErrors()) {
+      for (MailJimpError e : mce.getErrors()) {
         log.warn("Mail chimp error: {}", e.getError());
       }
     }
@@ -75,7 +75,7 @@ public class TestMailChimpService {
     try {
       List<ApiKey> content = mSvc.keyList();
       log.debug("List Content: {}", content);
-    } catch (MailChimpException mce) {
+    } catch (MailJimpException mce) {
       processError(mce);
     } catch (Exception ex) {
       log.error(ex.getMessage(), ex);
@@ -89,7 +89,7 @@ public class TestMailChimpService {
     try {
       String content = mSvc.keyAdd();
       log.debug("Add Content: {}", content);
-    } catch (MailChimpException mce) {
+    } catch (MailJimpException mce) {
       processError(mce);
     }
   }
@@ -100,7 +100,7 @@ public class TestMailChimpService {
     try {
       Boolean content = mSvc.keyExpire();
       log.debug("Expire Content: {}", content);
-    } catch (MailChimpException mce) {
+    } catch (MailJimpException mce) {
       processError(mce);
     }
   }
@@ -110,7 +110,7 @@ public class TestMailChimpService {
     try {
       List<MailingList> content = mSvc.getLists();
       log.debug("Lists Content: {}", content);
-    } catch (MailChimpException mce) {
+    } catch (MailJimpException mce) {
       processError(mce);
     }
   }
@@ -120,7 +120,7 @@ public class TestMailChimpService {
     try {
       Map<String, Date> content = mSvc.getListMembers(listId, MemberStatus.SUBSCRIBED, null, null, null);
       log.debug("List members: {}", content);
-    } catch (MailChimpException mce) {
+    } catch (MailJimpException mce) {
       processError(mce);
     }
   }
@@ -130,7 +130,7 @@ public class TestMailChimpService {
     try {
       MemberInfo content = mSvc.getMemberInfo(listId, subscribedUserEMailAddress);
       log.debug("Members info: {}", content);
-    } catch (MailChimpException mce) {
+    } catch (MailJimpException mce) {
       processError(mce);
     }
   }
@@ -140,7 +140,7 @@ public class TestMailChimpService {
     try {
       boolean status = mSvc.listSubscribe(listId, TEST_EMAIL_ADDRESS, new HashMap<String, Object>(), EmailType.HTML, false, true, true, false);
       log.debug("Subscription status: {}", status);
-    } catch (MailChimpException mce) {
+    } catch (MailJimpException mce) {
       processError(mce);
     }
   }
@@ -158,7 +158,7 @@ public class TestMailChimpService {
       MemberInfo content = mSvc.getMemberInfo(listId, TEST_EMAIL_ADDRESS);
       log.debug("Members info: {}", content);
       assertEquals("Test", content.getMerges().get("FNAME"));
-    } catch (MailChimpException mce) {
+    } catch (MailJimpException mce) {
       processError(mce);
     }
   }
@@ -175,7 +175,7 @@ public class TestMailChimpService {
       final Object[] batch = new Object[] { user1, user2 };
       BatchResult result = mSvc.listBatchSubscribe(listId, batch, false, true, true);
       log.debug("Batch subscribe: {}", result);
-    } catch (MailChimpException mce) {
+    } catch (MailJimpException mce) {
       processError(mce);
     }
   }
@@ -185,7 +185,7 @@ public class TestMailChimpService {
     try {
       boolean status = mSvc.listUnsubscribe(listId, TEST_EMAIL_ADDRESS, true, false, false);
       log.debug("Unsubscription status: {}", status);
-    } catch (MailChimpException mce) {
+    } catch (MailJimpException mce) {
       processError(mce);
     }
   }

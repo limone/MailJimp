@@ -19,8 +19,8 @@ package mailjimp.service.impl;
 
 import mailjimp.dom.IHasParserHints;
 import mailjimp.dom.IParsableProperty;
-import mailjimp.service.MailChimpException;
-import mailjimp.service.impl.MailChimpParser;
+import mailjimp.service.MailJimpException;
+import mailjimp.service.impl.MailJimpParser;
 import mailjimp.util.ParserHint;
 import mailjimp.util.ParserUtils;
 
@@ -166,7 +166,7 @@ public class TestMailChimpParser {
     }
   }
 
-  private MailChimpParser parser = new MailChimpParser();
+  private MailJimpParser parser = new MailJimpParser();
 
   @Test
   public void setVarsSimpleValues() throws Exception {
@@ -258,12 +258,12 @@ public class TestMailChimpParser {
     assertFalse(parser.parseListSubscribe(false));
   }
 
-  @Test(expected = MailChimpException.class)
+  @Test(expected = MailJimpException.class)
   public void parseListSubscribeFailure() throws Exception {
     parser.parseListSubscribe("true");
   }
 
-  @Test(expected = MailChimpException.class)
+  @Test(expected = MailJimpException.class)
   public void parseListSubscribeCanHandleNull() throws Exception {
     parser.parseListSubscribe(null);
   }
@@ -274,12 +274,12 @@ public class TestMailChimpParser {
     assertFalse(parser.parseListUnsubscribe(false));
   }
 
-  @Test(expected = MailChimpException.class)
+  @Test(expected = MailJimpException.class)
   public void parseListUnsubscribeFailure() throws Exception {
     parser.parseListUnsubscribe("true");
   }
 
-  @Test(expected = MailChimpException.class)
+  @Test(expected = MailJimpException.class)
   public void parseListUnsubscribeCanHandleNull() throws Exception {
     parser.parseListUnsubscribe(null);
   }
@@ -290,12 +290,12 @@ public class TestMailChimpParser {
     assertFalse(parser.parseListUpdateMember(false));
   }
 
-  @Test(expected = MailChimpException.class)
+  @Test(expected = MailJimpException.class)
   public void parseListUpdateMemberFailure() throws Exception {
     parser.parseListUpdateMember("true");
   }
 
-  @Test(expected = MailChimpException.class)
+  @Test(expected = MailJimpException.class)
   public void parseListUpdateMemberCanHandleNull() throws Exception {
     parser.parseListUpdateMember(null);
   }

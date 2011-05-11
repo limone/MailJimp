@@ -20,15 +20,15 @@ package mailjimp.dom;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class MailChimpError implements Serializable {
+public class MailJimpError implements Serializable {
   private String  error;
   private Integer code;
 
-  public MailChimpError() {
+  public MailJimpError() {
     // empty
   }
 
-  public MailChimpError(String error, Integer code) {
+  public MailJimpError(String error, Integer code) {
     this.error = error;
     this.code = code;
   }
