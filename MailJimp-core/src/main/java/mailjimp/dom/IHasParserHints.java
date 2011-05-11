@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * The {@link mailjimp.service.impl.MailChimpParser parser} does its best to
+ * The {@link mailjimp.service.impl.MailJimpParser parser} does its best to
  * guess the correct types of the properties it has to set. But when it comes to
  * merges this is not enough - IHasParserHints to the rescue!
  * 

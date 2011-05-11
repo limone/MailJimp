@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 /**
  * Represents the response to an batch operation like
- * {@link mailjimp.service.IMailChimpService#listBatchSubscribe(String, Object[], boolean, boolean, boolean)}
+ * {@link mailjimp.service.IMailJimpService#listBatchSubscribe(String, Object[], boolean, boolean, boolean)}
  * 
  * Author: Eike Hirsch (me at eike-hirsch dot net) Date: 27.04.11 Time: 10:36
  */

@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
  * Handy constants, which are used in this project or by projects using this
  * one.
  */
-public interface MailChimpConstants extends Serializable {
+public interface MailJimpConstants extends Serializable {
   SimpleDateFormat SDF              = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   String           MERGE_FNAME      = "FNAME";
   String           MERGE_LNAME      = "LNAME";

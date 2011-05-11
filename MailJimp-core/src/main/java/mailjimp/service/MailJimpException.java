@@ -20,35 +20,35 @@ package mailjimp.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import mailjimp.dom.MailChimpError;
+import mailjimp.dom.MailJimpError;
 
 @SuppressWarnings("serial")
-public class MailChimpException extends Exception {
+public class MailJimpException extends Exception {
   private int                  statusCode;
-  private List<MailChimpError> errors = new ArrayList<MailChimpError>();
+  private List<MailJimpError> errors = new ArrayList<MailJimpError>();
 
-  public MailChimpException() {
+  public MailJimpException() {
     super();
   }
 
-  public MailChimpException(String message, Throwable cause) {
+  public MailJimpException(String message, Throwable cause) {
     super(message, cause);
   }
 
-  public MailChimpException(String message) {
+  public MailJimpException(String message) {
     super(message);
   }
 
-  public MailChimpException(Throwable cause) {
+  public MailJimpException(Throwable cause) {
     super(cause);
   }
 
-  public MailChimpException(int statusCode, String message) {
+  public MailJimpException(int statusCode, String message) {
     super(message);
     this.statusCode = statusCode;
   }
 
-  public MailChimpException(int statusCode, String message, Throwable cause) {
+  public MailJimpException(int statusCode, String message, Throwable cause) {
     super(message, cause);
     this.statusCode = statusCode;
   }
@@ -57,11 +57,11 @@ public class MailChimpException extends Exception {
     return statusCode;
   }
 
-  public List<MailChimpError> getErrors() {
+  public List<MailJimpError> getErrors() {
     return errors;
   }
 
-  public void setErrors(List<MailChimpError> errors) {
+  public void setErrors(List<MailJimpError> errors) {
     this.errors = errors;
   }
 }

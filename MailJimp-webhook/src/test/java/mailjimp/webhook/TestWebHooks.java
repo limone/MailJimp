@@ -20,7 +20,7 @@ package mailjimp.webhook;
 import mailjimp.dom.WebHookData;
 import mailjimp.dom.WebHookType;
 import mailjimp.dom.list.MemberInfo;
-import mailjimp.service.impl.MailChimpConstants;
+import mailjimp.service.impl.MailJimpConstants;
 import mailjimp.webhook.WebHookConstants;
 import mailjimp.webhook.WebHookController;
 
@@ -78,14 +78,14 @@ public class TestWebHooks {
   }
 
   private void assertFiredAt(WebHookData data) {
-    assertEquals("2011-05-06 13:55:32", MailChimpConstants.SDF.format(data.getFiredAt()));
+    assertEquals("2011-05-06 13:55:32", MailJimpConstants.SDF.format(data.getFiredAt()));
   }
 
   private void assertMemberInfo(WebHookData data) {
     MemberInfo memberInfo = data.getMemberInfo();
     assertNotNull(memberInfo);
     assertEquals("me@eike-hirsch.net", memberInfo.getEmail());
-    assertEquals("Eike", memberInfo.getMerges().get(MailChimpConstants.MERGE_FNAME));
+    assertEquals("Eike", memberInfo.getMerges().get(MailJimpConstants.MERGE_FNAME));
     assertEquals("VALUE1, VALUE2", memberInfo.getGroupings()[0].getGroups());
   }
 

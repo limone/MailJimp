@@ -24,20 +24,20 @@ package mailjimp.service;
  * User: Eike Hirsch Date: 21.04.11 Time: 16:32
  */
 @SuppressWarnings("serial")
-public class UnexpectedMailChimpResponseException extends MailChimpException {
-  public UnexpectedMailChimpResponseException() {
+public class UnexpectedMailJimpResponseException extends MailJimpException {
+  public UnexpectedMailJimpResponseException() {
     super();
   }
 
-  public UnexpectedMailChimpResponseException(String s) {
+  public UnexpectedMailJimpResponseException(String s) {
     super(s);
   }
 
-  public UnexpectedMailChimpResponseException(String s, Throwable throwable) {
+  public UnexpectedMailJimpResponseException(String s, Throwable throwable) {
     super(s, throwable);
   }
 
-  public UnexpectedMailChimpResponseException(Throwable throwable) {
+  public UnexpectedMailJimpResponseException(Throwable throwable) {
     super(throwable);
   }
 }
