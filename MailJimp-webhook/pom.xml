@@ -38,6 +38,12 @@
       <version>${project.version}</version>
     </dependency>
 
+	<!-- we need the servlet api -->
+	<dependency>
+	  <groupId>javax.servlet</groupId>
+	  <artifactId>servlet-api</artifactId>
+	</dependency>
+
     <!-- extra spring dependencies -->
     <dependency>
       <groupId>org.springframework</groupId>
