@@ -25,6 +25,7 @@
 
 
 	<import resource="classpath:/mailjimp-spring-config.xml" />
+	<import resource="classpath:/mailjimp-webhook-spring-config.xml" />
 
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 </beans>

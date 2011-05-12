@@ -10,13 +10,7 @@ Your task is to implement that interface and to make it available in your applic
 
 ### Runtime Info
 
-Everything that is true for the core module is true for this one with one exception:
-
-Instead of:
-
-	<import resource="classpath:mailjimp-spring-config.xml" />
-
-write
+Everything that is true for the core module is true for this one with one addition:
 
 	<import resource="classpath:mailjimp-webhook-spring-config.xml" />
 
