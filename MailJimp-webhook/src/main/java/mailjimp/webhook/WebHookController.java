@@ -22,6 +22,8 @@ import mailjimp.dom.WebHookType;
 import mailjimp.service.MailJimpException;
 import mailjimp.service.impl.MailJimpConstants;
 import mailjimp.service.impl.MailJimpParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +46,8 @@ import java.util.regex.Pattern;
  */
 @Controller
 public class WebHookController {
+
+  private static final Logger LOG = LoggerFactory.getLogger( WebHookController.class );
 
   private static Pattern  DATA_PATTERN
 		  = Pattern.compile("data\\[(\\w+)\\](\\[(\\w+)\\](\\[(\\d+)\\]\\[(\\w+)\\])?)?");
@@ -75,8 +79,13 @@ public class WebHookController {
   @RequestMapping(params = "type=subscribe")
   public @ResponseBody
   String subscribe(WebRequest request) throws Exception {
-    WebHookData data = new WebHookData(WebHookType.SUBSCRIBE);
-    webHookAdapter.userSubscribed(buildData(request, data));
+	  LOG.info("Subscribe...");
+    try {
+      WebHookData data = new WebHookData(WebHookType.SUBSCRIBE);
+      webHookAdapter.userSubscribed(buildData(request, data));
+    } catch (Exception e) {
+      LOG.error("Error while processing request.", e);
+    }
     return "Copy that!";
   }
 
@@ -96,8 +105,13 @@ public class WebHookController {
   @RequestMapping(params = "type=unsubscribe")
   public @ResponseBody
   String unsubscribe(WebRequest request) throws Exception {
-    WebHookData data = new WebHookData(WebHookType.UNSUBSCRIBE);
-    webHookAdapter.userUnsubscribed(buildData(request, data));
+    LOG.info("Unsubscribe...");
+    try {
+      WebHookData data = new WebHookData(WebHookType.UNSUBSCRIBE);
+      webHookAdapter.userUnsubscribed(buildData(request, data));
+    } catch (Exception e) {
+      LOG.error("Error while processing request.", e);
+    }
     return "Ten four!";
   }
 
@@ -117,8 +131,13 @@ public class WebHookController {
   @RequestMapping(params = "type=profile")
   public @ResponseBody
   String profile(WebRequest request) throws Exception {
-    WebHookData data = new WebHookData(WebHookType.UPDATE_PROFILE);
-    webHookAdapter.profileUpdated(buildData(request, data));
+	  LOG.info("Profile updated...");
+    try {
+      WebHookData data = new WebHookData(WebHookType.UPDATE_PROFILE);
+      webHookAdapter.profileUpdated(buildData(request, data));
+    } catch (Exception e) {
+      LOG.error("Error while processing request.", e);
+    }
     return "Roger that!";
   }
 
@@ -138,8 +157,13 @@ public class WebHookController {
   @RequestMapping(params = "type=upemail")
   public @ResponseBody
   String upemail(WebRequest request) throws Exception {
-    WebHookData data = new WebHookData(WebHookType.UPDATE_EMAIL);
-    webHookAdapter.eMailUpdated(buildData(request, data));
+    LOG.info("E-Mail updated...");
+    try {
+      WebHookData data = new WebHookData(WebHookType.UPDATE_EMAIL);
+      webHookAdapter.eMailUpdated(buildData(request, data));
+    } catch (Exception e) {
+      LOG.error("Error while processing request.", e);
+    }
     return "Understood!";
   }
 
@@ -159,8 +183,14 @@ public class WebHookController {
   @RequestMapping(params = "type=cleaned")
   public @ResponseBody
   String cleaned(WebRequest request) throws Exception {
-    WebHookData data = new WebHookData(WebHookType.CLEANED);
-    webHookAdapter.cleaned(buildData(request, data));
+    LOG.info("Account cleaned...");
+    try {
+      WebHookData data = new WebHookData(WebHookType.CLEANED);
+      webHookAdapter.cleaned(buildData(request, data));
+    } catch (Exception e ) {
+      LOG.error("Error while processing request.", e);
+    }
+
     return "OK!";
   }
 
