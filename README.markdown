@@ -31,7 +31,19 @@ In the later one you need to set the id of an existing list and an email address
 
 #### Maven
 
-If you wish to use the MailJimp API with Maven, please add the following to your POM:
+MailJimp deploys releases and snapshots to Sonatype's OSS repository.  Releases are automatically synchronized with Maven Central so no repository information should be required.  To use our most recent release, please add the following dependency:
+
+##### Dependency
+
+	<dependency>
+		<groupId>net.mailjimp</groupId>
+		<artifactId>mailjimp-core</artifactId>
+		<version>0.2</version>
+	</dependency>
+
+#####  Snapshots
+
+Alternately, if you wish to utlize a development snapshot, please add the following to your POM:
 
 #####  Repository
 
@@ -53,5 +65,5 @@ If you wish to use the MailJimp API with Maven, please add the following to your
 	<dependency>
 		<groupId>net.mailjimp</groupId>
 		<artifactId>mailjimp-core</artifactId>
-		<version>0.2-SNAPSHOT</version>
+		<version>0.3-SNAPSHOT</version>
 	</dependency>

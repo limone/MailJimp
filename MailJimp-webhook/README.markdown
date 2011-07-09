@@ -20,9 +20,8 @@ This will auto configure the controller and the interceptor. Keep in mind that t
 
 To use this module add the following to you pom.
 
-	<dependency>
-		<groupId>net.mailjimp</groupId>
-		<artifactId>mailjimp-webhook</artifactId>
-		<version>0.2</version>
-	</dependency>
-
+  <dependency>
+    <groupId>net.mailjimp</groupId>
+    <artifactId>mailjimp-webhook</artifactId>
+    <version>0.2</version>
+  </dependency>
