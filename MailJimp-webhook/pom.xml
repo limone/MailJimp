@@ -15,7 +15,7 @@
   ~ You should have received a copy of the GNU Lesser General Public License
   ~ along with MailJimp.  If not, see <http://www.gnu.org/licenses />.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="             http://maven.apache.org/POM/4.0.0             http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://maven.apache.org/POM/4.0.0             http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>mailjimp-webhook</artifactId>
   <name>MailChimp Java API - Webhook</name>
@@ -24,7 +24,7 @@
   <parent>
     <groupId>net.mailjimp</groupId>
     <artifactId>mailjimp-parent</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <relativePath>../MailJimp-parent</relativePath>
   </parent>
 
