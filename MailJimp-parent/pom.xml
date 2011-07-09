@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.mailjimp</groupId>
   <artifactId>mailjimp-parent</artifactId>
@@ -33,8 +32,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/mlaccetti/MailJimp.git</connection>
+    <connection>scm:git:git@github.com:mlaccetti/MailJimp.git</connection>
     <developerConnection>scm:git:git@github.com:mlaccetti/MailJimp.git</developerConnection>
+    <url>scm:git:git@github.com:mlaccetti/MailJimp.git</url>
   </scm>
 
   <licenses>
@@ -59,38 +59,46 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
+      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aop</artifactId>
+      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
+      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
     </dependency>
 
     <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
+      <version>1.6.1</version>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
+      <version>1.2.16</version>
     </dependency>
 
     <!-- JAXRS -->
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-bundle-jaxrs</artifactId>
+      <version>2.2.10</version>
       <exclusions>
         <exclusion>
           <artifactId>jetty</artifactId>
@@ -120,6 +128,14 @@
           <artifactId>jetty-util</artifactId>
           <groupId>org.mortbay.jetty</groupId>
         </exclusion>
+        <exclusion>
+          <artifactId>geronimo-javamail_1.4_spec</artifactId>
+          <groupId>org.apache.geronimo.specs</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>geronimo-servlet_2.5_spec</artifactId>
+          <groupId>org.apache.geronimo.specs</groupId>
+        </exclusion>
       </exclusions>
     </dependency>
 
@@ -127,158 +143,43 @@
     <dependency>
       <groupId>org.apache.xmlrpc</groupId>
       <artifactId>xmlrpc-client</artifactId>
+      <version>3.1.3</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>junit</artifactId>
+          <groupId>junit</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Test -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
+      <version>1.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Provided apis -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
-
-  <dependencyManagement>
-    <dependencies>
-      <!-- Spring -->
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-core</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-aop</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context-support</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <!-- this one is only for the webhooks -->
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-
-      <!-- Logging -->
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-log4j12</artifactId>
-        <version>1.6.1</version>
-      </dependency>
-      <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>1.2.16</version>
-      </dependency>
-
-      <!-- JAXRS -->
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-bundle-jaxrs</artifactId>
-        <version>2.2.10</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>jetty</artifactId>
-            <groupId>org.mortbay.jetty</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>abdera-core</artifactId>
-            <groupId>org.apache.abdera</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>abdera-extensions-json</artifactId>
-            <groupId>org.apache.abdera</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>abdera-extensions-main</artifactId>
-            <groupId>org.apache.abdera</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>abdera-i18n</artifactId>
-            <groupId>org.apache.abdera</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>abdera-parser</artifactId>
-            <groupId>org.apache.abdera</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>jetty-util</artifactId>
-            <groupId>org.mortbay.jetty</groupId>
-          </exclusion>
-	      <exclusion>
-		      <artifactId>geronimo-javamail_1.4_spec</artifactId>
-		      <groupId>org.apache.geronimo.specs</groupId>
-	      </exclusion>
-	      <exclusion>
-		      <artifactId>geronimo-servlet_2.5_spec</artifactId>
-		      <groupId>org.apache.geronimo.specs</groupId>
-	      </exclusion>
-        </exclusions>
-      </dependency>
-
-      <!-- XML RPC -->
-      <dependency>
-        <groupId>org.apache.xmlrpc</groupId>
-        <artifactId>xmlrpc-client</artifactId>
-        <version>3.1.3</version>
-	    <exclusions>
-		    <exclusion>
-			    <artifactId>junit</artifactId>
-			    <groupId>junit</groupId>
-		    </exclusion>
-	    </exclusions>
-      </dependency>
-
-      <!-- Test -->
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-test</artifactId>
-        <version>${spring.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.8.1</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest-all</artifactId>
-        <version>1.1</version>
-        <scope>test</scope>
-      </dependency>
-
-	  <!-- Provided apis -->
-	  <dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>servlet-api</artifactId>
-		<version>2.5</version>
-		<scope>provided</scope>
-	  </dependency>
-
-    </dependencies>
-  </dependencyManagement>
 
   <build>
     <resources>
@@ -316,10 +217,10 @@
 
     <plugins>
       <plugin>
-        <inherited>true</inherited>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
+        <inherited>true</inherited>
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
@@ -344,7 +245,7 @@
             <id>attach-sources</id>
             <phase>verify</phase>
             <goals>
-              <goal>jar-no-fork</goal>
+              <goal>jar</goal>
             </goals>
           </execution>
         </executions>
@@ -362,6 +263,17 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <mavenExecutorId>forked-path</mavenExecutorId>
+          <useReleaseProfile>false</useReleaseProfile>
+          <pushChanges>false</pushChanges>
+          <arguments>-Psonatype-oss-release -Plimone -Dmaven.test.skip=true</arguments>
+        </configuration>
       </plugin>
     </plugins>
   </build>
