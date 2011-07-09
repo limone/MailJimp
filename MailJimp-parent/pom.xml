@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.mailjimp</groupId>
   <artifactId>mailjimp-parent</artifactId>
-  <version>0.2</version>
+  <version>0.3-SNAPSHOT</version>
   <name>MailChimp Java API - Meta Project</name>
   <description>A Java library that wraps around the MailChimp web-based API.</description>
   <url>http://github.com/mlaccetti/MailJimp</url>
