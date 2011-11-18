@@ -41,7 +41,7 @@
   <context:property-placeholder location="classpath*:mailjimp.properties"
     ignore-resource-not-found="true" ignore-unresolvable="true" />
   <context:annotation-config />
-  <context:component-scan base-package="mailjimp.service" />
+  <context:component-scan base-package="mailjimp" />
 
   <bean name="mailJimpService" class="mailjimp.service.impl.MailJimpService">
     <!-- You can manually hardcode the credentials and API keys through the XML configuration, if you want -->
