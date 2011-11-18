@@ -45,7 +45,7 @@ public class MemberInfo implements IHasParserHints {
   private Date                                 timestamp;
   private Date                                 infoChanged;
   private Integer                              webId;
-  private Group[]                              groupings;
+  private Groups[]                             groupings;
 
   public MemberInfo() {
     // empty
@@ -172,11 +172,11 @@ public class MemberInfo implements IHasParserHints {
     this.webId = webId;
   }
 
-  public Group[] getGroupings() {
+  public Groups[] getGroupings() {
     return groupings;
   }
 
-  public void setGroupings(Group[] groupings) {
+  public void setGroupings(Groups[] groupings) {
     this.groupings = groupings;
   }
 }

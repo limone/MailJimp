@@ -29,6 +29,7 @@ import javax.annotation.PostConstruct;
 
 import mailjimp.dom.BatchResult;
 import mailjimp.dom.EmailType;
+import mailjimp.dom.list.Groups;
 import mailjimp.dom.list.MailingList;
 import mailjimp.dom.list.MemberInfo;
 import mailjimp.dom.list.MemberStatus;
@@ -36,7 +37,7 @@ import mailjimp.dom.security.ApiKey;
 import mailjimp.service.IMailJimpService;
 import mailjimp.service.MailJimpException;
 
-import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.slf4j.Logger;
@@ -59,9 +60,9 @@ public class MailJimpService implements IMailJimpService {
   private String password;
   private String apiKey;
   private String apiVersion;
-  private boolean ssl = false;
+  private boolean ssl = true;
 
-  protected MailJimpService() {
+  public MailJimpService() {
     // empty, just for Spring
   }
 
@@ -94,7 +95,7 @@ public class MailJimpService implements IMailJimpService {
   }
 
   @PostConstruct
-  protected void init() {
+  public void init() {
     // check if everything is configured.
     checkConfig();
     log.info("Creating MailChimp integration client.");
@@ -112,8 +113,8 @@ public class MailJimpService implements IMailJimpService {
   }
 
   private void checkConfig() {
-    if (apiKey == null || apiKey.length() == 0) { throw new IllegalArgumentException("API key cannot be null/empty."); }
-    if (apiVersion == null || apiVersion.length() == 0) { throw new IllegalArgumentException("API version cannot be null/empty."); }
+    if (apiKey == null || apiKey.isEmpty()) { throw new IllegalArgumentException("API key cannot be null/empty."); }
+    if (apiVersion == null || apiVersion.isEmpty()) { throw new IllegalArgumentException("API version cannot be null/empty."); }
   }
 
   /**
@@ -131,9 +132,15 @@ public class MailJimpService implements IMailJimpService {
     } else {
       serverURL.append(SERVER_URL_PREFIX_HTTP);
     }
+    
+    
+    
+    final int dcSeparater = apiKey.lastIndexOf('-');
+    final String dcLocation = dcSeparater != -1 ? apiKey.substring(dcSeparater + 1) : "us1";
+    
     serverURL
     // parse the data center
-    .append(apiKey.substring(apiKey.lastIndexOf('-') + 1))
+    .append(dcLocation)
     // bring in the clue
     .append(SERVER_URL_MAIN)
     // add the version
@@ -242,5 +249,29 @@ public class MailJimpService implements IMailJimpService {
   public boolean listUpdateMember(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean replaceInterests) throws MailJimpException {
     Object[] params = new Object[] { apiKey, listId, emailAddress, mergeVars, emailType.getEmailType(), replaceInterests };
     return (Boolean) invoke("listUpdateMember", params, "parseListUpdateMember");
+  }
+
+  @Override
+  public List<Groups> listInterestGroupings(String listId) throws MailJimpException {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public boolean listInterestGroupAdd(String listId, String groupId, Integer groupingId) throws MailJimpException {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public boolean listInterestGroupDel(String listId, String groupName, Integer groupingId) throws MailJimpException {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public boolean listInterestGroupUpdate(String listId, String oldName, String newName) throws MailJimpException {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

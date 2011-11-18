@@ -51,105 +51,27 @@
   </modules>
 
   <properties>
-    <spring.version>3.0.5.RELEASE</spring.version>
+    <spring.version>3.0.6.RELEASE</spring.version>
   </properties>
 
   <dependencies>
-    <!-- Spring -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-aop</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context-support</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-
     <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.6.1</version>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.6.2</version>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.16</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>0.9.30</version>
+      <scope>test</scope>
     </dependency>
-
-    <!-- JAXRS -->
     <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-bundle-jaxrs</artifactId>
-      <version>2.2.10</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>jetty</artifactId>
-          <groupId>org.mortbay.jetty</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>abdera-core</artifactId>
-          <groupId>org.apache.abdera</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>abdera-extensions-json</artifactId>
-          <groupId>org.apache.abdera</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>abdera-extensions-main</artifactId>
-          <groupId>org.apache.abdera</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>abdera-i18n</artifactId>
-          <groupId>org.apache.abdera</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>abdera-parser</artifactId>
-          <groupId>org.apache.abdera</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jetty-util</artifactId>
-          <groupId>org.mortbay.jetty</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>geronimo-javamail_1.4_spec</artifactId>
-          <groupId>org.apache.geronimo.specs</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>geronimo-servlet_2.5_spec</artifactId>
-          <groupId>org.apache.geronimo.specs</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <!-- XML RPC -->
-    <dependency>
-      <groupId>org.apache.xmlrpc</groupId>
-      <artifactId>xmlrpc-client</artifactId>
-      <version>3.1.3</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>junit</artifactId>
-          <groupId>junit</groupId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>1.6.2</version>
+      <scope>test</scope>
     </dependency>
 
     <!-- Test -->
@@ -162,7 +84,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.8.1</version>
+      <version>4.9</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -225,7 +147,7 @@
           <source>1.6</source>
           <target>1.6</target>
           <optimize>true</optimize>
-          <debug>true</debug>
+          <debug>false</debug>
         </configuration>
       </plugin>
       <plugin>

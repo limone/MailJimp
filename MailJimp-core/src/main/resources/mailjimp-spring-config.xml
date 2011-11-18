@@ -50,5 +50,6 @@
     <constructor-arg name="apiKey" value="${mj.apiKey}" />
     <constructor-arg name="apiVersion" value="${mj.apiVersion}" />
     <constructor-arg name="ssl" value="${mj.ssl}" />
+    <!-- please note that we default to using SSL, so make sure port 443 is not blocked! -->
   </bean>
 </beans>

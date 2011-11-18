@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import mailjimp.dom.*;
+import mailjimp.dom.list.Groups;
 import mailjimp.dom.list.MailingList;
 import mailjimp.dom.list.MemberInfo;
 import mailjimp.dom.list.MemberStatus;
@@ -165,4 +166,50 @@ public interface IMailJimpService extends Serializable {
    * @throws MailJimpException
    */
   public boolean listUnsubscribe(String listId, String emailAddress, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailJimpException;
+  
+  /**
+   * Get the list of interest groupings for a given mailing list, including the label, form information, and included groups for each.
+   * 
+   * @param listId              ID of the list
+   * 
+   * @return                    List of interest groups for the list.
+   * @throws MailJimpException  If there was a problem retrieving the list of groups.
+   */
+  public List<Groups> listInterestGroupings(String listId) throws MailJimpException;
+  
+  /**
+   * Create a single Interest Groups - if groups are not enabled, they will automatically be turned on when adding the first group.
+   * 
+   * @param listId              ID of the list
+   * @param groupName           Name of the group to add
+   * @param groupingId          (optional) ID for the new group to use - If not supplied, the first grouping on the list will be used. 
+   * 
+   * @return                    True if succeeded, an error otherwise.
+   * @throws MailJimpException  If the interest group could not be added.
+   */
+  public boolean listInterestGroupAdd(String listId, String groupId, Integer groupingId) throws MailJimpException;
+  
+  /**
+   * Delete a single Interest Groups - if the last group for a list is deleted, this will also turn groups for the list off.
+   * 
+   * @param listId              ID of the list
+   * @param groupName           Name of the group to delete
+   * @param groupingId          The grouping to delete the group from - if not supplied, the first grouping on the list is used.
+   * 
+   * @return                    True if succeeded, an error otherwise.
+   * @throws MailJimpException  If the interest group could not be removed.
+   */
+  public boolean listInterestGroupDel(String listId, String groupName, Integer groupingId) throws MailJimpException;
+  
+  /**
+   * Change the name of an interest group.
+   * 
+   * @param listId              ID of the list
+   * @param oldName             The interest group name to be changed
+   * @param newName             The new interest grup name to be set
+   * 
+   * @return                    True if succeeded, an error otherwise.
+   * @throws MailJimpException  If the interest group could not be renamed.
+   */
+  public boolean listInterestGroupUpdate(String listId, String oldName, String newName) throws MailJimpException;
 }

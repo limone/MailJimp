@@ -165,29 +165,6 @@ public class MailJimpParser implements Serializable {
     throw new IllegalArgumentException(String.format("Could not convert from %s to %s.", value.getClass().getSimpleName(), expected.getSimpleName()));
   }
 
-  // debugging
-  // private void dumpResults(Map<String, Object> results) {
-  // for( String key : results.keySet() ) {
-  // final Object value = results.get(key);
-  // if( Map.class.isAssignableFrom(value.getClass())) {
-  // System.out.format("\n%s::", key);
-  // dumpResults((Map<String, Object>) value);
-  // System.out.println("::");
-  // } else if( value.getClass().isArray()) {
-  // System.out.format("\n%s(%s[]}::", key,
-  // value.getClass().getComponentType());
-  // Object[] array = (Object[]) value;
-  // for (int i = 0; i < array.length; i++) {
-  // Object o = array[i];
-  // System.out.println("=> " + o);
-  // }
-  // } else {
-  // System.out.format("\n%s\t%s", key, value);
-  // }
-  // }
-  // System.out.print('\n');
-  // }
-  //
   public List<ApiKey> parseApiKeys(Object results) throws MailJimpException {
     List<ApiKey> keys = new ArrayList<ApiKey>();
     if (results instanceof Object[]) {
