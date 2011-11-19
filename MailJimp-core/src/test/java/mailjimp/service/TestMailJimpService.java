@@ -17,42 +17,40 @@
  */
 package mailjimp.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mailjimp.dom.*;
+import mailjimp.dom.BatchResult;
+import mailjimp.dom.EmailType;
 import mailjimp.dom.list.MailingList;
 import mailjimp.dom.list.MemberInfo;
 import mailjimp.dom.list.MemberStatus;
 import mailjimp.dom.security.ApiKey;
-import mailjimp.service.MailJimpException;
-import mailjimp.service.impl.MailJimpService;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "/mailjimp-test-spring-config.xml" })
 @Configurable
-public class TestMailChimpService {
+public class TestMailJimpService extends AbstractServiceTester {
   private static final String    TEST_EMAIL_ADDRESS = "test@laccetti.com";
-  private transient final Logger log                = LoggerFactory.getLogger(getClass());
   
   @Autowired
-  private MailJimpService       mSvc;
+  @Qualifier("xmlRpc")
+  private IMailJimpService       mSvc;
   
   @Value("${mj.test.listId}")
   private String                 listId;
@@ -60,15 +58,6 @@ public class TestMailChimpService {
   @Value("${mj.test.subscribedUserEMailAddress}")
   private String                 subscribedUserEMailAddress;
 
-  private void processError(MailJimpException mce) {
-    log.error("Exception while trying to process MailChimp call.");
-    if (mce.getErrors() != null && mce.getErrors().size() > 0) {
-      for (MailJimpError e : mce.getErrors()) {
-        log.warn("Mail chimp error: {}", e.getError());
-      }
-    }
-    fail();
-  }
 
   @Test
   public void testListApiKeys() {

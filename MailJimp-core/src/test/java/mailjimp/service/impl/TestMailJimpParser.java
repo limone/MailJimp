@@ -35,7 +35,7 @@ import static org.junit.Assert.*;
 /**
  * Eike Hirsch (me at eike-hirsch dot net) Date: 27.04.11 Time: 06:38
  */
-public class TestMailChimpParser {
+public class TestMailJimpParser {
   /**
    * A Class with only simple values.
    */
