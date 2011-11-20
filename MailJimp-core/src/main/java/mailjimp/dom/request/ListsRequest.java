@@ -2,16 +2,27 @@ package mailjimp.dom.request;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 public class ListsRequest implements Serializable {
+  @JsonProperty
   private String apikey;
-  private int start;
-  private int limit;
+  
+  @JsonProperty
+  private Integer start;
+  
+  @JsonProperty
+  private Integer limit;
   
   public ListsRequest() {
     // empty
   }
+  
+  public ListsRequest(String apikey) {
+    this.apikey = apikey;
+  }
 
-  public ListsRequest(String apikey, int start, int limit) {
+  public ListsRequest(String apikey, Integer start, Integer limit) {
     this.apikey = apikey;
     this.start = start;
     this.limit = limit;
@@ -26,7 +37,7 @@ public class ListsRequest implements Serializable {
     return this;
   }
 
-  public int getStart() {
+  public Integer getStart() {
     return start;
   }
 
@@ -35,7 +46,7 @@ public class ListsRequest implements Serializable {
     return this;
   }
 
-  public int getLimit() {
+  public Integer getLimit() {
     return limit;
   }
 

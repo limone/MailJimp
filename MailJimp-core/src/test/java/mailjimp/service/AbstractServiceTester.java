@@ -10,7 +10,7 @@ public class AbstractServiceTester {
   protected final Logger log = LoggerFactory.getLogger(getClass());
   
   protected void processError(MailJimpException mce) {
-    log.error("Exception while trying to process MailChimp call.");
+    log.error("Exception while trying to process MailChimp call.", mce);
     if (mce.getErrors() != null && mce.getErrors().size() > 0) {
       for (MailJimpError e : mce.getErrors()) {
         log.warn("Mail chimp error: {}", e.getError());
