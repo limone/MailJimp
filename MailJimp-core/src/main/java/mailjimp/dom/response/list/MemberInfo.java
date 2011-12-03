@@ -15,37 +15,48 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mailjimp.dom.list;
+package mailjimp.dom.response.list;
 
-import mailjimp.dom.IHasParserHints;
-import mailjimp.util.ParserHint;
-import mailjimp.util.ParserUtils;
-
+import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
+import mailjimp.dom.enums.MemberStatus;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 @SuppressWarnings("serial")
-public class MemberInfo implements IHasParserHints {
-  private static final Map<String, ParserHint> hints = new HashMap<String, ParserHint>();
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class MemberInfo implements Serializable {
+  private String id;
+  private String email;
   
-  static {
-    ParserUtils.addParserHint("groupings", "merges/GROUPINGS", hints);
-  }
+  @JsonProperty("email_type")
+  private String emailType;
+  private Map<String, String> merges;
+  private MemberStatus status;
   
-  private String                               id;
-  private String                               email;
-  private String                               emailType;
-  private Map<String, String>                  merges;
-  private MemberStatus                         status;
-  private String                               ipOpt;
-  private String                               ipSignup;
-  private Integer                              memberRating;
-  private String                               campaignId;
-  private Date                                 timestamp;
-  private Date                                 infoChanged;
-  private Integer                              webId;
-  private Groups[]                             groupings;
+  @JsonProperty("ip_opt")
+  private String ipOpt;
+  
+  @JsonProperty("ip_signup")
+  private String ipSignup;
+  
+  @JsonProperty("member_rating")
+  private Integer memberRating;
+  
+  @JsonProperty("campaign_id")
+  private String campaignId;
+  
+  private Date timestamp;
+  
+  @JsonProperty("info_changed")
+  private Date infoChanged;
+  
+  @JsonProperty("web_id")
+  private Integer webId;
+  private Groups[] groupings;
 
   public MemberInfo() {
     // empty
@@ -69,11 +80,6 @@ public class MemberInfo implements IHasParserHints {
   @Override
   public String toString() {
     return String.format("MemberInfo [campaignId=%s, email=%s, emailType=%s, id=%s, infoChanged=%s, " + "ipOpt=%s, ipSignup=%s, memberRating=%d, merges=%s, status=%s, timestamp=%s, webId=%d]", campaignId, email, emailType, id, infoChanged, ipOpt, ipSignup, memberRating, merges, status, timestamp, webId);
-  }
-
-  @Override
-  public Map<String, ParserHint> getHints() {
-    return hints;
   }
 
   public String getId() {

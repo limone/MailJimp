@@ -1,8 +1,9 @@
-package mailjimp.dom.list;
+package mailjimp.dom.response.list;
 
-import mailjimp.dom.IParsableProperty;
+import java.io.Serializable;
 
-public class Group implements IParsableProperty {
+
+public class Group implements Serializable {
   private String bit;
   private String name;
   private String displayOrder;

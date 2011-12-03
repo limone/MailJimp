@@ -1,4 +1,4 @@
-package mailjimp.dom.response;
+package mailjimp.dom.response.list;
 
 import java.util.Date;
 import java.util.List;
@@ -9,7 +9,7 @@ public class MailingList {
   private String id;
   
   @JsonProperty("web_id")
-  private Long webId;
+  private Integer webId;
   
   private String name;
   
@@ -62,11 +62,11 @@ public class MailingList {
     this.id = id;
   }
 
-  public Long getWebId() {
+  public Integer getWebId() {
     return webId;
   }
 
-  public void setWebId(Long webId) {
+  public void setWebId(Integer webId) {
     this.webId = webId;
   }
 

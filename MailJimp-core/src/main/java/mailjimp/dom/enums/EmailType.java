@@ -15,17 +15,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mailjimp.dom.list;
+package mailjimp.dom.enums;
 
-public enum MemberStatus {
-  SUBSCRIBED("subscribed"), UNSUBSCRIBED("unsubscribed"), CLEANED("cleaned"), UPDATED("updated");
-  private String status;
+public enum EmailType {
+  HTML("html"), TEXT("text"), MOBILE("mobile");
+  private String emailType;
 
-  MemberStatus(String status) {
-    this.status = status;
+  EmailType(String emailType) {
+    this.emailType = emailType;
   }
 
-  public String getStatus() {
-    return status;
+  public String getEmailType() {
+    return emailType;
   }
 }

@@ -1,4 +1,4 @@
-package mailjimp.dom.response;
+package mailjimp.dom.response.list;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 

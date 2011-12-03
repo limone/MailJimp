@@ -15,11 +15,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mailjimp.dom.list;
+package mailjimp.dom.response.list;
 
+import java.io.Serializable;
 import java.util.List;
-
-import mailjimp.dom.IParsableProperty;
 
 /**
  * Represents a group of MailChimps groupings.
@@ -27,7 +26,7 @@ import mailjimp.dom.IParsableProperty;
  * @author Eike Hirsch (me at eike-hirsch dot net) Date: 05.05.11 Time: 10:10
  */
 @SuppressWarnings("serial")
-public class Groups implements IParsableProperty {
+public class Groups implements Serializable {
   private int    id;
   private String name;
   private String formField;

@@ -1,6 +1,8 @@
-package mailjimp.dom.response;
+package mailjimp.dom.response.list;
 
 import java.util.List;
+
+import mailjimp.dom.response.MailJimpResponse;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 

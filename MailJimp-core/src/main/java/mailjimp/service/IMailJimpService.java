@@ -22,11 +22,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import mailjimp.dom.*;
-import mailjimp.dom.list.Groups;
-import mailjimp.dom.list.MailingList;
-import mailjimp.dom.list.MemberInfo;
-import mailjimp.dom.list.MemberStatus;
+import mailjimp.dom.enums.EmailType;
+import mailjimp.dom.enums.MemberStatus;
+import mailjimp.dom.response.list.BatchSubscribeResponse;
+import mailjimp.dom.response.list.Groups;
+import mailjimp.dom.response.list.MailingList;
+import mailjimp.dom.response.list.MemberInfo;
+import mailjimp.dom.response.list.MemberResponseInfo;
 import mailjimp.dom.security.ApiKey;
 
 /**
@@ -81,7 +83,7 @@ public interface IMailJimpService extends Serializable {
    * @return List of Mailing Lists
    * @throws MailJimpException
    */
-  public List<MailingList> getLists() throws MailJimpException;
+  public List<MailingList> lists() throws MailJimpException;
 
   /**
    * Retrieve all members for specific mailing list.
@@ -94,7 +96,7 @@ public interface IMailJimpService extends Serializable {
    * @return
    * @throws MailJimpException
    */
-  public Map<String, Date> getListMembers(String listId, MemberStatus memberStatus, Date since, Integer start, Integer limit) throws MailJimpException;
+  public List<MemberResponseInfo> listMembers(String listId, MemberStatus memberStatus, Date since, Integer start, Integer limit) throws MailJimpException;
 
   /**
    * Retrieve member info for a specific mailing list.
@@ -104,7 +106,7 @@ public interface IMailJimpService extends Serializable {
    * @return
    * @throws MailJimpException
    */
-  public MemberInfo getMemberInfo(String listId, String emailAddress) throws MailJimpException;
+  public List<MemberInfo> listMemberInfo(String listId, List<String> emailAddresses) throws MailJimpException;
 
   /**
    * Subscribe a user to a mailing list.
@@ -139,7 +141,7 @@ public interface IMailJimpService extends Serializable {
    * 
    * @throws MailJimpException
    */
-  public BatchResult listBatchSubscribe(String listId, Object[] batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailJimpException;
+  public BatchSubscribeResponse listBatchSubscribe(String listId, Object[] batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailJimpException;
 
   /**
    * Update a members info on a mailing list.
