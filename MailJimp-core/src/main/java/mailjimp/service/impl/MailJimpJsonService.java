@@ -14,6 +14,8 @@ import mailjimp.dom.enums.MemberStatus;
 import mailjimp.dom.request.list.ListMemberInfoRequest;
 import mailjimp.dom.request.list.ListMembersRequest;
 import mailjimp.dom.request.list.ListSubscribeRequest;
+import mailjimp.dom.request.list.ListUnsubscribeRequest;
+import mailjimp.dom.request.list.ListUpdateMemberRequest;
 import mailjimp.dom.request.list.ListsRequest;
 import mailjimp.dom.response.MailJimpErrorResponse;
 import mailjimp.dom.response.list.BatchSubscribeResponse;
@@ -181,14 +183,16 @@ public class MailJimpJsonService extends AbstractMailJimpService {
 
   @Override
   public boolean listUpdateMember(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean replaceInterests) throws MailJimpException {
-    // TODO Auto-generated method stub
-    return false;
+    Boolean response = performRequest("listUpdateMember", new ListUpdateMemberRequest(apiKey, listId, emailAddress, mergeVars, emailType, replaceInterests), Boolean.class);
+    log.debug("List update member response: {}", response);
+    return response;
   }
 
   @Override
   public boolean listUnsubscribe(String listId, String emailAddress, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailJimpException {
-    // TODO Auto-generated method stub
-    return false;
+    Boolean response = performRequest("listUnsubscribe", new ListUnsubscribeRequest(apiKey, listId, emailAddress, deleteMember, sendGoodbye, sendNotify), Boolean.class);
+    log.debug("List unsubscribe response: {}", response);
+    return response;
   }
 
   @Override

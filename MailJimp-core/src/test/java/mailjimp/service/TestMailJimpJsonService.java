@@ -2,7 +2,9 @@ package mailjimp.service;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mailjimp.dom.enums.EmailType;
 import mailjimp.dom.enums.MemberStatus;
@@ -70,6 +72,30 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
     try {
       boolean response = mSvc.listSubscribe(listId, "subtest@laccetti.com", null, EmailType.HTML, false, true, false, true);
       log.debug("User subscribed: {}", response);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListUpdateMember() {
+    try {
+      Map<String,Object> mergeVars = new HashMap<String, Object>();
+      mergeVars.put("FNAME", "Test");
+      mergeVars.put("LNAME", "TestLast");
+      
+      boolean response = mSvc.listUpdateMember(listId, TEST_EMAIL_ADDRESS, mergeVars, EmailType.HTML, true);
+      log.debug("User updated: {}", response);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListUnsubscribe() {
+    try {
+      boolean response = mSvc.listUnsubscribe(listId, "subtest@laccetti.com", false, true, true);
+      log.debug("User unsubscribed: {}", response);
     } catch (MailJimpException mje) {
       processError(mje);
     }
