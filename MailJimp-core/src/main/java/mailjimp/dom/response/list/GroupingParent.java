@@ -17,40 +17,30 @@
  */
 package mailjimp.dom.response.list;
 
-import java.util.List;
+import java.io.Serializable;
 
-import mailjimp.dom.response.MailJimpResponse;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
-public class ListsResponse extends MailJimpResponse {
-  private Integer total;
+public class GroupingParent implements Serializable {
+  private int    id;
+  private String name;
   
-  @JsonProperty("data")
-  private List<MailingList> lists;
-  
-  public ListsResponse() {
+  public GroupingParent() {
     // empty
   }
-
-  public Integer getTotal() {
-    return total;
+  
+  public int getId() {
+    return id;
   }
 
-  public void setTotal(Integer total) {
-    this.total = total;
+  public void setId(Integer id) {
+    this.id = id;
   }
 
-  public List<MailingList> getLists() {
-    return lists;
+  public String getName() {
+    return name;
   }
 
-  public void setLists(List<MailingList> lists) {
-    this.lists = lists;
-  }
-
-  @Override
-  public String toString() {
-    return "ListsResponse [total=" + total + ", lists=" + lists + "]";
+  public void setName(String name) {
+    this.name = name;
   }
 }

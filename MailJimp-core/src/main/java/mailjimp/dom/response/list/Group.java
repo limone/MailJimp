@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Eike Hirsch
+ * Copyright 2011 Michael Laccetti
  *
  * This file is part of MailJimp.
  *
@@ -18,26 +18,34 @@
 package mailjimp.dom.response.list;
 
 import java.io.Serializable;
-import java.util.List;
 
-/**
- * Represents a group of MailChimps groupings.
- * 
- * @author Eike Hirsch (me at eike-hirsch dot net) Date: 05.05.11 Time: 10:10
- */
-@SuppressWarnings("serial")
+import org.codehaus.jackson.annotate.JsonProperty;
+
 public class Group implements Serializable {
-  private int    id;
+  private String bit;
+  
   private String name;
-  private String formField;
-  private List<String> groups;
-
-  public int getId() {
-    return id;
+  
+  @JsonProperty("display_order")
+  private String displayOrder;
+  
+  private Integer subscribers;
+  
+  public Group() {
+    // empty
   }
 
-  public void setId(Integer id) {
-    this.id = id;
+  @Override
+  public String toString() {
+    return "Group [bit=" + bit + ", name=" + name + ", displayOrder=" + displayOrder + ", subscribers=" + subscribers + "]";
+  }
+
+  public String getBit() {
+    return bit;
+  }
+
+  public void setBit(String bit) {
+    this.bit = bit;
   }
 
   public String getName() {
@@ -48,22 +56,19 @@ public class Group implements Serializable {
     this.name = name;
   }
 
-  /**
-   * Get the assigned groups as a comma separated string.
-   * 
-   * @return The assigned groups as a comma separated string.
-   */
-  public List<String> getGroups() {
-    return groups;
+  public String getDisplayOrder() {
+    return displayOrder;
   }
 
-  /**
-   * Set the assigned groups as a comma separated string.
-   * 
-   * @param groups
-   *          The assigned groups as a comma separated string.
-   */
-  public void setGroups(List<String> groups) {
-    this.groups = groups;
+  public void setDisplayOrder(String displayOrder) {
+    this.displayOrder = displayOrder;
+  }
+
+  public Integer getSubscribers() {
+    return subscribers;
+  }
+
+  public void setSubscribers(Integer subscribers) {
+    this.subscribers = subscribers;
   }
 }

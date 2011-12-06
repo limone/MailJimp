@@ -1,3 +1,20 @@
+/*
+ * Copyright 2011 Michael Laccetti
+ *
+ * This file is part of MailJimp.
+ *
+ * MailJimp is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, version 3 of the License.
+ *
+ * MailJimp is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package mailjimp.service.impl;
 
 import java.io.IOException;
@@ -11,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 
 import mailjimp.dom.enums.EmailType;
 import mailjimp.dom.enums.MemberStatus;
+import mailjimp.dom.request.list.ListInterestGroupingsRequest;
 import mailjimp.dom.request.list.ListMemberInfoRequest;
 import mailjimp.dom.request.list.ListMembersRequest;
 import mailjimp.dom.request.list.ListSubscribeRequest;
@@ -19,7 +37,7 @@ import mailjimp.dom.request.list.ListUpdateMemberRequest;
 import mailjimp.dom.request.list.ListsRequest;
 import mailjimp.dom.response.MailJimpErrorResponse;
 import mailjimp.dom.response.list.BatchSubscribeResponse;
-import mailjimp.dom.response.list.Group;
+import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.ListMemberInfoResponse;
 import mailjimp.dom.response.list.ListMembersResponse;
 import mailjimp.dom.response.list.ListsResponse;
@@ -34,6 +52,7 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +98,7 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     m.setDateFormat(new SimpleDateFormat("yyyy-MM-MM HH:mm:ss"));
   }
   
-  private <T> T performRequest(String method, Object param, Class<T> clazz) throws MailJimpException {
+  private <V> V performRequest(String method, Object param, TypeReference<V> typeRef) throws MailJimpException {
     String requestJson = null;
     try {
       requestJson = m.writeValueAsString(param);
@@ -116,11 +135,11 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     }
 
     try {
-      T val = m.readValue(responseJson, clazz);
+      V val = m.readValue(responseJson, typeRef);
       return val;
     } catch (Exception ex) {
-      log.error(String.format("Could not convert JSON to expected type (%s).", clazz.getCanonicalName()), ex);
-      throw new MailJimpException(String.format("Could not convert JSON to expected type (%s).", clazz.getCanonicalName()), ex);
+      log.error(String.format("Could not convert JSON to expected type (%s).", typeRef.getType().getClass().getCanonicalName()), ex);
+      throw new MailJimpException(String.format("Could not convert JSON to expected type (%s).", typeRef.getType().getClass().getCanonicalName()), ex);
     }
   }
   @Override
@@ -149,28 +168,28 @@ public class MailJimpJsonService extends AbstractMailJimpService {
 
   @Override
   public List<MailingList> lists() throws MailJimpException {
-    ListsResponse response = performRequest("lists", new ListsRequest(apiKey), ListsResponse.class);
+    ListsResponse response = performRequest("lists", new ListsRequest(apiKey), new TypeReference<ListsResponse>() {/* empty */});
     log.debug("List info: {}", response);
     return response.getLists();
   }
 
   @Override
   public List<MemberResponseInfo> listMembers(String listId, MemberStatus memberStatus, Date since, Integer start, Integer limit) throws MailJimpException {
-    ListMembersResponse response = performRequest("listMembers", new ListMembersRequest(apiKey, listId, memberStatus.getStatus(), since, start, limit), ListMembersResponse.class);
+    ListMembersResponse response = performRequest("listMembers", new ListMembersRequest(apiKey, listId, memberStatus.getStatus(), since, start, limit), new TypeReference<ListMembersResponse>() {/* empty */});
     log.debug("List info: {}", response);
     return response.getMembers();
   }
 
   @Override
   public List<MemberInfo> listMemberInfo(String listId, List<String> emailAddresses) throws MailJimpException {
-    ListMemberInfoResponse response = performRequest("listMemberInfo", new ListMemberInfoRequest(apiKey, listId, emailAddresses), ListMemberInfoResponse.class);
+    ListMemberInfoResponse response = performRequest("listMemberInfo", new ListMemberInfoRequest(apiKey, listId, emailAddresses), new TypeReference<ListMemberInfoResponse>() {/* empty */});
     log.debug("List member info response: {}", response);
     return response.getMembers();
   }
 
   @Override
   public boolean listSubscribe(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean doubleOptin, boolean updateExisting, boolean replaceInterests, boolean sendWelcome) throws MailJimpException {
-    Boolean response = performRequest("listSubscribe", new ListSubscribeRequest(apiKey, listId, emailAddress, mergeVars, emailType, doubleOptin, updateExisting, replaceInterests, sendWelcome), Boolean.class);
+    Boolean response = performRequest("listSubscribe", new ListSubscribeRequest(apiKey, listId, emailAddress, mergeVars, emailType, doubleOptin, updateExisting, replaceInterests, sendWelcome), new TypeReference<Boolean>() {/* empty */});
     log.debug("List subscribe response: {}", response);
     return response;
   }
@@ -183,22 +202,23 @@ public class MailJimpJsonService extends AbstractMailJimpService {
 
   @Override
   public boolean listUpdateMember(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean replaceInterests) throws MailJimpException {
-    Boolean response = performRequest("listUpdateMember", new ListUpdateMemberRequest(apiKey, listId, emailAddress, mergeVars, emailType, replaceInterests), Boolean.class);
+    Boolean response = performRequest("listUpdateMember", new ListUpdateMemberRequest(apiKey, listId, emailAddress, mergeVars, emailType, replaceInterests), new TypeReference<Boolean>() {/* empty */});
     log.debug("List update member response: {}", response);
     return response;
   }
 
   @Override
   public boolean listUnsubscribe(String listId, String emailAddress, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailJimpException {
-    Boolean response = performRequest("listUnsubscribe", new ListUnsubscribeRequest(apiKey, listId, emailAddress, deleteMember, sendGoodbye, sendNotify), Boolean.class);
+    Boolean response = performRequest("listUnsubscribe", new ListUnsubscribeRequest(apiKey, listId, emailAddress, deleteMember, sendGoodbye, sendNotify), new TypeReference<Boolean>() {/* empty */});
     log.debug("List unsubscribe response: {}", response);
     return response;
   }
 
   @Override
-  public List<Group> listInterestGroupings(String listId) throws MailJimpException {
-    // TODO Auto-generated method stub
-    return null;
+  public List<InterestGrouping> listInterestGroupings(String listId) throws MailJimpException {
+    List<InterestGrouping> response = performRequest("listInterestGroupings", new ListInterestGroupingsRequest(apiKey, listId), new TypeReference<List<InterestGrouping>>() {/* empty */});
+    log.debug("List interesting groupings response: {}", response);
+    return response;
   }
 
   @Override
@@ -218,5 +238,4 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     // TODO Auto-generated method stub
     return false;
   }
-
 }

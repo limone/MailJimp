@@ -19,38 +19,47 @@ package mailjimp.dom.response.list;
 
 import java.util.List;
 
-import mailjimp.dom.response.MailJimpResponse;
-
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class ListsResponse extends MailJimpResponse {
-  private Integer total;
+public class InterestGrouping extends GroupingParent {
+  @JsonProperty("form_field")
+  private String formField;
   
-  @JsonProperty("data")
-  private List<MailingList> lists;
+  @JsonProperty("display_order")
+  private String displayOrder;
   
-  public ListsResponse() {
+  private List<Group> groups;
+  
+  public InterestGrouping() {
     // empty
-  }
-
-  public Integer getTotal() {
-    return total;
-  }
-
-  public void setTotal(Integer total) {
-    this.total = total;
-  }
-
-  public List<MailingList> getLists() {
-    return lists;
-  }
-
-  public void setLists(List<MailingList> lists) {
-    this.lists = lists;
   }
 
   @Override
   public String toString() {
-    return "ListsResponse [total=" + total + ", lists=" + lists + "]";
+    return "InterestGrouping [formField=" + formField + ", displayOrder=" + displayOrder + ", groups=" + groups + "]";
+  }
+
+  public String getFormField() {
+    return formField;
+  }
+
+  public void setFormField(String formField) {
+    this.formField = formField;
+  }
+
+  public String getDisplayOrder() {
+    return displayOrder;
+  }
+
+  public void setDisplayOrder(String displayOrder) {
+    this.displayOrder = displayOrder;
+  }
+
+  public List<Group> getGroups() {
+    return groups;
+  }
+
+  public void setGroups(List<Group> groups) {
+    this.groups = groups;
   }
 }

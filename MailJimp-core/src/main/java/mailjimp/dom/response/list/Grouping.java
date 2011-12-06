@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Michael Laccetti
+ * Copyright 2011 Eike Hirsch
  *
  * This file is part of MailJimp.
  *
@@ -19,38 +19,31 @@ package mailjimp.dom.response.list;
 
 import java.util.List;
 
-import mailjimp.dom.response.MailJimpResponse;
+/**
+ * Represents a group of MailChimps groupings.
+ * 
+ * @author Eike Hirsch (me at eike-hirsch dot net) Date: 05.05.11 Time: 10:10
+ */
+@SuppressWarnings("serial")
+public class Grouping extends GroupingParent {
+  private List<String> groups;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
-public class ListsResponse extends MailJimpResponse {
-  private Integer total;
-  
-  @JsonProperty("data")
-  private List<MailingList> lists;
-  
-  public ListsResponse() {
-    // empty
+  /**
+   * Get the assigned groups as a comma separated string.
+   * 
+   * @return The assigned groups as a comma separated string.
+   */
+  public List<String> getGroups() {
+    return groups;
   }
 
-  public Integer getTotal() {
-    return total;
-  }
-
-  public void setTotal(Integer total) {
-    this.total = total;
-  }
-
-  public List<MailingList> getLists() {
-    return lists;
-  }
-
-  public void setLists(List<MailingList> lists) {
-    this.lists = lists;
-  }
-
-  @Override
-  public String toString() {
-    return "ListsResponse [total=" + total + ", lists=" + lists + "]";
+  /**
+   * Set the assigned groups as a comma separated string.
+   * 
+   * @param groups
+   *          The assigned groups as a comma separated string.
+   */
+  public void setGroups(List<String> groups) {
+    this.groups = groups;
   }
 }

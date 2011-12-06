@@ -1,5 +1,25 @@
+/*
+ * Copyright 2011 Michael Laccetti
+ *
+ * This file is part of MailJimp.
+ *
+ * MailJimp is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, version 3 of the License.
+ *
+ * MailJimp is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package mailjimp.service;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -8,6 +28,7 @@ import java.util.Map;
 
 import mailjimp.dom.enums.EmailType;
 import mailjimp.dom.enums.MemberStatus;
+import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
@@ -24,8 +45,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "/mailjimp-test-spring-config.xml" })
 @Configurable
@@ -38,15 +57,20 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
 
   @Value("${mj.test.subscribedUserEMailAddress}")
   private String subscribedUserEMailAddress;
-  
+
   /**
    * This address is subscribed, updated, then removed.
    */
   private static String randomEmailAddress = null;
-  
+
   @BeforeClass
   public static void setup() {
     randomEmailAddress = "test" + RandomStringUtils.randomNumeric(3) + "@laccetti.com";
+  }
+
+  @After
+  public void after() {
+    System.out.println("\n\n\n");
   }
 
   @Test
@@ -74,7 +98,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       processError(mje);
     }
   }
-  
+
   /**
    * The following tests were put in place based on issue #11
    */
@@ -88,7 +112,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       processError(mje);
     }
   }
-  
+
   @Test
   public void testListMembersAllPopulated() {
     try {
@@ -103,7 +127,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       processError(mje);
     }
   }
-  
+
   @Test
   public void testListMembersMissingDate() {
     try {
@@ -114,19 +138,18 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       processError(mje);
     }
   }
-  
 
   @Test
   public void testListMember() {
     try {
       log.debug("Test list member");
-      List<MemberInfo> members = mSvc.listMemberInfo(listId, Arrays.asList(new String[] {subscribedUserEMailAddress}));
+      List<MemberInfo> members = mSvc.listMemberInfo(listId, Arrays.asList(new String[] { subscribedUserEMailAddress }));
       log.debug("Member info: {}", members);
     } catch (MailJimpException mje) {
       processError(mje);
     }
   }
-  
+
   @Test
   public void testListSubscribe() {
     try {
@@ -138,21 +161,26 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       processError(mje);
     }
   }
-  
+
   @Test
   public void testListSubscribeMergeVars() {
- // Add List Member to existing group “Sphere”
-
     // Create Merges with test merge field and grouping
-    Map<String,Object> merges = new HashMap<String,Object>();
+    Map<String, Object> merges = new HashMap<String, Object>();
     merges.put(MailJimpConstants.MERGE_EMAIL, randomEmailAddress);
     merges.put(MailJimpConstants.MERGE_FNAME, "Test");
     merges.put(MailJimpConstants.MERGE_LNAME, "TestMergeVars");
-    merges.put("MMERGE3", "test merge");  // This works.
-    merges.put("GROUPINGS", "577");  // This doesn’t work.
+    merges.put("MMERGE3", "test merge");
+
+    List<Map<Object, Object>> groupings = new ArrayList<Map<Object, Object>>();
+    Map<Object, Object> groups = new HashMap<Object, Object>();
+    groups.put("name", "Test Group");
+    groups.put("groups", "Test 1");
+    groupings.add(groups);
+
+    merges.put("GROUPINGS", groupings);
 
     try {
-      log.debug("Test list subscribe");
+      log.debug("Test list subscribe with merges");
       boolean response = mSvc.listSubscribe(listId, randomEmailAddress, merges, EmailType.HTML, false, true, false, true);
       log.debug("User subscribed: {}", response);
       assertTrue("User was not subscribed.", response);
@@ -160,22 +188,33 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       processError(mje);
     }
   }
-  
+
   @Test
   public void testListUpdateMember() {
     try {
-      Map<String,Object> mergeVars = new HashMap<String, Object>();
-      mergeVars.put(MailJimpConstants.MERGE_FNAME, "Test");
-      mergeVars.put(MailJimpConstants.MERGE_FNAME, "TestLast");
-      
+      // Create Merges with test merge field and grouping
+      Map<String, Object> merges = new HashMap<String, Object>();
+      merges.put(MailJimpConstants.MERGE_EMAIL, subscribedUserEMailAddress);
+      merges.put(MailJimpConstants.MERGE_FNAME, "Test");
+      merges.put(MailJimpConstants.MERGE_LNAME, "TestMergeVars");
+      merges.put("MMERGE3", "test merge");
+
+      List<Map<Object, Object>> groupings = new ArrayList<Map<Object, Object>>();
+      Map<Object, Object> groups = new HashMap<Object, Object>();
+      groups.put("name", "Test Group");
+      groups.put("groups", "Test 1");
+      groupings.add(groups);
+
+      merges.put("GROUPINGS", groupings);
+
       log.debug("Test list update member");
-      boolean response = mSvc.listUpdateMember(listId, randomEmailAddress, mergeVars, EmailType.HTML, true);
+      boolean response = mSvc.listUpdateMember(listId, subscribedUserEMailAddress, merges, EmailType.HTML, true);
       log.debug("User updated: {}", response);
     } catch (MailJimpException mje) {
       processError(mje);
     }
   }
-  
+
   @Test
   public void testListUnsubscribe() {
     try {
@@ -186,9 +225,15 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       processError(mje);
     }
   }
-  
-  @After
-  public void after() {
-    System.out.println("\n\n\n");
+
+  @Test
+  public void testListInterestGroupings() {
+    try {
+      log.debug("Test list interest groupings");
+      List<InterestGrouping> response = mSvc.listInterestGroupings(listId);
+      log.debug("Interest groupings: {}", response);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
   }
 }

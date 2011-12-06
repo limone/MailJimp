@@ -15,42 +15,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mailjimp.dom.response.list;
-
-import java.util.List;
-
-import mailjimp.dom.response.MailJimpResponse;
+package mailjimp.dom.request.list;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class ListsResponse extends MailJimpResponse {
-  private Integer total;
-  
-  @JsonProperty("data")
-  private List<MailingList> lists;
-  
-  public ListsResponse() {
-    // empty
+import mailjimp.dom.request.MailJimpRequest;
+
+public class ListInterestGroupingsRequest extends MailJimpRequest {
+  @JsonProperty("id")
+  private String listId;
+
+  public ListInterestGroupingsRequest(String apikey, String listId) {
+    super(apikey);
+    this.listId = listId;
   }
 
-  public Integer getTotal() {
-    return total;
+  public String getListId() {
+    return listId;
   }
 
-  public void setTotal(Integer total) {
-    this.total = total;
-  }
-
-  public List<MailingList> getLists() {
-    return lists;
-  }
-
-  public void setLists(List<MailingList> lists) {
-    this.lists = lists;
-  }
-
-  @Override
-  public String toString() {
-    return "ListsResponse [total=" + total + ", lists=" + lists + "]";
+  public void setListId(String listId) {
+    this.listId = listId;
   }
 }

@@ -64,7 +64,7 @@ public class MemberInfo implements Serializable {
   @JsonProperty("web_id")
   private Integer webId;
 
-  private List<Group> groupings;
+  private List<Grouping> groupings;
 
   public MemberInfo() {
     // empty
@@ -123,13 +123,13 @@ public class MemberInfo implements Serializable {
     this.merges = merges;
     
     if (merges.containsKey(GROUPINGS_KEY)) {
-      List<Group> groups = new ArrayList<Group>();
+      List<Grouping> groups = new ArrayList<Grouping>();
       
       Object groupings = merges.get(GROUPINGS_KEY);
       if (groupings instanceof List) {
         List<Map<String, Object>> lGroupings = (List<Map<String, Object>>) groupings;
         for (Map<String, Object> grouping : lGroupings) {
-          Group g = new Group();
+          Grouping g = new Grouping();
           final Object groupId = grouping.get("id");
           g.setId(groupId instanceof Integer ? (Integer)groupId : Integer.parseInt(groupId.toString()));
           g.setName(grouping.get("name").toString());
@@ -207,11 +207,11 @@ public class MemberInfo implements Serializable {
     this.webId = webId;
   }
 
-  public List<Group> getGroupings() {
+  public List<Grouping> getGroupings() {
     return groupings;
   }
 
-  public void setGroupings(List<Group> groupings) {
+  public void setGroupings(List<Grouping> groupings) {
     this.groupings = groupings;
   }
 }
