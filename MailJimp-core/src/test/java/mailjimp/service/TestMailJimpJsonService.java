@@ -12,6 +12,7 @@ import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
   @Test
   public void testLists() {
     try {
+      log.debug("Testing lists");
       List<MailingList> content = mSvc.lists();
       log.debug("Lists Content: {}", content);
     } catch (MailJimpException mje) {
@@ -50,16 +52,59 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       i.set(Calendar.YEAR, 2009);
       i.set(Calendar.MONTH, Calendar.DECEMBER);
       i.set(Calendar.DATE, 15);
+      log.debug("Testing list members");
       List<MemberResponseInfo> content = mSvc.listMembers(listId, MemberStatus.subscribed, i.getTime(), null, null);
       log.debug("Lists Content: {}", content);
     } catch (MailJimpException mje) {
       processError(mje);
     }
   }
+  
+  /**
+   * The following tests were put in place based on issue #11
+   */
+  @Test
+  public void testListMembersAllNull() {
+    try {
+      log.debug("Testing list members - all null");
+      List<MemberResponseInfo> content = mSvc.listMembers(listId, MemberStatus.subscribed, null, null, null);
+      log.debug("Lists Content: {}", content);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListMembersAllPopulated() {
+    try {
+      Calendar i = Calendar.getInstance();
+      i.set(Calendar.YEAR, 2011);
+      i.set(Calendar.MONTH, Calendar.JANUARY);
+      i.set(Calendar.DATE, 1);
+      log.debug("Test list members - all populated");
+      List<MemberResponseInfo> content = mSvc.listMembers(listId, MemberStatus.subscribed, i.getTime(), 0, 100);
+      log.debug("Lists Content: {}", content);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListMembersMissingDate() {
+    try {
+      log.debug("Test list members - missing date");
+      List<MemberResponseInfo> content = mSvc.listMembers(listId, MemberStatus.subscribed, null, 0, 100);
+      log.debug("Lists Content: {}", content);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
 
   @Test
   public void testListMember() {
     try {
+      log.debug("Test list member");
       List<MemberInfo> members = mSvc.listMemberInfo(listId, Arrays.asList(new String[] {TEST_EMAIL_ADDRESS}));
       log.debug("Member info: {}", members);
     } catch (MailJimpException mje) {
@@ -70,6 +115,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
   @Test
   public void testListSubscribe() {
     try {
+      log.debug("Test list subscribe");
       boolean response = mSvc.listSubscribe(listId, "subtest@laccetti.com", null, EmailType.HTML, false, true, false, true);
       log.debug("User subscribed: {}", response);
     } catch (MailJimpException mje) {
@@ -84,6 +130,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       mergeVars.put("FNAME", "Test");
       mergeVars.put("LNAME", "TestLast");
       
+      log.debug("Test list update member");
       boolean response = mSvc.listUpdateMember(listId, TEST_EMAIL_ADDRESS, mergeVars, EmailType.HTML, true);
       log.debug("User updated: {}", response);
     } catch (MailJimpException mje) {
@@ -94,10 +141,16 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
   @Test
   public void testListUnsubscribe() {
     try {
+      log.debug("Test list unusubscribe");
       boolean response = mSvc.listUnsubscribe(listId, "subtest@laccetti.com", false, true, true);
       log.debug("User unsubscribed: {}", response);
     } catch (MailJimpException mje) {
       processError(mje);
     }
+  }
+  
+  @After
+  public void after() {
+    System.out.println("\n\n\n");
   }
 }
