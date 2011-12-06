@@ -19,9 +19,10 @@ package mailjimp.webhook;
 
 import java.io.Serializable;
 
-import mailjimp.dom.WebHookData;
-import mailjimp.dom.list.MemberInfo;
 import javax.servlet.http.HttpServletRequest;
+
+import mailjimp.dom.WebHookData;
+import mailjimp.dom.response.list.MemberInfo;
 
 /**
  * This is the gateway to your application. Implement this interface and make

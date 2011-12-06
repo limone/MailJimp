@@ -17,12 +17,15 @@
  */
 package mailjimp.webhook;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import mailjimp.dom.WebHookData;
 import mailjimp.dom.WebHookType;
-import mailjimp.dom.list.MemberInfo;
+import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.service.impl.MailJimpConstants;
-import mailjimp.webhook.WebHookConstants;
-import mailjimp.webhook.WebHookController;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,8 +38,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
 
-import static org.junit.Assert.*;
-
 /**
  * Author: Eike Hirsch (me at eike-hirsch dot net) Date: 03.05.11 Time: 13:42
  */
@@ -45,10 +46,13 @@ import static org.junit.Assert.*;
 public class TestWebHooks {
   @Autowired
   private WebHookController              controller;
+  
   @Autowired
   private MyTestWebHookAdapter           webHookAdapter;
+  
   @Autowired
   private AnnotationMethodHandlerAdapter annotationMethodHandlerAdapter;
+  
   private MockHttpServletResponse        response;
   private MockHttpServletRequest         request;
   private WebHookData                    data;
@@ -86,7 +90,10 @@ public class TestWebHooks {
     assertNotNull(memberInfo);
     assertEquals("me@eike-hirsch.net", memberInfo.getEmail());
     assertEquals("Eike", memberInfo.getMerges().get(MailJimpConstants.MERGE_FNAME));
-    assertEquals("VALUE1, VALUE2", memberInfo.getGroupings()[0].getGroups());
+    
+    final Object[] testArray = new Object[]{"VALUE1", "VALUE2"};
+    final Object[] groupArray = memberInfo.getGroupings().get(0).getGroups().toArray();
+    assertArrayEquals(testArray, groupArray);
   }
 
   @Test

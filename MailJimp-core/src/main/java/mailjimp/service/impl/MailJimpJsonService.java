@@ -19,7 +19,7 @@ import mailjimp.dom.request.list.ListUpdateMemberRequest;
 import mailjimp.dom.request.list.ListsRequest;
 import mailjimp.dom.response.MailJimpErrorResponse;
 import mailjimp.dom.response.list.BatchSubscribeResponse;
-import mailjimp.dom.response.list.Groups;
+import mailjimp.dom.response.list.Group;
 import mailjimp.dom.response.list.ListMemberInfoResponse;
 import mailjimp.dom.response.list.ListMembersResponse;
 import mailjimp.dom.response.list.ListsResponse;
@@ -196,7 +196,7 @@ public class MailJimpJsonService extends AbstractMailJimpService {
   }
 
   @Override
-  public List<Groups> listInterestGroupings(String listId) throws MailJimpException {
+  public List<Group> listInterestGroupings(String listId) throws MailJimpException {
     // TODO Auto-generated method stub
     return null;
   }

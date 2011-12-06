@@ -1,43 +1,43 @@
+/*
+ * Copyright 2011 Eike Hirsch
+ *
+ * This file is part of MailJimp.
+ *
+ * MailJimp is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, version 3 of the License.
+ *
+ * MailJimp is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package mailjimp.dom.response.list;
 
 import java.io.Serializable;
+import java.util.List;
 
-
+/**
+ * Represents a group of MailChimps groupings.
+ * 
+ * @author Eike Hirsch (me at eike-hirsch dot net) Date: 05.05.11 Time: 10:10
+ */
+@SuppressWarnings("serial")
 public class Group implements Serializable {
-  private String bit;
+  private int    id;
   private String name;
-  private String displayOrder;
-  private int numSubscribers;
+  private String formField;
+  private List<String> groups;
 
-  /**
-   * Default no-args constructor.
-   */
-  public Group() {
-    // empty
+  public int getId() {
+    return id;
   }
 
-  /**
-   * Full args constructor.
-   * 
-   * @param bit
-   * @param name
-   * @param displayOrder
-   * @param numSubscribers
-   */
-  public Group(String bit, String name, String displayOrder, int numSubscribers) {
-    super();
-    this.bit = bit;
-    this.name = name;
-    this.displayOrder = displayOrder;
-    this.numSubscribers = numSubscribers;
-  }
-
-  public String getBit() {
-    return bit;
-  }
-
-  public void setBit(String bit) {
-    this.bit = bit;
+  public void setId(Integer id) {
+    this.id = id;
   }
 
   public String getName() {
@@ -48,19 +48,22 @@ public class Group implements Serializable {
     this.name = name;
   }
 
-  public String getDisplayOrder() {
-    return displayOrder;
+  /**
+   * Get the assigned groups as a comma separated string.
+   * 
+   * @return The assigned groups as a comma separated string.
+   */
+  public List<String> getGroups() {
+    return groups;
   }
 
-  public void setDisplayOrder(String displayOrder) {
-    this.displayOrder = displayOrder;
-  }
-
-  public int getNumSubscribers() {
-    return numSubscribers;
-  }
-
-  public void setNumSubscribers(int numSubscribers) {
-    this.numSubscribers = numSubscribers;
+  /**
+   * Set the assigned groups as a comma separated string.
+   * 
+   * @param groups
+   *          The assigned groups as a comma separated string.
+   */
+  public void setGroups(List<String> groups) {
+    this.groups = groups;
   }
 }

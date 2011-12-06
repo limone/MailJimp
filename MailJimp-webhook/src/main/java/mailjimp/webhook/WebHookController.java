@@ -19,9 +19,11 @@ package mailjimp.webhook;
 
 import mailjimp.dom.WebHookData;
 import mailjimp.dom.WebHookType;
+import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.service.MailJimpException;
 import mailjimp.service.impl.MailJimpConstants;
-import mailjimp.service.impl.MailJimpParser;
+
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
+import java.io.StringWriter;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,21 +50,23 @@ import java.util.regex.Pattern;
 @Controller
 public class WebHookController {
 
-  private static final Logger LOG = LoggerFactory.getLogger( WebHookController.class );
+  private static final Logger LOG = LoggerFactory.getLogger(WebHookController.class);
 
-  private static Pattern  DATA_PATTERN
-		  = Pattern.compile("data\\[(\\w+)\\](\\[(\\w+)\\](\\[(\\d+)\\]\\[(\\w+)\\])?)?");
+  private static Pattern DATA_PATTERN = Pattern.compile("data\\[(\\w+)\\](\\[(\\w+)\\](\\[(\\d+)\\]\\[(\\w+)\\])?)?");
 
-  private static int      INDEX_PARAM_NAME              = 1;
-  private static int      INDEX_MAPPED_PARAM_NAME       = 3;
-  private static int      INDEX_MAPPED_ARRAY_INDEX      = 5;
-  private static int      INDEX_MAPPED_ARRAY_PARAM_NAME = 6;
+  private static int INDEX_PARAM_NAME = 1;
+  private static int INDEX_MAPPED_PARAM_NAME = 3;
+  private static int INDEX_MAPPED_ARRAY_INDEX = 5;
+  private static int INDEX_MAPPED_ARRAY_PARAM_NAME = 6;
 
   @Autowired
   private IWebHookAdapter webHookAdapter;
-  // as our core module can be run without spring in place, we can not auto wire
-  // the parser.
-  private MailJimpParser parser                        = new MailJimpParser();
+
+  private final ObjectMapper m = new ObjectMapper();
+  
+  public WebHookController() {
+    // empty
+  }
 
   /**
    * WebHook for the subscribe callbacks. This will call
@@ -79,7 +84,7 @@ public class WebHookController {
   @RequestMapping(params = "type=subscribe")
   public @ResponseBody
   String subscribe(WebRequest request) throws Exception {
-	  LOG.info("Subscribe...");
+    LOG.info("Subscribe...");
     try {
       WebHookData data = new WebHookData(WebHookType.SUBSCRIBE);
       webHookAdapter.userSubscribed(buildData(request, data));
@@ -131,7 +136,7 @@ public class WebHookController {
   @RequestMapping(params = "type=profile")
   public @ResponseBody
   String profile(WebRequest request) throws Exception {
-	  LOG.info("Profile updated...");
+    LOG.info("Profile updated...");
     try {
       WebHookData data = new WebHookData(WebHookType.UPDATE_PROFILE);
       webHookAdapter.profileUpdated(buildData(request, data));
@@ -187,7 +192,7 @@ public class WebHookController {
     try {
       WebHookData data = new WebHookData(WebHookType.CLEANED);
       webHookAdapter.cleaned(buildData(request, data));
-    } catch (Exception e ) {
+    } catch (Exception e) {
       LOG.error("Error while processing request.", e);
     }
 
@@ -198,7 +203,16 @@ public class WebHookController {
     data.setFiredAt(MailJimpConstants.SDF.parse(request.getParameter("fired_at")));
     data.setRawData(parseRequest(request));
     if (WebHookType.SUBSCRIBE == data.getType() || WebHookType.UNSUBSCRIBE == data.getType() || WebHookType.UPDATE_PROFILE == data.getType()) {
-      data.setMemberInfo(parser.parseListMemberInfo(data.getRawData()));
+      try {
+        final StringWriter json = new StringWriter();
+        m.writeValue(json, data.getRawData());
+        LOG.debug("JSON: {}", json.toString());
+        MemberInfo val = m.readValue(json.toString(), MemberInfo.class);
+        data.setMemberInfo(val);
+      } catch (Exception ex) {
+        LOG.error("Could not convert data to MemberInfo object.", ex);
+        throw new MailJimpException("Could not convert data to MemberInfo object.", ex);
+      }
     }
     return data;
   }

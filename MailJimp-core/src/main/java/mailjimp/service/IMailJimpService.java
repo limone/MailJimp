@@ -25,7 +25,7 @@ import java.util.Map;
 import mailjimp.dom.enums.EmailType;
 import mailjimp.dom.enums.MemberStatus;
 import mailjimp.dom.response.list.BatchSubscribeResponse;
-import mailjimp.dom.response.list.Groups;
+import mailjimp.dom.response.list.Group;
 import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
@@ -177,10 +177,10 @@ public interface IMailJimpService extends Serializable {
    * @return                    List of interest groups for the list.
    * @throws MailJimpException  If there was a problem retrieving the list of groups.
    */
-  public List<Groups> listInterestGroupings(String listId) throws MailJimpException;
+  public List<Group> listInterestGroupings(String listId) throws MailJimpException;
   
   /**
-   * Create a single Interest Groups - if groups are not enabled, they will automatically be turned on when adding the first group.
+   * Create a single Interest Group - if groups are not enabled, they will automatically be turned on when adding the first group.
    * 
    * @param listId              ID of the list
    * @param groupName           Name of the group to add
@@ -192,7 +192,7 @@ public interface IMailJimpService extends Serializable {
   public boolean listInterestGroupAdd(String listId, String groupId, Integer groupingId) throws MailJimpException;
   
   /**
-   * Delete a single Interest Groups - if the last group for a list is deleted, this will also turn groups for the list off.
+   * Delete a single Interest Group - if the last group for a list is deleted, this will also turn groups for the list off.
    * 
    * @param listId              ID of the list
    * @param groupName           Name of the group to delete

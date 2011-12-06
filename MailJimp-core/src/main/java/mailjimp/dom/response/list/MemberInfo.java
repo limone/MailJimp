@@ -18,7 +18,10 @@
 package mailjimp.dom.response.list;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import mailjimp.dom.enums.MemberStatus;
@@ -29,12 +32,16 @@ import org.codehaus.jackson.annotate.JsonProperty;
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MemberInfo implements Serializable {
+  private final String GROUPINGS_KEY = "GROUPINGS";
+  
   private String id;
   private String email;
   
   @JsonProperty("email_type")
   private String emailType;
-  private Map<String, String> merges;
+  
+  private Map<String, Object> merges;
+  
   private MemberStatus status;
   
   @JsonProperty("ip_opt")
@@ -56,13 +63,14 @@ public class MemberInfo implements Serializable {
   
   @JsonProperty("web_id")
   private Integer webId;
-  private Groups[] groupings;
+
+  private List<Group> groupings;
 
   public MemberInfo() {
     // empty
   }
 
-  public MemberInfo(String id, String email, String emailType, Map<String, String> merges, MemberStatus status, String ipOpt, String ipSignup, Integer memberRating, String campaignId, Date timestamp, Date infoChanged, Integer webId) {
+  public MemberInfo(String id, String email, String emailType, Map<String, Object> merges, MemberStatus status, String ipOpt, String ipSignup, Integer memberRating, String campaignId, Date timestamp, Date infoChanged, Integer webId) {
     this.id = id;
     this.email = email;
     this.emailType = emailType;
@@ -106,12 +114,32 @@ public class MemberInfo implements Serializable {
     this.emailType = emailType;
   }
 
-  public Map<String, String> getMerges() {
+  public Map<String, Object> getMerges() {
     return merges;
   }
 
-  public void setMerges(Map<String, String> merges) {
+  @SuppressWarnings("unchecked")
+  public void setMerges(Map<String, Object> merges) {
     this.merges = merges;
+    
+    if (merges.containsKey(GROUPINGS_KEY)) {
+      List<Group> groups = new ArrayList<Group>();
+      
+      Object groupings = merges.get(GROUPINGS_KEY);
+      if (groupings instanceof List) {
+        List<Map<String,String>> lGroupings = (List<Map<String,String>>) groupings;
+        for (Map<String,String> grouping : lGroupings) {
+          Group g = new Group();
+          g.setId(Integer.parseInt(grouping.get("id")));
+          g.setName(grouping.get("name"));
+          final String sGroups = grouping.get("groups");
+          final String[] splitGroups = sGroups.split(", ");
+          g.setGroups(Arrays.asList(splitGroups));
+          groups.add(g);
+        }
+      }
+      this.groupings = groups;
+    }
   }
 
   public MemberStatus getStatus() {
@@ -178,11 +206,11 @@ public class MemberInfo implements Serializable {
     this.webId = webId;
   }
 
-  public Groups[] getGroupings() {
+  public List<Group> getGroupings() {
     return groupings;
   }
 
-  public void setGroupings(Groups[] groupings) {
+  public void setGroupings(List<Group> groupings) {
     this.groupings = groupings;
   }
 }

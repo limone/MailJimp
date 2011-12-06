@@ -17,11 +17,11 @@
  */
 package mailjimp.dom;
 
-import mailjimp.dom.list.MemberInfo;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+
+import mailjimp.dom.response.list.MemberInfo;
 
 /**
  * Generic object to keep all the additional data that is provided by MailChimp.
