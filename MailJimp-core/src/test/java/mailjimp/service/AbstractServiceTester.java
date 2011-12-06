@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AbstractServiceTester {
-  protected static final String TEST_EMAIL_ADDRESS = "test@laccetti.com";
-  
   protected final Logger log = LoggerFactory.getLogger(getClass());
   
   protected void processError(MailJimpException mje) {

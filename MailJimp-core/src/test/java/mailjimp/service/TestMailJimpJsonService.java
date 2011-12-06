@@ -11,8 +11,11 @@ import mailjimp.dom.enums.MemberStatus;
 import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
+import mailjimp.service.impl.MailJimpConstants;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "/mailjimp-test-spring-config.xml" })
@@ -33,6 +38,16 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
 
   @Value("${mj.test.subscribedUserEMailAddress}")
   private String subscribedUserEMailAddress;
+  
+  /**
+   * This address is subscribed, updated, then removed.
+   */
+  private static String randomEmailAddress = null;
+  
+  @BeforeClass
+  public static void setup() {
+    randomEmailAddress = "test" + RandomStringUtils.randomNumeric(3) + "@laccetti.com";
+  }
 
   @Test
   public void testLists() {
@@ -105,7 +120,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
   public void testListMember() {
     try {
       log.debug("Test list member");
-      List<MemberInfo> members = mSvc.listMemberInfo(listId, Arrays.asList(new String[] {TEST_EMAIL_ADDRESS}));
+      List<MemberInfo> members = mSvc.listMemberInfo(listId, Arrays.asList(new String[] {subscribedUserEMailAddress}));
       log.debug("Member info: {}", members);
     } catch (MailJimpException mje) {
       processError(mje);
@@ -116,8 +131,31 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
   public void testListSubscribe() {
     try {
       log.debug("Test list subscribe");
-      boolean response = mSvc.listSubscribe(listId, "subtest@laccetti.com", null, EmailType.HTML, false, true, false, true);
+      boolean response = mSvc.listSubscribe(listId, randomEmailAddress, null, EmailType.HTML, false, false, false, false);
       log.debug("User subscribed: {}", response);
+      assertTrue("User could not subscribe to the list.", response);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListSubscribeMergeVars() {
+ // Add List Member to existing group “Sphere”
+
+    // Create Merges with test merge field and grouping
+    Map<String,Object> merges = new HashMap<String,Object>();
+    merges.put(MailJimpConstants.MERGE_EMAIL, randomEmailAddress);
+    merges.put(MailJimpConstants.MERGE_FNAME, "Test");
+    merges.put(MailJimpConstants.MERGE_LNAME, "TestMergeVars");
+    merges.put("MMERGE3", "test merge");  // This works.
+    merges.put("GROUPINGS", "577");  // This doesn’t work.
+
+    try {
+      log.debug("Test list subscribe");
+      boolean response = mSvc.listSubscribe(listId, randomEmailAddress, merges, EmailType.HTML, false, true, false, true);
+      log.debug("User subscribed: {}", response);
+      assertTrue("User was not subscribed.", response);
     } catch (MailJimpException mje) {
       processError(mje);
     }
@@ -127,11 +165,11 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
   public void testListUpdateMember() {
     try {
       Map<String,Object> mergeVars = new HashMap<String, Object>();
-      mergeVars.put("FNAME", "Test");
-      mergeVars.put("LNAME", "TestLast");
+      mergeVars.put(MailJimpConstants.MERGE_FNAME, "Test");
+      mergeVars.put(MailJimpConstants.MERGE_FNAME, "TestLast");
       
       log.debug("Test list update member");
-      boolean response = mSvc.listUpdateMember(listId, TEST_EMAIL_ADDRESS, mergeVars, EmailType.HTML, true);
+      boolean response = mSvc.listUpdateMember(listId, randomEmailAddress, mergeVars, EmailType.HTML, true);
       log.debug("User updated: {}", response);
     } catch (MailJimpException mje) {
       processError(mje);
@@ -142,7 +180,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
   public void testListUnsubscribe() {
     try {
       log.debug("Test list unusubscribe");
-      boolean response = mSvc.listUnsubscribe(listId, "subtest@laccetti.com", false, true, true);
+      boolean response = mSvc.listUnsubscribe(listId, randomEmailAddress, false, true, true);
       log.debug("User unsubscribed: {}", response);
     } catch (MailJimpException mje) {
       processError(mje);

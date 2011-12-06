@@ -127,12 +127,13 @@ public class MemberInfo implements Serializable {
       
       Object groupings = merges.get(GROUPINGS_KEY);
       if (groupings instanceof List) {
-        List<Map<String,String>> lGroupings = (List<Map<String,String>>) groupings;
-        for (Map<String,String> grouping : lGroupings) {
+        List<Map<String, Object>> lGroupings = (List<Map<String, Object>>) groupings;
+        for (Map<String, Object> grouping : lGroupings) {
           Group g = new Group();
-          g.setId(Integer.parseInt(grouping.get("id")));
-          g.setName(grouping.get("name"));
-          final String sGroups = grouping.get("groups");
+          final Object groupId = grouping.get("id");
+          g.setId(groupId instanceof Integer ? (Integer)groupId : Integer.parseInt(groupId.toString()));
+          g.setName(grouping.get("name").toString());
+          final String sGroups = grouping.get("groups").toString();
           final String[] splitGroups = sGroups.split(", ");
           g.setGroups(Arrays.asList(splitGroups));
           groups.add(g);

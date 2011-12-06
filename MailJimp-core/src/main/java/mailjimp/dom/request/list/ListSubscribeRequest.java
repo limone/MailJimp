@@ -15,7 +15,7 @@ public class ListSubscribeRequest extends MailJimpRequest {
   private String emailAddress;
   
   @JsonProperty("merge_vars")
-  private Map<String,Object> mergeVars;
+  private Map<String, Object> mergeVars;
   
   @JsonProperty("email_type")
   private EmailType emailType;
