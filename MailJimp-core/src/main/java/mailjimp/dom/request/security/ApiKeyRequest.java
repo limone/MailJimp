@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Eike Hirsch
+ * Copyright 2011 Michael Laccetti
  *
  * This file is part of MailJimp.
  *
@@ -15,19 +15,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mailjimp.webhook;
+package mailjimp.dom.request.security;
 
-import mailjimp.dom.MailJimpConstants;
+public class ApiKeyRequest extends ApiKeyBaseRequest {
+  private Boolean expired;
 
-/**
- * Collection of special keys used in the raw data of the callbacks.
- * 
- * @author Eike Hirsch (me at eike-hirsch dot net) Date: 06.05.11 Time: 15:47
- */
-public interface WebHookConstants extends MailJimpConstants {
-  String REASON    = "reason";
-  String OLD_EMAIL = "old_email";
-  String NEW_EMAIL = "new_email";
-  String ACTION    = "action";
-  String LIST_ID   = "list_id";
+  public ApiKeyRequest(String apikey, String username, String password, Boolean expired) {
+    super(apikey, username, password);
+    this.expired = expired;
+  }
 }

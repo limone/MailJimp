@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import mailjimp.dom.enums.EmailType;
+import mailjimp.dom.enums.InterestGroupingType;
+import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
 import mailjimp.dom.response.list.BatchSubscribeResponse;
 import mailjimp.dom.response.list.InterestGrouping;
@@ -40,14 +42,6 @@ import mailjimp.dom.security.ApiKey;
  */
 public interface IMailJimpService extends Serializable {
   /**
-   * Retrieve a list of all MailChimp API Keys for this User - expired keys
-   * included.
-   * 
-   * @return List of keys
-   */
-  public List<ApiKey> keyList() throws MailJimpException;
-
-  /**
    * Retrieve a list of all MailChimp API Keys for this user -
    * including/excluding expired keys.
    * 
@@ -57,8 +51,9 @@ public interface IMailJimpService extends Serializable {
    * @return
    * @throws MailJimpException
    */
-  public List<ApiKey> keyList(boolean includeExpired) throws MailJimpException;
+  public List<ApiKey> apikeys(boolean expired) throws MailJimpException;
 
+  
   /**
    * Add an API Key to your account.
    * 
@@ -66,16 +61,18 @@ public interface IMailJimpService extends Serializable {
    * 
    * @return Newly generated key
    */
-  public String keyAdd() throws MailJimpException;
+  public String apikeyAdd() throws MailJimpException;
 
   /**
    * Expire a Specific API Key
    * 
    * Please note that if you have not provided your username and password, this method will return false.
    * 
+   * @param keyToExpire The key to expire - note that we force you to pass one in, in case you don't want to expire the
+   * one that is currently in use!
    * @return Whether or not the API key was expired
    */
-  public boolean keyExpire() throws MailJimpException;
+  public boolean apikeyExpire(String keyToExpire) throws MailJimpException;
 
   /**
    * Retrieve all mailing lists.
@@ -180,6 +177,44 @@ public interface IMailJimpService extends Serializable {
   public List<InterestGrouping> listInterestGroupings(String listId) throws MailJimpException;
   
   /**
+   * Add a new Interest Grouping - if interest groups for the List are not yet enabled, adding the first grouping will automatically turn them on.
+   * 
+   * @param listId              ID of the list
+   * @param name                Name of the interest grouping
+   * @param type                Type of the grouping to add
+   * @param groups              List of initial group names to be added - at least one is required, and names must be unique within a grouping.  If the addition takes the total number of groups over 60, an error will be thrown.
+   * 
+   * @return                    The new grouping ID.
+   * @throws                    If there was a problem creating the interest grouping
+   */
+  public Integer listInterestGroupingAdd(String listId, String name, InterestGroupingType type, List<String> groups) throws MailJimpException;
+  
+  /**
+   * Update an existing Interest Grouping
+   * 
+   * @param groupingId          ID of the grouping to update
+   * @param fieldNameToUpdate   The field to update - we use an enumeration so we can catch possible problems
+   * @param value               The new name of the field
+   * 
+   * @return                    True if the request succeeds
+   * @throws                    If there was a problem updating the interest grouping
+   */
+  public Boolean listInterestGroupingUpdate(Integer groupingId, InterestGroupingUpdateType fieldNameToUpdate, String value) throws MailJimpException;
+  
+  /**
+   * Remove an Interest Grouping
+   * 
+   * @param groupingId          ID of the grouping to delete
+   * @param name                Name of the interest grouping
+   * @param type                Type of the grouping to add
+   * @param groups              List of initial group names to be added - at least one is required, and names must be unique within a grouping.  If the addition takes the total number of groups over 60, an error will be thrown.
+   * 
+   * @return                    True if the request succeeds
+   * @throws                    If there was a problem deleting the interest grouping
+   */
+  public Boolean listInterestGroupingDelete(Integer groupingId) throws MailJimpException;
+  
+  /**
    * Create a single Interest Grouping - if groups are not enabled, they will automatically be turned on when adding the first group.
    * 
    * @param listId              ID of the list
@@ -201,7 +236,7 @@ public interface IMailJimpService extends Serializable {
    * @return                    True if succeeded, an error otherwise.
    * @throws MailJimpException  If the interest group could not be removed.
    */
-  public boolean listInterestGroupDel(String listId, String groupName, Integer groupingId) throws MailJimpException;
+  public boolean listInterestGroupDelete(String listId, String groupName, Integer groupingId) throws MailJimpException;
   
   /**
    * Change the name of an interest group.

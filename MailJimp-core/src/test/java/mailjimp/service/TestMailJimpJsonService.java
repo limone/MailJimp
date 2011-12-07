@@ -17,7 +17,7 @@
  */
 package mailjimp.service;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,13 +26,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mailjimp.dom.MailJimpConstants;
 import mailjimp.dom.enums.EmailType;
+import mailjimp.dom.enums.InterestGroupingType;
+import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
 import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
-import mailjimp.service.impl.MailJimpConstants;
+import mailjimp.dom.security.ApiKey;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
@@ -62,6 +65,16 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
    * This address is subscribed, updated, then removed.
    */
   private static String randomEmailAddress = null;
+  
+  /**
+   * This api key is to track the one that is added, then removed
+   */
+  private static String generatedApiKey = null;
+  
+  /**
+   * The ID of the interest grouping we create, so we can then remove it
+   */
+  private static Integer generatedInterestGroupingId = null;
 
   @BeforeClass
   public static void setup() {
@@ -174,7 +187,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
     List<Map<Object, Object>> groupings = new ArrayList<Map<Object, Object>>();
     Map<Object, Object> groups = new HashMap<Object, Object>();
     groups.put("name", "Test Group");
-    groups.put("groups", "Test 1");
+    groups.put("groups", "Group 1");
     groupings.add(groups);
 
     merges.put("GROUPINGS", groupings);
@@ -202,7 +215,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       List<Map<Object, Object>> groupings = new ArrayList<Map<Object, Object>>();
       Map<Object, Object> groups = new HashMap<Object, Object>();
       groups.put("name", "Test Group");
-      groups.put("groups", "Test 1");
+      groups.put("groups", "Group 2");
       groupings.add(groups);
 
       merges.put("GROUPINGS", groupings);
@@ -226,12 +239,80 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
     }
   }
 
+  
+  @Test
+  public void testApiKeys() {
+    try {
+      log.debug("Test api keys");
+      List<ApiKey> keys = mSvc.apikeys(true);
+      log.debug("API keys: {}", keys);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testApiKeyAdd() {
+    try {
+      log.debug("Test API key add");
+      generatedApiKey = mSvc.apikeyAdd();
+      log.debug("API key: {}", generatedApiKey);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testApiKeyExpire() {
+    assertNotNull("API key was null.", generatedApiKey);
+    try {
+      log.debug("Test API key expire");
+      boolean status = mSvc.apikeyExpire(generatedApiKey);
+      log.debug("API key expire success: {}", status);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
   @Test
   public void testListInterestGroupings() {
     try {
       log.debug("Test list interest groupings");
       List<InterestGrouping> response = mSvc.listInterestGroupings(listId);
       log.debug("Interest groupings: {}", response);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListInterestGroupingsAdd() {
+    try {
+      log.debug("Test list interest groupings add");
+      generatedInterestGroupingId = mSvc.listInterestGroupingAdd(listId, RandomStringUtils.randomAlphabetic(10), InterestGroupingType.hidden, Arrays.asList(new String[]{"test 1", "test 2", "test 3"}));
+      log.debug("Interest groupings add: {}", generatedInterestGroupingId);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListInterestGroupingsUpdate() {
+    try {
+      log.debug("Test list interest groupings update");
+      Boolean success = mSvc.listInterestGroupingUpdate(generatedInterestGroupingId, InterestGroupingUpdateType.name, RandomStringUtils.randomAlphabetic(10));
+      log.debug("Interest groupings update: {}", success);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListInterestGroupingsDelete() {
+    try {
+      log.debug("Test list interest groupings delete");
+      Boolean success = mSvc.listInterestGroupingDelete(generatedInterestGroupingId);
+      log.debug("Interest groupings delete: {}", success);
     } catch (MailJimpException mje) {
       processError(mje);
     }

@@ -20,10 +20,17 @@ package mailjimp.dom.security;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 @SuppressWarnings("serial")
 public class ApiKey implements Serializable {
+  @JsonProperty("apikey")
   private String apiKey;
+  
+  @JsonProperty("created_at")
   private Date   createdAt;
+  
+  @JsonProperty("expired_at")
   private Date   expiredAt;
 
   public ApiKey() {

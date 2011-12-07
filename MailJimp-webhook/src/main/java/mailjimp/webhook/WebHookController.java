@@ -17,11 +17,11 @@
  */
 package mailjimp.webhook;
 
+import mailjimp.dom.MailJimpConstants;
 import mailjimp.dom.WebHookData;
 import mailjimp.dom.WebHookType;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.service.MailJimpException;
-import mailjimp.service.impl.MailJimpConstants;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;

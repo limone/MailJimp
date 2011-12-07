@@ -27,7 +27,12 @@ import javax.annotation.PostConstruct;
 import javax.ws.rs.core.MediaType;
 
 import mailjimp.dom.enums.EmailType;
+import mailjimp.dom.enums.InterestGroupingType;
+import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
+import mailjimp.dom.request.list.ListInterestGroupingAddRequest;
+import mailjimp.dom.request.list.ListInterestGroupingDelRequest;
+import mailjimp.dom.request.list.ListInterestGroupingUpdateRequest;
 import mailjimp.dom.request.list.ListInterestGroupingsRequest;
 import mailjimp.dom.request.list.ListMemberInfoRequest;
 import mailjimp.dom.request.list.ListMembersRequest;
@@ -35,6 +40,9 @@ import mailjimp.dom.request.list.ListSubscribeRequest;
 import mailjimp.dom.request.list.ListUnsubscribeRequest;
 import mailjimp.dom.request.list.ListUpdateMemberRequest;
 import mailjimp.dom.request.list.ListsRequest;
+import mailjimp.dom.request.security.ApiKeyAddRequest;
+import mailjimp.dom.request.security.ApiKeyExpireRequest;
+import mailjimp.dom.request.security.ApiKeyRequest;
 import mailjimp.dom.response.MailJimpErrorResponse;
 import mailjimp.dom.response.list.BatchSubscribeResponse;
 import mailjimp.dom.response.list.InterestGrouping;
@@ -142,28 +150,26 @@ public class MailJimpJsonService extends AbstractMailJimpService {
       throw new MailJimpException(String.format("Could not convert JSON to expected type (%s).", typeRef.getType().getClass().getCanonicalName()), ex);
     }
   }
+  
   @Override
-  public List<ApiKey> keyList() throws MailJimpException {
-    // TODO Auto-generated method stub
-    return null;
+  public List<ApiKey> apikeys(boolean expired) throws MailJimpException {
+    List<ApiKey> response = performRequest("apikeys", new ApiKeyRequest(apiKey, username, password, expired), new TypeReference<List<ApiKey>>() {/* empty */});
+    log.debug("Api keys info: {}", response);
+    return response;
   }
 
   @Override
-  public List<ApiKey> keyList(boolean includeExpired) throws MailJimpException {
-    // TODO Auto-generated method stub
-    return null;
+  public String apikeyAdd() throws MailJimpException {
+    String apikey = performRequest("apikeyAdd", new ApiKeyAddRequest(apiKey, username, password), new TypeReference<String>() {/* empty */});
+    log.debug("API key add: {}", apikey);
+    return apikey;
   }
 
   @Override
-  public String keyAdd() throws MailJimpException {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public boolean keyExpire() throws MailJimpException {
-    // TODO Auto-generated method stub
-    return false;
+  public boolean apikeyExpire(String keyToExpire) throws MailJimpException {
+    Boolean response = performRequest("apikeyExpire", new ApiKeyExpireRequest(keyToExpire, username, password), new TypeReference<Boolean>() {/* empty */});
+    log.debug("API key expire: {}", response);
+    return response;
   }
 
   @Override
@@ -228,7 +234,7 @@ public class MailJimpJsonService extends AbstractMailJimpService {
   }
 
   @Override
-  public boolean listInterestGroupDel(String listId, String groupName, Integer groupingId) throws MailJimpException {
+  public boolean listInterestGroupDelete(String listId, String groupName, Integer groupingId) throws MailJimpException {
     // TODO Auto-generated method stub
     return false;
   }
@@ -237,5 +243,26 @@ public class MailJimpJsonService extends AbstractMailJimpService {
   public boolean listInterestGroupUpdate(String listId, String oldName, String newName) throws MailJimpException {
     // TODO Auto-generated method stub
     return false;
+  }
+
+  @Override
+  public Integer listInterestGroupingAdd(String listId, String name, InterestGroupingType type, List<String> groups) throws MailJimpException {
+    Integer response = performRequest("listInterestGroupingAdd", new ListInterestGroupingAddRequest(apiKey, listId, name, type, groups), new TypeReference<Integer>() {/* empty */});
+    log.debug("New interesting grouping ID: {}", response);
+    return response;
+  }
+
+  @Override
+  public Boolean listInterestGroupingUpdate(Integer groupingId, InterestGroupingUpdateType fieldNameToUpdate, String value) throws MailJimpException {
+    Boolean response = performRequest("listInterestGroupingUpdate", new ListInterestGroupingUpdateRequest(apiKey, groupingId, fieldNameToUpdate, value), new TypeReference<Boolean>() {/* empty */});
+    log.debug("Update interesting grouping status: {}", response);
+    return response;
+  }
+
+  @Override
+  public Boolean listInterestGroupingDelete(Integer groupingId) throws MailJimpException {
+    Boolean response = performRequest("listInterestGroupingDel", new ListInterestGroupingDelRequest(apiKey, groupingId), new TypeReference<Boolean>() {/* empty */});
+    log.debug("Delete interesting grouping status: {}", response);
+    return response;
   }
 }

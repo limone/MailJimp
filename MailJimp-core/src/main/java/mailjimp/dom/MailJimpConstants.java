@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mailjimp.service.impl;
+package mailjimp.dom;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
