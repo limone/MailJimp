@@ -9,7 +9,7 @@
     <groupId>net.mailjimp</groupId>
     <artifactId>mailjimp-parent</artifactId>
     <version>0.3-SNAPSHOT</version>
-    <relativePath>../MailJimp-parent</relativePath>
+    <relativePath>../MailJimp-parent/pom.xml</relativePath>
   </parent>
 
   <dependencies>
