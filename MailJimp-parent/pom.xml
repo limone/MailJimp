@@ -32,9 +32,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git@github.com:mlaccetti/MailJimp.git</connection>
+    <connection>scm:git:git://github.com/mlaccetti/MailJimp.git</connection>
     <developerConnection>scm:git:git@github.com:mlaccetti/MailJimp.git</developerConnection>
-    <url>git@github.com:mlaccetti/MailJimp.git</url>
+    <url>https://github.com/mlaccetti/MailJimp</url>
   </scm>
 
   <licenses>
