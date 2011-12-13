@@ -9,13 +9,13 @@
   <parent>
     <groupId>net.mailjimp</groupId>
     <artifactId>mailjimp-parent</artifactId>
-    <version>0.3</version>
+    <version>0.3-SNAPSHOT</version>
     <relativePath>../MailJimp-parent</relativePath>
   </parent>
 
   <dependencies>
     <dependency>
-      <groupId>net.mailjimp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>mailjimp-core</artifactId>
       <version>${project.version}</version>
       <exclusions>
