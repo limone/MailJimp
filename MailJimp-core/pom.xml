@@ -8,7 +8,7 @@
   <parent>
     <groupId>net.mailjimp</groupId>
     <artifactId>mailjimp-parent</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
     <relativePath>../MailJimp-parent</relativePath>
   </parent>
 
