@@ -31,7 +31,10 @@ import mailjimp.dom.enums.EmailType;
 import mailjimp.dom.enums.InterestGroupingType;
 import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
+import mailjimp.dom.request.list.ListBatchSubscribeStruct;
 import mailjimp.dom.response.list.InterestGrouping;
+import mailjimp.dom.response.list.ListBatchSubscribeResponse;
+import mailjimp.dom.response.list.ListBatchUnsubscribeResponse;
 import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
@@ -40,6 +43,7 @@ import mailjimp.dom.security.ApiKey;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +61,9 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
 
   @Value("${mj.test.listId}")
   private String listId;
+  
+  @Value("${mj.test.groupingId}")
+  private Integer groupingId;
 
   @Value("${mj.test.subscribedUserEMailAddress}")
   private String subscribedUserEMailAddress;
@@ -64,7 +71,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
   /**
    * This address is subscribed, updated, then removed.
    */
-  private static String randomEmailAddress = null;
+  private static final String randomEmailAddress = "test" + RandomStringUtils.randomNumeric(3) + "@laccetti.com";
   
   /**
    * This api key is to track the one that is added, then removed
@@ -75,10 +82,24 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
    * The ID of the interest grouping we create, so we can then remove it
    */
   private static Integer generatedInterestGroupingId = null;
+  
+  /**
+   * These emails are batch subscribed, then batch unsubscribed
+   */
+  private static final List<String> batchEmails = new ArrayList<String>();
+  
+  /**
+   * The test interest grouping group we create, update, then remove.  Comes in two flavours:
+   * the original, and the "updated"
+   */
+  private static String groupName = RandomStringUtils.randomAlphabetic(8);
+  private static String newGroupName = RandomStringUtils.randomAlphabetic(8);
 
   @BeforeClass
   public static void setup() {
-    randomEmailAddress = "test" + RandomStringUtils.randomNumeric(3) + "@laccetti.com";
+    for (int i=0; i<5; i++) {
+      batchEmails.add("test" + RandomStringUtils.randomNumeric(3) + "@laccetti.com");
+    }
   }
 
   @After
@@ -241,6 +262,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
 
   
   @Test
+  @Ignore
   public void testApiKeys() {
     try {
       log.debug("Test api keys");
@@ -252,6 +274,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
   }
   
   @Test
+  @Ignore
   public void testApiKeyAdd() {
     try {
       log.debug("Test API key add");
@@ -263,6 +286,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
   }
   
   @Test
+  @Ignore
   public void testApiKeyExpire() {
     assertNotNull("API key was null.", generatedApiKey);
     try {
@@ -313,6 +337,66 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       log.debug("Test list interest groupings delete");
       Boolean success = mSvc.listInterestGroupingDelete(generatedInterestGroupingId);
       log.debug("Interest groupings delete: {}", success);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListBatchSubscribe() {
+    try {
+      log.debug("Test list batch subscribe");
+      List<ListBatchSubscribeStruct> batch = new ArrayList<ListBatchSubscribeStruct>(batchEmails.size());
+      for (String email : batchEmails) {
+        batch.add(new ListBatchSubscribeStruct(email, EmailType.TEXT));
+      }
+      
+      ListBatchSubscribeResponse response = mSvc.listBatchSubscribe(listId, batch, false, true, true);
+      log.debug("List batch subscribe: {}", response);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListBatchUnsubscribe() {
+    try {
+      log.debug("Test list batch unsubscribe");
+      ListBatchUnsubscribeResponse response = mSvc.listBatchUnsubscribe(listId, batchEmails, true, false, false);
+      log.debug("List batch unsubscribe: {}", response);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListInterestGroupAdd() {
+    try {
+      log.debug("Test list interest group add");
+      Boolean response = mSvc.listInterestGroupAdd(listId, groupName, groupingId);
+      log.debug("List interest group add: {}", response);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListInterestGroupUpdate() {
+    try {
+      log.debug("Test list interest group update");
+      Boolean response = mSvc.listInterestGroupUpdate(listId, groupName, newGroupName);
+      log.debug("List interest group update: {}", response);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  @Test
+  public void testListInterestGroupDelete() {
+    try {
+      log.debug("Test list interest group delete");
+      Boolean response = mSvc.listInterestGroupDelete(listId, newGroupName, groupingId);
+      log.debug("List interest group delete: {}", response);
     } catch (MailJimpException mje) {
       processError(mje);
     }

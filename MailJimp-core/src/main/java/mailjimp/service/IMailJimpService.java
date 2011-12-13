@@ -26,7 +26,9 @@ import mailjimp.dom.enums.EmailType;
 import mailjimp.dom.enums.InterestGroupingType;
 import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
-import mailjimp.dom.response.list.BatchSubscribeResponse;
+import mailjimp.dom.request.list.ListBatchSubscribeStruct;
+import mailjimp.dom.response.list.ListBatchSubscribeResponse;
+import mailjimp.dom.response.list.ListBatchUnsubscribeResponse;
 import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
@@ -122,7 +124,7 @@ public interface IMailJimpService extends Serializable {
   public boolean listSubscribe(String listId, String emailAddress, Map<String, Object> mergeVars, EmailType emailType, boolean doubleOptin, boolean updateExisting, boolean replaceInterests, boolean sendWelcome) throws MailJimpException;
 
   /**
-   * Batch subscribe a user to a mailing list. See <a
+   * Batch subscribe a user to a mailing list. See the <a
    * href="http://apidocs.mailchimp.com/1.3/listbatchsubscribe.func.php"
    * title="MailChimp API">MailChimp API</a> for more info.
    * 
@@ -138,7 +140,23 @@ public interface IMailJimpService extends Serializable {
    * 
    * @throws MailJimpException
    */
-  public BatchSubscribeResponse listBatchSubscribe(String listId, Object[] batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailJimpException;
+  public ListBatchSubscribeResponse listBatchSubscribe(String listId, List<ListBatchSubscribeStruct> batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailJimpException;
+  
+  
+  /**
+   * Batch subscribe many users to a list.  See the <a
+   * href="http://apidocs.mailchimp.com/api/rtfm/listbatchunsubscribe.func.php"
+   * title="MailChimp API">MailChimp API</a> for more info.
+   * 
+   * @param listId
+   * @param emails
+   * @param deleteMember
+   * @param sendGoodbye
+   * @param sendNotify
+   * @return
+   * @throws MailJimpException
+   */
+  public ListBatchUnsubscribeResponse listBatchUnsubscribe(String listId, List<String> emails, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailJimpException;
 
   /**
    * Update a members info on a mailing list.
@@ -224,7 +242,7 @@ public interface IMailJimpService extends Serializable {
    * @return                    True if succeeded, an error otherwise.
    * @throws MailJimpException  If the interest group could not be added.
    */
-  public boolean listInterestGroupAdd(String listId, String groupId, Integer groupingId) throws MailJimpException;
+  public boolean listInterestGroupAdd(String listId, String groupName, Integer groupingId) throws MailJimpException;
   
   /**
    * Delete a single Interest Grouping - if the last group for a list is deleted, this will also turn groups for the list off.

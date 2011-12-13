@@ -30,6 +30,12 @@ import mailjimp.dom.enums.EmailType;
 import mailjimp.dom.enums.InterestGroupingType;
 import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
+import mailjimp.dom.request.list.ListBatchSubscribeRequest;
+import mailjimp.dom.request.list.ListBatchSubscribeStruct;
+import mailjimp.dom.request.list.ListBatchUnsubscribeRequest;
+import mailjimp.dom.request.list.ListInterestGroupAddRequest;
+import mailjimp.dom.request.list.ListInterestGroupDelRequest;
+import mailjimp.dom.request.list.ListInterestGroupUpdateRequest;
 import mailjimp.dom.request.list.ListInterestGroupingAddRequest;
 import mailjimp.dom.request.list.ListInterestGroupingDelRequest;
 import mailjimp.dom.request.list.ListInterestGroupingUpdateRequest;
@@ -44,8 +50,9 @@ import mailjimp.dom.request.security.ApiKeyAddRequest;
 import mailjimp.dom.request.security.ApiKeyExpireRequest;
 import mailjimp.dom.request.security.ApiKeyRequest;
 import mailjimp.dom.response.MailJimpErrorResponse;
-import mailjimp.dom.response.list.BatchSubscribeResponse;
+import mailjimp.dom.response.list.ListBatchSubscribeResponse;
 import mailjimp.dom.response.list.InterestGrouping;
+import mailjimp.dom.response.list.ListBatchUnsubscribeResponse;
 import mailjimp.dom.response.list.ListMemberInfoResponse;
 import mailjimp.dom.response.list.ListMembersResponse;
 import mailjimp.dom.response.list.ListsResponse;
@@ -201,9 +208,17 @@ public class MailJimpJsonService extends AbstractMailJimpService {
   }
 
   @Override
-  public BatchSubscribeResponse listBatchSubscribe(String listId, Object[] batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailJimpException {
-    // TODO Auto-generated method stub
-    return null;
+  public ListBatchSubscribeResponse listBatchSubscribe(String listId, List<ListBatchSubscribeStruct> batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailJimpException {
+    ListBatchSubscribeResponse response = performRequest("listBatchSubscribe", new ListBatchSubscribeRequest(apiKey, listId, batch, doubleOptin, updateExisting, replaceInterests), new TypeReference<ListBatchSubscribeResponse>() {/* empty */});
+    log.debug("List batch subscribe response: {}", response);
+    return response;
+  }
+
+  @Override
+  public ListBatchUnsubscribeResponse listBatchUnsubscribe(String listId, List<String> emails, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailJimpException {
+    ListBatchUnsubscribeResponse response = performRequest("listBatchUnsubscribe", new ListBatchUnsubscribeRequest(apiKey, listId, emails, deleteMember, sendGoodbye, sendNotify), new TypeReference<ListBatchUnsubscribeResponse>() {/* empty */});
+    log.debug("List batch unsubscribe response: {}", response);
+    return response;
   }
 
   @Override
@@ -228,21 +243,24 @@ public class MailJimpJsonService extends AbstractMailJimpService {
   }
 
   @Override
-  public boolean listInterestGroupAdd(String listId, String groupId, Integer groupingId) throws MailJimpException {
-    // TODO Auto-generated method stub
-    return false;
+  public boolean listInterestGroupAdd(String listId, String groupName, Integer groupingId) throws MailJimpException {
+    Boolean success = performRequest("listInterestGroupAdd", new ListInterestGroupAddRequest(apiKey, listId, groupName, groupingId), new TypeReference<Boolean>() {/* empty */});
+    log.debug("List interest group add: {}", success);
+    return success;
   }
 
   @Override
   public boolean listInterestGroupDelete(String listId, String groupName, Integer groupingId) throws MailJimpException {
-    // TODO Auto-generated method stub
-    return false;
+    Boolean success = performRequest("listInterestGroupDel", new ListInterestGroupDelRequest(apiKey, listId, groupName, groupingId), new TypeReference<Boolean>() {/* empty */});
+    log.debug("List interest group delete: {}", success);
+    return success;
   }
 
   @Override
   public boolean listInterestGroupUpdate(String listId, String oldName, String newName) throws MailJimpException {
-    // TODO Auto-generated method stub
-    return false;
+    Boolean success = performRequest("listInterestGroupUpdate", new ListInterestGroupUpdateRequest(apiKey, listId, oldName, newName), new TypeReference<Boolean>() {/* empty */});
+    log.debug("List interest group update: {}", success);
+    return success;
   }
 
   @Override

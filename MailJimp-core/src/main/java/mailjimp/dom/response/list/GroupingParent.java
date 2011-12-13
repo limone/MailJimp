@@ -21,8 +21,8 @@ import java.io.Serializable;
 
 
 public class GroupingParent implements Serializable {
-  private int    id;
-  private String name;
+  protected int    id;
+  protected String name;
   
   public GroupingParent() {
     // empty
