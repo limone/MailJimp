@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.mailjimp</groupId>
   <artifactId>mailjimp-parent</artifactId>
-  <version>0.4-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
   <name>MailChimp Java API - Meta Project</name>
   <description>A Java library that wraps around the MailChimp web-based API.</description>
   <url>http://github.com/mlaccetti/MailJimp</url>
@@ -156,7 +156,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.2</version>
+        <version>2.2.1</version>
         <configuration>
           <mavenExecutorId>forked-path</mavenExecutorId>
           <useReleaseProfile>false</useReleaseProfile>
