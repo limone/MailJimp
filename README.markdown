@@ -38,7 +38,7 @@ MailJimp deploys releases and snapshots to Sonatype's OSS repository.  Releases 
 	<dependency>
 		<groupId>net.mailjimp</groupId>
 		<artifactId>mailjimp-core</artifactId>
-		<version>0.2</version>
+		<version>0.3</version>
 	</dependency>
 
 #####  Snapshots
@@ -65,5 +65,5 @@ Alternately, if you wish to utlize a development snapshot, please add the follow
 	<dependency>
 		<groupId>net.mailjimp</groupId>
 		<artifactId>mailjimp-core</artifactId>
-		<version>0.3-SNAPSHOT</version>
+		<version>0.4-SNAPSHOT</version>
 	</dependency>
