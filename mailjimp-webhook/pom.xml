@@ -4,13 +4,11 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>mailjimp-webhook</artifactId>
   <name>MailChimp Java API - Webhook</name>
-  <description>A Java library that wraps around the MailChimp web-based API a.k.a WebHooks.</description>
 
   <parent>
     <groupId>net.mailjimp</groupId>
     <artifactId>mailjimp-parent</artifactId>
     <version>0.3-SNAPSHOT</version>
-    <relativePath>../MailJimp-parent/pom.xml</relativePath>
   </parent>
 
   <dependencies>

@@ -46,8 +46,8 @@
   </licenses>
 
   <modules>
-    <module>../MailJimp-core</module>
-    <module>../MailJimp-webhook</module>
+    <module>mailjimp-core</module>
+    <module>mailjimp-webhook</module>
   </modules>
 
   <properties>
