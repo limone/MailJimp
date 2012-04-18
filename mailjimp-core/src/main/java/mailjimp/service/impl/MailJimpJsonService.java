@@ -113,7 +113,7 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     m.setDateFormat(new SimpleDateFormat("yyyy-MM-MM HH:mm:ss"));
   }
   
-  private <V> V performRequest(String method, Object param, TypeReference<V> typeRef) throws MailJimpException {
+  protected <V> V performRequest(String method, Object param, TypeReference<V> typeRef) throws MailJimpException {
     String requestJson = null;
     try {
       requestJson = m.writeValueAsString(param);
@@ -283,4 +283,17 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     log.debug("Delete interesting grouping status: {}", response);
     return response;
   }
+  
+  
+  public int createTemplate(String name, String html) throws MailJimpException {
+	    int response = performRequest("templateAdd", new mailjimp.dom.request.template.TemplateAddRequest(apiKey, name, html), new TypeReference<Integer>() {/* empty */});
+	    log.debug("Tempate Add: {}", response);
+	    return response;
+	  }
+
+@Override
+public boolean tempateAdd(String name, String html) throws MailJimpException {
+	// TODO Auto-generated method stub
+	return false;
+}
 }

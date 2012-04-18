@@ -18,6 +18,7 @@
 package mailjimp.service.impl;
 
 import mailjimp.service.IMailJimpService;
+import mailjimp.service.MailJimpException;
 
 abstract class AbstractMailJimpService implements IMailJimpService {
   protected static final String SERVER_URL_PREFIX_HTTP = "http://";
@@ -102,4 +103,5 @@ abstract class AbstractMailJimpService implements IMailJimpService {
     .append('/');
     return serverURL.toString();
   }
+
 }

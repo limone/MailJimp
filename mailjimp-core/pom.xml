@@ -60,4 +60,5 @@
       <version>2.1</version>
     </dependency>
   </dependencies>
+  <groupId>ca.morningstar.mailjimp</groupId>
 </project>

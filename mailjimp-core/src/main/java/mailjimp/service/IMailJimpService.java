@@ -256,6 +256,7 @@ public interface IMailJimpService extends Serializable {
    */
   public boolean listInterestGroupDelete(String listId, String groupName, Integer groupingId) throws MailJimpException;
   
+  
   /**
    * Change the name of an interest group.
    * 
@@ -267,4 +268,18 @@ public interface IMailJimpService extends Serializable {
    * @throws MailJimpException  If the interest group could not be renamed.
    */
   public boolean listInterestGroupUpdate(String listId, String oldName, String newName) throws MailJimpException;
+  
+  /**
+  Parameters	
+   * name						the name for the template - names must be unique and a max of 50 bytes
+   * html						a string specifying the entire template to be created. This is NOT campaign content. They are intended to utilize our template language. * 
+   * @return                    True if succeeded, an error otherwise.
+   * @throws MailJimpException  If the interest group could not be renamed.
+   */
+  public boolean tempateAdd(String name, String html) throws MailJimpException;
+  
+  
+  
+  
+  
 }
