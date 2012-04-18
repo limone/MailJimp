@@ -151,7 +151,8 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     }
 
     try {
-      V val = m.readValue(responseJson, typeRef);
+    	//TMG Added cast to fix bug in JavaC:  http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6302954
+      V val = (V) m.readValue(responseJson, typeRef);
       return val;
     } catch (Exception ex) {
       log.error(String.format("Could not convert JSON to expected type (%s).", typeRef.getType().getClass().getCanonicalName()), ex);
