@@ -60,6 +60,7 @@ import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
 import mailjimp.dom.security.ApiKey;
+import mailjimp.service.AbstractMailJimpService;
 import mailjimp.service.MailJimpException;
 
 import org.apache.commons.io.IOUtils;
@@ -284,16 +285,11 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     return response;
   }
   
-  
-  public int createTemplate(String name, String html) throws MailJimpException {
-	    int response = performRequest("templateAdd", new mailjimp.dom.request.template.TemplateAddRequest(apiKey, name, html), new TypeReference<Integer>() {/* empty */});
-	    log.debug("Tempate Add: {}", response);
-	    return response;
-	  }
 
-@Override
-public boolean tempateAdd(String name, String html) throws MailJimpException {
-	// TODO Auto-generated method stub
-	return false;
-}
+  @Override
+  public int templateAdd(String name, String html) throws MailJimpException {
+    int response = performRequest("templateAdd", new mailjimp.dom.request.template.TemplateAddRequest(apiKey, name, html), new TypeReference<Integer>() {/* empty */});
+    log.debug("Tempate Add: {}", response);
+    return response;
+    }
 }
