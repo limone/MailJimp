@@ -1,7 +1,7 @@
 /*
- * Copyright 2011 Michael Laccetti
+ * Copyright 2011 Michael Laccetti and Tim Gilbert
  *
- * This file is part of MailJimp.
+ * This file is part of MailJimp and forked MailJimp under https://github.com/knaak/MailJimp
  *
  * MailJimp is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
