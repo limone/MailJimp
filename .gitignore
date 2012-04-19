@@ -7,3 +7,7 @@ target/
 **/*.iml
 **/.idea
 bin/
+
+mailjimp-core/src/test/resources/mailjimp-test.properties
+
+mailjimp-core/src/test/resources/mailjimp.properties
