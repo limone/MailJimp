@@ -274,9 +274,28 @@ public interface IMailJimpService extends Serializable {
    * name						the name for the template - names must be unique and a max of 50 bytes
    * html						a string specifying the entire template to be created. This is NOT campaign content. They are intended to utilize our template language. * 
    * @return                    new templateId
-   * @throws MailJimpException  If the interest group could not be renamed.
+   * @throws MailJimpException  If the template couldn't be added.
    */
-  public int templateAdd(String name, String html) throws MailJimpException; 
+  public int templateAdd(String name, String html) throws MailJimpException;
+
+
+  /**
+  Parameters	
+   * id							the template id
+   * @return                    boolean success
+   * @throws MailJimpException  If the template id can't be found
+   */  
+  boolean templateDel(int id) throws MailJimpException;
+
+  /**
+  Parameters	
+   * id							the template id
+   * name						the new name, null if no change
+   * html						the new html, null if no change
+   * @return                    boolean success
+   * @throws MailJimpException  If the template id can't be found or both name and html are null.
+   */  
+  boolean templateUpdate(int id, String name, String html) throws MailJimpException; 
   
   
   

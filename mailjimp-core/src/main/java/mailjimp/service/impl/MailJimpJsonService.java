@@ -293,4 +293,19 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     log.debug("Tempate Add: {}", response);
     return response;
     }
+  
+  
+  @Override
+  public boolean templateDel(int id) throws MailJimpException {
+    boolean response = performRequest("templateDel", new mailjimp.dom.request.template.TemplateDelRequest(apiKey, id), new TypeReference<Boolean>() {/* empty */});
+    log.debug("Tempate Add: {}", response);
+    return response;
+    }
+
+  @Override
+  public boolean templateUpdate(int id, String name, String html) throws MailJimpException {
+    boolean response = performRequest("templateUpdate", new mailjimp.dom.request.template.TemplateUpdateRequest(apiKey, id, name, html), new TypeReference<Boolean>() {/* empty */});
+    log.debug("Tempate Update: {}", response);
+    return response;
+    }
 }

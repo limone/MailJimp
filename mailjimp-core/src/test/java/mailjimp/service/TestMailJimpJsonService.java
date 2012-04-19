@@ -94,6 +94,8 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
    */
   private static String groupName = RandomStringUtils.randomAlphabetic(8);
   private static String newGroupName = RandomStringUtils.randomAlphabetic(8);
+  
+  private static String templateName = RandomStringUtils.randomAlphabetic(8);
 
   @BeforeClass
   public static void setup() {
@@ -106,7 +108,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
   public void after() {
     System.out.println("\n\n\n");
   }
-
+  
   @Test
   public void testLists() {
     try {
@@ -374,7 +376,7 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
     try {
       log.debug("Test list interest group add");
       Boolean response = mSvc.listInterestGroupAdd(listId, groupName, groupingId);
-      log.debug("List interest group add: {}", response);
+      log.debug("List interest group atdd: {}", response);
     } catch (MailJimpException mje) {
       processError(mje);
     }
@@ -401,4 +403,4 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       processError(mje);
     }
   }
-}
+ }
