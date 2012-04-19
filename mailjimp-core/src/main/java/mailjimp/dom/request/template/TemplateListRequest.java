@@ -28,9 +28,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class TemplateListRequest extends MailJimpRequest {
 
 	private static final long serialVersionUID = 1L;
-
-	@JsonProperty
-	private int id = -1;
 	
 	@JsonProperty
 	private List<NamedBoolean> types;
@@ -42,24 +39,13 @@ public class TemplateListRequest extends MailJimpRequest {
 	private List<NamedBoolean> inactives;
 	 
 
-	public TemplateListRequest(String apikey, int id, String category, List<NamedBoolean> types, List<NamedBoolean> inactives) {
+	public TemplateListRequest(String apikey, String category, List<NamedBoolean> types, List<NamedBoolean> inactives) {
 		super(apikey);
-		
-		this.id = id;
+				
 		this.category = category;
 		this.types = types;
 		this.inactives = inactives;
 		
-	}
-
-
-	public int getId() {
-		return id;
-	}
-
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 

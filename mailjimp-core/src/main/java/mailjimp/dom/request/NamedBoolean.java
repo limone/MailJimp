@@ -10,6 +10,12 @@ public class NamedBoolean {
 	@JsonProperty
 	private Boolean value;
 
+	public NamedBoolean(String name, Boolean value)
+	{
+		this.name = name;
+		this.value = value;
+	}
+	
 	public String getName() {
 		return name;
 	}

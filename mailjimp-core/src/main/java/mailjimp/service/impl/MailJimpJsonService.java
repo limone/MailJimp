@@ -328,8 +328,8 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     }
 
   @Override
-  public TemplateListResponse templateList(int templateId, String category, List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException {
-	TemplateListResponse response = performRequest("templates", new mailjimp.dom.request.template.TemplateListRequest(apiKey, templateId, category, types, inactives), new TypeReference<TemplateListResponse>() {/* empty */});
+  public TemplateListResponse templateList() throws MailJimpException { //int templateId, String category, List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException {
+	TemplateListResponse response = performRequest("templates", new mailjimp.dom.request.template.TemplateListRequest(apiKey, null, null, null), new TypeReference<TemplateListResponse>() {/* empty */});
     log.debug("Tempate List: {}", response);
     return response;
     }

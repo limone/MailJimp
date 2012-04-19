@@ -318,8 +318,7 @@ public interface IMailJimpService extends Serializable {
   TemplateInfoResponse templateInfo(int templateId, String type) throws MailJimpException;
 
 
-TemplateListResponse templateList(int templateId, String category,
-		List<NamedBoolean> types, List<NamedBoolean> inactives)
-		throws MailJimpException;
+  TemplateListResponse templateList() throws MailJimpException;
+//TemplateListResponse templateList(String category,List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException;
   
 }
