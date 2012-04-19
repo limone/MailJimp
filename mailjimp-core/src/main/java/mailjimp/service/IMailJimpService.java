@@ -287,6 +287,13 @@ public interface IMailJimpService extends Serializable {
    * @throws MailJimpException  If the template id can't be found
    */  
   boolean templateDel(int templateId) throws MailJimpException;
+  
+  /**
+  Parameters	
+   * id							the template id
+   * @return                    boolean success
+   * @throws MailJimpException  If the template id can't be found   */  
+  boolean templateUndel(int templateId) throws MailJimpException;
 
   /**
   Parameters	
@@ -306,8 +313,6 @@ public interface IMailJimpService extends Serializable {
    * @return                    TemplateInfoResponse success
    * @throws MailJimpException  If the template id can't be found or both name and html are null.
    */
-  TemplateInfoResponse templateInfo(int templateId, String type) throws MailJimpException; 
-  
-  
+  TemplateInfoResponse templateInfo(int templateId, String type) throws MailJimpException;
   
 }

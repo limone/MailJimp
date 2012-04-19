@@ -299,7 +299,15 @@ public class MailJimpJsonService extends AbstractMailJimpService {
   @Override
   public boolean templateDel(int id) throws MailJimpException {
     boolean response = performRequest("templateDel", new mailjimp.dom.request.template.TemplateDelRequest(apiKey, id), new TypeReference<Boolean>() {/* empty */});
-    log.debug("Tempate Add: {}", response);
+    log.debug("Tempate delete: {}", response);
+    return response;
+    }
+
+  
+  @Override
+  public boolean templateUndel(int id) throws MailJimpException {
+    boolean response = performRequest("templateUndel", new mailjimp.dom.request.template.TemplateDelRequest(apiKey, id), new TypeReference<Boolean>() {/* empty */});
+    log.debug("Tempate undelete: {}", response);
     return response;
     }
 
@@ -316,4 +324,6 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     log.debug("Tempate Info: {}", response);
     return response;
     }
+
+
 }

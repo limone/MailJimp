@@ -34,7 +34,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration({ "/mailjimp-test-spring-config.xml" })
 @Configurable
 public class TestMailJimpJsonServiceTemplate extends AbstractServiceTester {
-  @Autowired
+  private static final String TEMPLATEHTML = "<style type=\"text/css\">\n</style><html>Test Case Template NEW</html>";
+
+
+@Autowired
   private IMailJimpService mSvc;
 
   
@@ -56,7 +59,7 @@ public class TestMailJimpJsonServiceTemplate extends AbstractServiceTester {
   public void testTemplateAdd(){
 	  try {
 		  log.debug("Test template add");
-		  Integer response = mSvc.templateAdd(templateName, "<html>Test Case Template</html>");
+		  Integer response = mSvc.templateAdd(templateName, "<html>Test Case Template</html>"); // note not TEMPLATEHTML
 		  templateId = response;
 		  log.debug("Template addTemplate: {}", response);
 	  } catch (MailJimpException mje) {
@@ -68,7 +71,7 @@ public class TestMailJimpJsonServiceTemplate extends AbstractServiceTester {
   public void testTemplateUpdate(){
 	  try {
 		  log.debug("Test template add");
-		  Boolean response = mSvc.templateUpdate(templateId, templateNewName, "<html>Test Case Template NEW</html>");		  
+		  Boolean response = mSvc.templateUpdate(templateId, templateNewName, TEMPLATEHTML);		  
 		  log.debug("Template updateTemplate: {}", response);
 		  Assert.assertTrue(response);
 	  } catch (MailJimpException mje) {
@@ -83,22 +86,46 @@ public class TestMailJimpJsonServiceTemplate extends AbstractServiceTester {
 		  TemplateInfoResponse response = mSvc.templateInfo(templateId, null);		  
 		  log.debug("Template infoTemplate: {}", response);
 		  
-		  Assert.assertTrue(response.getSource().equals("<style type=\"text/css\">\n</style><html>Test Case Template NEW</html>"));
-		  Assert.assertTrue(response.getPreview().equals("<style type=\"text/css\">\n</style><html>Test Case Template NEW</html>"));
+		  Assert.assertTrue(response.getSource().equals(TEMPLATEHTML));
+		  Assert.assertTrue(response.getPreview().equals(TEMPLATEHTML));
 		  
 	  } catch (MailJimpException mje) {
 		  processError(mje);
 	  }
   }
   
-    
-  
+
   @Test
   public void testTemplateDel(){
 	  try {
 		  log.debug("Test template del");
 		  boolean response = mSvc.templateDel(templateId);		  
 		  log.debug("Template delTemplate: {}", response);
+		  Assert.assertTrue(response);
+	  } catch (MailJimpException mje) {
+		  processError(mje);
+	  }	  
+  }
+  
+  @Test
+  public void testTemplateUnDel(){
+	  try {
+		  log.debug("Test template undel");
+		  boolean response = mSvc.templateUndel(templateId);		  
+		  log.debug("Template undelTemplate: {}", response);
+		  Assert.assertTrue(response);
+	  } catch (MailJimpException mje) {
+		  processError(mje);
+	  }	  
+  }
+
+  
+  
+  // cleanup too.
+  @Test
+  public void testTemplateFinalDelete(){
+	  try {
+		  boolean response = mSvc.templateDel(templateId);		  
 		  Assert.assertTrue(response);
 	  } catch (MailJimpException mje) {
 		  processError(mje);
