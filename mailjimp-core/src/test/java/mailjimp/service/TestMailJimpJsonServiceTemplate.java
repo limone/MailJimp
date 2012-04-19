@@ -18,6 +18,7 @@
 package mailjimp.service;
 
 import mailjimp.dom.response.template.TemplateInfoResponse;
+import mailjimp.dom.response.template.TemplateListResponse;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
@@ -66,6 +67,23 @@ public class TestMailJimpJsonServiceTemplate extends AbstractServiceTester {
 		  processError(mje);
 	  }
   }
+  
+  @Test
+  public void testTemplateList(){
+	  try {
+		  log.debug("Test template list");
+		  TemplateListResponse response = mSvc.templateList(templateId, null, null, null);
+		  
+		  Assert.assertNotNull(response);
+		  Assert.assertNotNull(response.getListItems());
+		  
+		  log.debug("Template addTemplate: {}", response);
+	  } catch (MailJimpException mje) {
+		  processError(mje);
+	  }
+  }
+  
+  
   
   @Test
   public void testTemplateUpdate(){

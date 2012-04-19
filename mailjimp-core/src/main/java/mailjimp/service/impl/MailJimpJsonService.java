@@ -30,6 +30,7 @@ import mailjimp.dom.enums.EmailType;
 import mailjimp.dom.enums.InterestGroupingType;
 import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
+import mailjimp.dom.request.NamedBoolean;
 import mailjimp.dom.request.list.ListBatchSubscribeRequest;
 import mailjimp.dom.request.list.ListBatchSubscribeStruct;
 import mailjimp.dom.request.list.ListBatchUnsubscribeRequest;
@@ -60,6 +61,7 @@ import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
 import mailjimp.dom.response.template.TemplateInfoResponse;
+import mailjimp.dom.response.template.TemplateListResponse;
 import mailjimp.dom.security.ApiKey;
 import mailjimp.service.AbstractMailJimpService;
 import mailjimp.service.MailJimpException;
@@ -325,5 +327,12 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     return response;
     }
 
+  @Override
+  public TemplateListResponse templateList(int templateId, String category, List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException {
+	TemplateListResponse response = performRequest("templates", new mailjimp.dom.request.template.TemplateListRequest(apiKey, templateId, category, types, inactives), new TypeReference<TemplateListResponse>() {/* empty */});
+    log.debug("Tempate List: {}", response);
+    return response;
+    }
+  
 
 }

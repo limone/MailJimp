@@ -26,6 +26,7 @@ import mailjimp.dom.enums.EmailType;
 import mailjimp.dom.enums.InterestGroupingType;
 import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
+import mailjimp.dom.request.NamedBoolean;
 import mailjimp.dom.request.list.ListBatchSubscribeStruct;
 import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.ListBatchSubscribeResponse;
@@ -34,6 +35,7 @@ import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
 import mailjimp.dom.response.template.TemplateInfoResponse;
+import mailjimp.dom.response.template.TemplateListResponse;
 import mailjimp.dom.security.ApiKey;
 
 /**
@@ -314,5 +316,10 @@ public interface IMailJimpService extends Serializable {
    * @throws MailJimpException  If the template id can't be found or both name and html are null.
    */
   TemplateInfoResponse templateInfo(int templateId, String type) throws MailJimpException;
+
+
+TemplateListResponse templateList(int templateId, String category,
+		List<NamedBoolean> types, List<NamedBoolean> inactives)
+		throws MailJimpException;
   
 }
