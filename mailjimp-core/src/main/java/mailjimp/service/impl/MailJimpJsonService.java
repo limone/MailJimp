@@ -59,6 +59,7 @@ import mailjimp.dom.response.list.ListsResponse;
 import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
+import mailjimp.dom.response.template.TemplateInfoResponse;
 import mailjimp.dom.security.ApiKey;
 import mailjimp.service.AbstractMailJimpService;
 import mailjimp.service.MailJimpException;
@@ -310,9 +311,9 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     }
   
   @Override
-  public Map<String,Object> templateInfo(int templateId, String type) throws MailJimpException {
-    Map<String,Object> response = performRequest("templateInfo", new mailjimp.dom.request.template.TemplateInfoRequest(apiKey, templateId, type), new TypeReference<Map<String,Object>>() {/* empty */});
-    log.debug("Tempate Update: {}", response);
+  public TemplateInfoResponse templateInfo(int templateId, String type) throws MailJimpException {
+    TemplateInfoResponse response = performRequest("templateInfo", new mailjimp.dom.request.template.TemplateInfoRequest(apiKey, templateId, type), new TypeReference<TemplateInfoResponse>() {/* empty */});
+    log.debug("Tempate Info: {}", response);
     return response;
     }
 }

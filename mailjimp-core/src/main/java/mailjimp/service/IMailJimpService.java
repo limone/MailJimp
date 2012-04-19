@@ -27,12 +27,13 @@ import mailjimp.dom.enums.InterestGroupingType;
 import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
 import mailjimp.dom.request.list.ListBatchSubscribeStruct;
+import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.ListBatchSubscribeResponse;
 import mailjimp.dom.response.list.ListBatchUnsubscribeResponse;
-import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
+import mailjimp.dom.response.template.TemplateInfoResponse;
 import mailjimp.dom.security.ApiKey;
 
 /**
@@ -302,10 +303,10 @@ public interface IMailJimpService extends Serializable {
    * id							the template id
    * name						the new name, null if no change
    * html						the new html, null if no change
-   * @return                    boolean success
+   * @return                    TemplateInfoResponse success
    * @throws MailJimpException  If the template id can't be found or both name and html are null.
    */
-  Map<String, Object> templateInfo(int templateId, String type) throws MailJimpException; 
+  TemplateInfoResponse templateInfo(int templateId, String type) throws MailJimpException; 
   
   
   
