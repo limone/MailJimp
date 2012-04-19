@@ -19,6 +19,7 @@ package mailjimp.service;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -320,5 +321,9 @@ public interface IMailJimpService extends Serializable {
 
   TemplateListResponse templateList() throws MailJimpException;
 //TemplateListResponse templateList(String category,List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException;
+
+
+
+  String campaignCreate(String type, HashMap<String, Object> options, HashMap<String, String> content) throws MailJimpException;
   
 }

@@ -1,0 +1,80 @@
+/*
+ * Copyright 2011 Michael Laccetti
+ *
+ * This file is part of MailJimp.
+ *
+ * MailJimp is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, version 3 of the License.
+ *
+ * MailJimp is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package mailjimp.service;
+
+import mailjimp.dom.MailJimpConstants;
+import mailjimp.dom.request.campaign.CampaignCreateRequest;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({ "/mailjimp-test-spring-config.xml" })
+@Configurable
+public class TestMailJimpJsonServiceCampaign extends AbstractServiceTester {
+
+
+@Autowired
+  private IMailJimpService mSvc;
+
+  @Value("${mj.test.listId}")
+  private String listId;
+
+  @Value("${mj.test.templateId}")
+  private Integer templateId;
+  
+  private static final String TEMPLATEHTML = "<style type=\"text/css\">\n</style><html>Test Case Template NEW</html>";  
+  private static final String TEMPLATETEXT = "Test Case Template NEW";
+  
+
+  @BeforeClass
+  public static void setup() {
+  }
+
+  @After
+  public void after() {
+    System.out.println("\n\n\n");
+  }
+  
+  
+  @Test
+  public void testCreateCampaign()
+  {
+	  try {
+		  log.debug("Test campaign create");
+		  String response = mSvc.campaignCreate(MailJimpConstants.CAMPAIGNTYPE_REGULAR, 
+				  CampaignCreateRequest.buildOptions(listId, "Test Subject", "tim.gilbert@morningstar.com", "TestCase User", "Dear Customer", templateId ), 
+				  CampaignCreateRequest.buildContentFromString(TEMPLATEHTML, TEMPLATETEXT));
+		  log.debug("Template updateTemplate: {}", response);
+		  Assert.assertTrue(response != null);
+	  } catch (MailJimpException mje) {
+		  processError(mje);
+	  }
+  }
+  
+  
+}

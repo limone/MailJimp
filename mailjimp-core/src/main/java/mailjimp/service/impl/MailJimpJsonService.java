@@ -20,6 +20,7 @@ package mailjimp.service.impl;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,6 @@ import mailjimp.dom.enums.EmailType;
 import mailjimp.dom.enums.InterestGroupingType;
 import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
-import mailjimp.dom.request.NamedBoolean;
 import mailjimp.dom.request.list.ListBatchSubscribeRequest;
 import mailjimp.dom.request.list.ListBatchSubscribeStruct;
 import mailjimp.dom.request.list.ListBatchUnsubscribeRequest;
@@ -334,5 +334,11 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     return response;
     }
   
+  @Override
+  public String campaignCreate(String type, HashMap<String,Object> options, HashMap<String,String> content) throws MailJimpException { //int templateId, String category, List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException {
+		String response = performRequest("campaignCreate", new mailjimp.dom.request.campaign.CampaignCreateRequest(apiKey, type, options, content), new TypeReference<String>() {/* empty */});
+	    log.debug("Tempate List: {}", response);
+	    return response;
+	    }
 
 }
