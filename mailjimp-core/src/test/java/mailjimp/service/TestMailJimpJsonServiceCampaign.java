@@ -50,6 +50,7 @@ public class TestMailJimpJsonServiceCampaign extends AbstractServiceTester {
   private static final String TEMPLATEHTML = "<style type=\"text/css\">\n</style><html>Test Case Template NEW</html>";  
   private static final String TEMPLATETEXT = "Test Case Template NEW";
   
+  private static String campaignId;
 
   @BeforeClass
   public static void setup() {
@@ -69,6 +70,7 @@ public class TestMailJimpJsonServiceCampaign extends AbstractServiceTester {
 		  String response = mSvc.campaignCreate(MailJimpConstants.CAMPAIGNTYPE_REGULAR, 
 				  CampaignCreateRequest.buildOptions(listId, "Test Subject", "tim.gilbert@morningstar.com", "TestCase User", "Dear Customer", templateId ), 
 				  CampaignCreateRequest.buildContentFromString(TEMPLATEHTML, TEMPLATETEXT));
+		  campaignId = response;
 		  log.debug("Template updateTemplate: {}", response);
 		  Assert.assertTrue(response != null);
 	  } catch (MailJimpException mje) {
@@ -76,5 +78,18 @@ public class TestMailJimpJsonServiceCampaign extends AbstractServiceTester {
 	  }
   }
   
+  @Test
+  public void testDeleteCampaign()
+  {
+	  try {
+		  log.debug("Test campaign delete :" + campaignId);
+		  Boolean response = mSvc.campaignDelete(campaignId);
+
+		  log.debug("Template updateTemplate: {}", response);
+		  Assert.assertTrue(response);
+	  } catch (MailJimpException mje) {
+		  processError(mje);
+	  }
+  }
   
 }

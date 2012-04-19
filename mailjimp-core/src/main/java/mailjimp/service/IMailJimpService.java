@@ -338,5 +338,13 @@ public interface IMailJimpService extends Serializable {
    * @throws MailJimpException  
    */  
   String campaignCreate(String type, HashMap<String, Object> options, HashMap<String, String> content) throws MailJimpException;
+
+  /**
+  Parameters
+   * campaignId					The Campaign Id	
+   * @return                    boolean success
+   * @throws MailJimpException  
+   */  
+  Boolean campaignDelete(String campaignId) throws MailJimpException;
   
 }

@@ -337,7 +337,14 @@ public class MailJimpJsonService extends AbstractMailJimpService {
   @Override
   public String campaignCreate(String type, HashMap<String,Object> options, HashMap<String,String> content) throws MailJimpException { //int templateId, String category, List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException {
 		String response = performRequest("campaignCreate", new mailjimp.dom.request.campaign.CampaignCreateRequest(apiKey, type, options, content), new TypeReference<String>() {/* empty */});
-	    log.debug("Tempate List: {}", response);
+	    log.debug("capaign Create: {}", response);
+	    return response;
+	    }
+  
+  @Override
+  public Boolean campaignDelete(String campaignId) throws MailJimpException {
+		Boolean response = performRequest("campaignDelete", new mailjimp.dom.request.campaign.CampaignDeleteRequest(apiKey, campaignId), new TypeReference<Boolean>() {/* empty */});
+	    log.debug("campaign Delete: {}", response);
 	    return response;
 	    }
 
