@@ -27,12 +27,12 @@ public class CampaignCreateRequest extends MailJimpRequest {
 		this.content = content;
 	}
 
-	static public HashMap<String,Object> buildOptions(String listId, String subject, String fromEmail, String fromName, String toName, int templateId)
+	static public HashMap<String,Object> buildOptions(String listId, String campaignName, String fromEmail, String fromName, String toName, int templateId)
 	{
 		HashMap<String,Object> options = new HashMap<String,Object>();
 
 		options.put("list_id", listId);
-		options.put("subject", subject);
+		options.put("subject", campaignName);
 		options.put("from_email",fromEmail);
 		options.put("from_name",fromName);
 		options.put("to_name",toName);

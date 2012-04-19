@@ -318,12 +318,25 @@ public interface IMailJimpService extends Serializable {
    */
   TemplateInfoResponse templateInfo(int templateId, String type) throws MailJimpException;
 
-
+  /**
+  Parameters	
+   * @return                    TemplateListResponse on success with all user templates.
+   * @throws MailJimpException  
+   */
   TemplateListResponse templateList() throws MailJimpException;
-//TemplateListResponse templateList(String category,List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException;
+  // there are a lot of template options which I have chosen not to implement since i don't use them, this is how the signature
+  // might have looked like otherwise.
+  //TemplateListResponse templateList(String category,List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException;
 
 
-
+  /**
+  Parameters
+   * type						Use MailJimpConstants.CAMPAIGNTYPE to specify the style of campaign
+   * options					Use CampaignCreateRequest.buildOptions to build your options
+   * content					Use CampaignCreateRequest.buildContent to build your content either by string, url, base64 encoded binary.	
+   * @return                    String with campaign id
+   * @throws MailJimpException  
+   */  
   String campaignCreate(String type, HashMap<String, Object> options, HashMap<String, String> content) throws MailJimpException;
   
 }
