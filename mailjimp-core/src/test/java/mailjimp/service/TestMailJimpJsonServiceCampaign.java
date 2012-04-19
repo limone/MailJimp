@@ -68,7 +68,7 @@ public class TestMailJimpJsonServiceCampaign extends AbstractServiceTester {
 	  try {
 		  log.debug("Test campaign create");
 		  String response = mSvc.campaignCreate(MailJimpConstants.CAMPAIGNTYPE_REGULAR, 
-				  CampaignCreateRequest.buildOptions(listId, "Test Subject", "tim.gilbert@morningstar.com", "TestCase User", "Dear Customer", templateId ), 
+				  CampaignCreateRequest.buildOptions(listId, "Test Campaign created by Test case", "tim.gilbert@morningstar.com", "TestCase User", "Dear Customer", templateId ), 
 				  CampaignCreateRequest.buildContentFromString(TEMPLATEHTML, TEMPLATETEXT));
 		  campaignId = response;
 		  log.debug("Template updateTemplate: {}", response);
