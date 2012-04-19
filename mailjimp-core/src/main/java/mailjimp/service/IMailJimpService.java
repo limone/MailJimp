@@ -285,7 +285,7 @@ public interface IMailJimpService extends Serializable {
    * @return                    boolean success
    * @throws MailJimpException  If the template id can't be found
    */  
-  boolean templateDel(int id) throws MailJimpException;
+  boolean templateDel(int templateId) throws MailJimpException;
 
   /**
   Parameters	
@@ -295,7 +295,17 @@ public interface IMailJimpService extends Serializable {
    * @return                    boolean success
    * @throws MailJimpException  If the template id can't be found or both name and html are null.
    */  
-  boolean templateUpdate(int id, String name, String html) throws MailJimpException; 
+  boolean templateUpdate(int templateId, String name, String html) throws MailJimpException;
+
+  /**
+  Parameters	
+   * id							the template id
+   * name						the new name, null if no change
+   * html						the new html, null if no change
+   * @return                    boolean success
+   * @throws MailJimpException  If the template id can't be found or both name and html are null.
+   */
+  Map<String, Object> templateInfo(int templateId, String type) throws MailJimpException; 
   
   
   

@@ -50,8 +50,8 @@ import mailjimp.dom.request.security.ApiKeyAddRequest;
 import mailjimp.dom.request.security.ApiKeyExpireRequest;
 import mailjimp.dom.request.security.ApiKeyRequest;
 import mailjimp.dom.response.MailJimpErrorResponse;
-import mailjimp.dom.response.list.ListBatchSubscribeResponse;
 import mailjimp.dom.response.list.InterestGrouping;
+import mailjimp.dom.response.list.ListBatchSubscribeResponse;
 import mailjimp.dom.response.list.ListBatchUnsubscribeResponse;
 import mailjimp.dom.response.list.ListMemberInfoResponse;
 import mailjimp.dom.response.list.ListMembersResponse;
@@ -305,6 +305,13 @@ public class MailJimpJsonService extends AbstractMailJimpService {
   @Override
   public boolean templateUpdate(int id, String name, String html) throws MailJimpException {
     boolean response = performRequest("templateUpdate", new mailjimp.dom.request.template.TemplateUpdateRequest(apiKey, id, name, html), new TypeReference<Boolean>() {/* empty */});
+    log.debug("Tempate Update: {}", response);
+    return response;
+    }
+  
+  @Override
+  public Map<String,Object> templateInfo(int templateId, String type) throws MailJimpException {
+    Map<String,Object> response = performRequest("templateInfo", new mailjimp.dom.request.template.TemplateInfoRequest(apiKey, templateId, type), new TypeReference<Map<String,Object>>() {/* empty */});
     log.debug("Tempate Update: {}", response);
     return response;
     }
