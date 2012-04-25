@@ -17,10 +17,12 @@
  */
 package mailjimp.service;
 
+import java.util.List;
+
 import mailjimp.dom.MailJimpConstants;
 import mailjimp.dom.request.campaign.CampaignCreateRequest;
+import mailjimp.dom.response.campaign.CampaignListResponse;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -62,7 +64,7 @@ public class TestMailJimpJsonServiceCampaign extends AbstractServiceTester {
   }
   
   
-  @Test
+  //@Test
   public void testCreateCampaign()
   {
 	  try {
@@ -78,7 +80,24 @@ public class TestMailJimpJsonServiceCampaign extends AbstractServiceTester {
 	  }
   }
   
-  @Test
+  @Test 
+  public void testListCampaign()
+  {
+	  try {
+		  log.debug("Test campaign list");
+		  
+		  CampaignListResponse response = mSvc.campaignList(null, 0, 10);
+		  
+		  
+		  log.debug("Template list campaigns: {}", response);
+		  Assert.assertTrue(response != null);
+	  } catch (MailJimpException mje) {
+		  processError(mje);
+	  } 
+  }
+  
+  
+  //@Test
   public void testDeleteCampaign()
   {
 	  try {

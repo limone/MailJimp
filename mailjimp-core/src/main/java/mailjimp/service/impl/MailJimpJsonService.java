@@ -51,6 +51,7 @@ import mailjimp.dom.request.security.ApiKeyAddRequest;
 import mailjimp.dom.request.security.ApiKeyExpireRequest;
 import mailjimp.dom.request.security.ApiKeyRequest;
 import mailjimp.dom.response.MailJimpErrorResponse;
+import mailjimp.dom.response.campaign.CampaignListResponse;
 import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.ListBatchSubscribeResponse;
 import mailjimp.dom.response.list.ListBatchUnsubscribeResponse;
@@ -347,5 +348,13 @@ public class MailJimpJsonService extends AbstractMailJimpService {
 	    log.debug("campaign Delete: {}", response);
 	    return response;
 	    }
-
+  
+  
+  @Override
+  public CampaignListResponse campaignList(HashMap<String,Object> filters, int start, int limit) throws MailJimpException {
+	    CampaignListResponse response = performRequest("campaigns", new mailjimp.dom.request.campaign.CampaignListRequest(apiKey, filters, start, limit), new TypeReference<CampaignListResponse>() {/* empty */});
+	    log.debug("campaign List: {}", response);
+	    
+	    return response;
+	    }
 }

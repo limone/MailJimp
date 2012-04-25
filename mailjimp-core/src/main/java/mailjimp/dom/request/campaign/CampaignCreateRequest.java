@@ -25,7 +25,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class CampaignCreateRequest extends MailJimpRequest {
 	
-	
 	@JsonProperty
 	private String type;
 	
