@@ -43,7 +43,7 @@ public class CampaignCreateRequest extends MailJimpRequest {
 		this.content = content;
 	}
 
-	static public HashMap<String,Object> buildOptions(String listId, String campaignName, String subject,  String fromEmail, String fromName, String toName)
+	static public HashMap<String,Object> buildOptions(String listId, String campaignName, String subject,  String fromEmail, String fromName, String toName, String googleUA)
 	{
 		HashMap<String,Object> options = new HashMap<String,Object>();
 
@@ -53,6 +53,14 @@ public class CampaignCreateRequest extends MailJimpRequest {
 		options.put("from_email",fromEmail);
 		options.put("from_name",fromName);
 		options.put("to_name",toName);
+		
+		if (googleUA != null)
+		{
+			HashMap<String,String> googleua = new HashMap<String,String>(1);
+			googleua.put("google", googleUA);		
+			options.put("analytics", googleua);
+		}
+		
 		return options;
 	}
 	

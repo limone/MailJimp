@@ -1,11 +1,14 @@
 package mailjimp.dom.response.campaign;
 
 import java.io.Serializable;
+
 import java.util.HashMap;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+@JsonIgnoreProperties({ "segment_opts", "type_opts" }) //TODO
 public class CampaignListResponseItem implements Serializable{
 	
 	@JsonProperty
@@ -104,11 +107,13 @@ public class CampaignListResponseItem implements Serializable{
 	@JsonProperty
 	String	segment_text;
 	
-	@JsonProperty
-	List<String>	segment_opts;
 	
-	@JsonProperty
-	List<String>	type_opts;
+
+//	@JsonProperty	
+//	List<String>	segment_opts;
+//	
+//	@JsonProperty
+//	List<String>	type_opts;
 	
 	
 	@Override
@@ -310,19 +315,19 @@ public class CampaignListResponseItem implements Serializable{
 	public void setSegment_text(String segment_text) {
 		this.segment_text = segment_text;
 	}
-	public List<String> getSegment_opts() {
-		return segment_opts;
-	}
-	public void setSegment_opts(List<String> segment_opts) {
-		this.segment_opts = segment_opts;
-	}
-	public List<String> getType_opts() {
-		return type_opts;
-	}
-	public void setType_opts(List<String> type_opts) {
-		this.type_opts = type_opts;
-	}
-	
+//	public List<String> getSegment_opts() {
+//		return segment_opts;
+//	}
+//	public void setSegment_opts(List<String> segment_opts) {
+//		this.segment_opts = segment_opts;
+//	}
+//	public List<String> getType_opts() {
+//		return type_opts;
+//	}
+//	public void setType_opts(List<String> type_opts) {
+//		this.type_opts = type_opts;
+//	}
+//	
 	
 	
 	
