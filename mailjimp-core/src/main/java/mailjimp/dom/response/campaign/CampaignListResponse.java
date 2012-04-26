@@ -28,7 +28,10 @@ public class CampaignListResponse implements Serializable{
 	public void setItems(List<CampaignListResponseItem> items) {
 		this.items = items;
 	}	
-
 	
-
+	@Override
+	public String toString()
+	{
+		return "CampaignListResponse: [total=" + total+"];";
+	}
 }

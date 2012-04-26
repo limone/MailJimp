@@ -25,64 +25,97 @@ public class CampaignListResponseItem implements Serializable{
 	
 	@JsonProperty	
 	String	content_type;
+	
 	@JsonProperty
 	String	title;
+	
 	@JsonProperty
 	String	type;
+	
 	@JsonProperty
 	String	create_time;
+	
 	@JsonProperty
-	String	send_time	;
+	String	send_time;
+	
 	@JsonProperty
-	int	emails_sent	;
+	int	emails_sent;
+	
 	@JsonProperty
-	String	status	;
+	String	status;
+	
 	@JsonProperty
-	String	from_name;	
+	String	from_name;
+	
 	@JsonProperty
-	String	from_email;	
+	String	from_email;
+	
 	@JsonProperty
-	String	subject	;
+	String	subject;
+	
 	@JsonProperty
-	String	to_name	;
+	String	to_name;
+	
 	@JsonProperty
 	String	archive_url;
+	
 	@JsonProperty
-	boolean	inline_css	;
+	boolean	inline_css;
+	
 	@JsonProperty
-	String	analytics	;
+	String	analytics;
+	
 	@JsonProperty
 	String	analytics_tag;
+	
 	@JsonProperty
 	boolean	authenticate;
+	
 	@JsonProperty
-	boolean	ecomm360	;
+	boolean	ecomm360;
+	
 	@JsonProperty
-	boolean	auto_tweet	;
+	boolean	auto_tweet;
+	
 	@JsonProperty
-	String	auto_fb_post;	
+	String	auto_fb_post;
+	
 	@JsonProperty
-	boolean	auto_footer	;
+	boolean	auto_footer;
+	
 	@JsonProperty
-	boolean	timewarp	;
+	boolean	timewarp;
+	
 	@JsonProperty
-	String	timewarp_schedule;	
+	String	timewarp_schedule;
+	
 	@JsonProperty
 	HashMap<String,Object> tracking;
+	
 	@JsonProperty
-	boolean	html_clicks	;
+	boolean	html_clicks;
+	
 	@JsonProperty
-	boolean	text_clicks	;
+	boolean	text_clicks;
+	
 	@JsonProperty
-	boolean	opens	;
+	boolean	opens;
+	
 	@JsonProperty
 	String	segment_text;
+	
 	@JsonProperty
 	List<String>	segment_opts;
+	
 	@JsonProperty
 	List<String>	type_opts;
 	
 	
+	@Override
+	public String toString()
+	{
+		return "CampaignListResponseItem: [id=" + this.id + ", listId=" + this.listId + ", templateId=" + template_id + ", title=" + this.title +"];";
+	}
 	
 	
 	public String getId() {
