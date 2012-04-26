@@ -4,7 +4,7 @@
   <name>MailChimp Java API - Core Components</name>
 
   <parent>
-    <groupId>net.mailjimp</groupId>
+    <groupId>ca.morningstar.mailjimp</groupId>
     <artifactId>mailjimp-parent</artifactId>
     <version>0.4-SNAPSHOT</version>
   </parent>
