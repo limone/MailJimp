@@ -348,7 +348,14 @@ public interface IMailJimpService extends Serializable {
    */  
   Boolean campaignDelete(String campaignId) throws MailJimpException;
 
-
+  /**
+  Parameters
+   * filters					Filters for returning campaigns	see http://apidocs.mailchimp.com/api/rtfm/campaigns.func.php
+   * start						Start position (0 beginning)
+   * limit						number of returns to return (start + limit support pagination)
+   * @return                    Object containing a list of campaign items.
+   * @throws MailJimpException  
+   */
   CampaignListResponse campaignList(HashMap<String, Object> filters, int start, int limit) throws MailJimpException;
   
 }

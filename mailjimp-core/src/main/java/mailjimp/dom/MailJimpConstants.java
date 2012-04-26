@@ -41,7 +41,10 @@ public interface MailJimpConstants extends Serializable {
   final String			CAMPAIGNTYPE_RSS = "rss";
   final String			CAMPAIGNTYPE_AUTO = "auto";
   
-  
-  
+  final String 			CAMPAIGNSTATUS_SENT = "sent";
+  final String 			CAMPAIGNSTATUS_SAVE = "save";
+  final String 			CAMPAIGNSTATUS_PAUSED = "paused";
+  final String 			CAMPAIGNSTATUS_SCHEDULE = "schedule";
+  final String 			CAMPAIGNSTATUS_SENDING = "sending";
   
 }
