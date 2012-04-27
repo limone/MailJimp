@@ -51,6 +51,7 @@ import mailjimp.dom.request.security.ApiKeyAddRequest;
 import mailjimp.dom.request.security.ApiKeyExpireRequest;
 import mailjimp.dom.request.security.ApiKeyRequest;
 import mailjimp.dom.response.MailJimpErrorResponse;
+import mailjimp.dom.response.campaign.CampaignBounceMessageResponse;
 import mailjimp.dom.response.campaign.CampaignListResponse;
 import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.ListBatchSubscribeResponse;
@@ -353,6 +354,14 @@ public class MailJimpJsonService extends AbstractMailJimpService {
   @Override
   public CampaignListResponse campaignList(HashMap<String,Object> filters, int start, int limit) throws MailJimpException {
 	    CampaignListResponse response = performRequest("campaigns", new mailjimp.dom.request.campaign.CampaignListRequest(apiKey, filters, start, limit), new TypeReference<CampaignListResponse>() {/* empty */});
+	    log.debug("campaign List: {}", response);
+	    
+	    return response;
+	    }
+  
+  @Override
+  public CampaignBounceMessageResponse campaignBounceMessages(String campaignId, Date since, int start, int limit) throws MailJimpException {
+	  CampaignBounceMessageResponse response = performRequest("campaigns", new mailjimp.dom.request.campaign.CampaignBounceMessagesRequest(apiKey, campaignId, since, start, limit), new TypeReference<CampaignBounceMessageResponse>() {/* empty */});
 	    log.debug("campaign List: {}", response);
 	    
 	    return response;

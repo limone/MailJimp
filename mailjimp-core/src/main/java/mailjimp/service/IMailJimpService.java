@@ -29,6 +29,7 @@ import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
 import mailjimp.dom.request.NamedBoolean;
 import mailjimp.dom.request.list.ListBatchSubscribeStruct;
+import mailjimp.dom.response.campaign.CampaignBounceMessageResponse;
 import mailjimp.dom.response.campaign.CampaignListResponse;
 import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.ListBatchSubscribeResponse;
@@ -357,5 +358,8 @@ public interface IMailJimpService extends Serializable {
    * @throws MailJimpException  
    */
   CampaignListResponse campaignList(HashMap<String, Object> filters, int start, int limit) throws MailJimpException;
+
+
+CampaignBounceMessageResponse campaignBounceMessages(String campaignId,	Date since, int start, int limit) throws MailJimpException;
   
 }
