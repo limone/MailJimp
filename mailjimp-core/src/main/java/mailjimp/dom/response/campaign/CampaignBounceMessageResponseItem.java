@@ -42,5 +42,11 @@ public class CampaignBounceMessageResponseItem implements Serializable{
 	}
 	
 	
+	@Override
+	public String toString()
+	{
+		return "CampaignBoucneMessageResponseItem [date=" + date + ", email=" + email + ", message=" + message + "];";
+	}
+	
 	
 	}

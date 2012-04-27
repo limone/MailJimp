@@ -361,8 +361,8 @@ public class MailJimpJsonService extends AbstractMailJimpService {
   
   @Override
   public CampaignBounceMessageResponse campaignBounceMessages(String campaignId, Date since, int start, int limit) throws MailJimpException {
-	  CampaignBounceMessageResponse response = performRequest("campaigns", new mailjimp.dom.request.campaign.CampaignBounceMessagesRequest(apiKey, campaignId, since, start, limit), new TypeReference<CampaignBounceMessageResponse>() {/* empty */});
-	    log.debug("campaign List: {}", response);
+	  CampaignBounceMessageResponse response = performRequest("campaignBounceMessages", new mailjimp.dom.request.campaign.CampaignBounceMessagesRequest(apiKey, campaignId, since, start, limit), new TypeReference<CampaignBounceMessageResponse>() {/* empty */});
+	    log.debug("campaign Bounce Message: {}", response);
 	    
 	    return response;
 	    }

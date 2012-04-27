@@ -17,8 +17,12 @@
  */
 package mailjimp.service;
 
+import java.util.Date;
+
 import mailjimp.dom.MailJimpConstants;
 import mailjimp.dom.request.campaign.CampaignCreateRequest;
+import mailjimp.dom.response.campaign.CampaignBounceMessageResponse;
+import mailjimp.dom.response.campaign.CampaignBounceMessageResponseItem;
 import mailjimp.dom.response.campaign.CampaignListResponse;
 import mailjimp.dom.response.campaign.CampaignListResponseItem;
 
@@ -105,6 +109,44 @@ public class TestMailJimpJsonServiceCampaign extends AbstractServiceTester {
 	  } 
   }
   
+  
+  @SuppressWarnings("deprecation")
+//@Test //TODO enable test after I have sent a campaign 
+  public void testBounceCampaign() throws InterruptedException
+  {
+	  try {		  
+		  boolean found = false;
+		  log.debug("Test campaign bounce messages");
+		  Date since = new Date();
+
+		  if (since.getMonth() == 1)
+		  {
+			  since.setYear(since.getYear()-1);
+			  since.setMonth(11); //DEC			  
+		  }
+		  else
+		  {
+			  since.setMonth(since.getMonth()-1);  
+		  }
+		  
+		  CampaignBounceMessageResponse response = mSvc.campaignBounceMessages(campaignId, since, 0, 10);
+		  
+		  // find the campaign I just created
+		  for (CampaignBounceMessageResponseItem item : response.getItems())
+		  {
+			  log.debug(item.toString());			  
+		  }
+		  
+		  
+		  log.debug("Bounce list campaigns: {}", response);
+		  Assert.assertTrue(response != null);
+		  Assert.assertTrue(found);
+	  } catch (MailJimpException mje) {
+		  processError(mje);
+	  } 
+  }
+  
+   
   
   @Test
   public void testDeleteCampaign()
