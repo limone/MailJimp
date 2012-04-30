@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class CampaignBounceMessageResponse implements Serializable{
+public class CampaignMembersResponse implements Serializable{
 	
 	@JsonProperty
 	int total;
 	
 	@JsonProperty("data")
-	List<CampaignBounceMessageResponseItem> items;
+	List<CampaignMembersResponseItem> items;
 
 	public int getTotal() {
 		return total;
@@ -21,11 +21,11 @@ public class CampaignBounceMessageResponse implements Serializable{
 		this.total = total;
 	}
 
-	public List<CampaignBounceMessageResponseItem> getItems() {
+	public List<CampaignMembersResponseItem> getItems() {
 		return items;
 	}
 
-	public void setItems(List<CampaignBounceMessageResponseItem> items) {
+	public void setItems(List<CampaignMembersResponseItem> items) {
 		this.items = items;
 	}	
 	

@@ -51,7 +51,7 @@ import mailjimp.dom.request.security.ApiKeyAddRequest;
 import mailjimp.dom.request.security.ApiKeyExpireRequest;
 import mailjimp.dom.request.security.ApiKeyRequest;
 import mailjimp.dom.response.MailJimpErrorResponse;
-import mailjimp.dom.response.campaign.CampaignBounceMessageResponse;
+import mailjimp.dom.response.campaign.CampaignMembersResponse;
 import mailjimp.dom.response.campaign.CampaignListResponse;
 import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.ListBatchSubscribeResponse;
@@ -360,9 +360,9 @@ public class MailJimpJsonService extends AbstractMailJimpService {
 	    }
   
   @Override
-  public CampaignBounceMessageResponse campaignBounceMessages(String campaignId, Date since, int start, int limit) throws MailJimpException {
-	  CampaignBounceMessageResponse response = performRequest("campaignBounceMessages", new mailjimp.dom.request.campaign.CampaignBounceMessagesRequest(apiKey, campaignId, since, start, limit), new TypeReference<CampaignBounceMessageResponse>() {/* empty */});
-	    log.debug("campaign Bounce Message: {}", response);
+  public CampaignMembersResponse campaignMembers(String campaignId, String status, int start, int limit) throws MailJimpException {
+	  CampaignMembersResponse response = performRequest("campaignMembers", new mailjimp.dom.request.campaign.CampaignMembersRequest(apiKey, campaignId, status, start, limit), new TypeReference<CampaignMembersResponse>() {/* empty */});
+	    log.debug("campaign members: {}", response);
 	    
 	    return response;
 	    }

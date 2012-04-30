@@ -47,4 +47,8 @@ public interface MailJimpConstants extends Serializable {
   final String 			CAMPAIGNSTATUS_SCHEDULE = "schedule";
   final String 			CAMPAIGNSTATUS_SENDING = "sending";
   
+  final String 			CAMPAIGNMEMBER_STATUS_SENT = "sent";
+  final String			CAMPAIGNMEMBER_STATUS_HARDBOUNCE = "hard";
+  final String			CAMPAIGNMEMBER_STATUS_SOFTBOUNCE = "soft";
+  final String			CAMPAIGNMEMBER_STATUS_ALL = "";
 }

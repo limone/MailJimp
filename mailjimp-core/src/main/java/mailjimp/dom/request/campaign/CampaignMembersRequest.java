@@ -27,7 +27,7 @@
 	import org.codehaus.jackson.annotate.JsonProperty;
 	import org.springframework.format.datetime.DateFormatter;
 
-	public class CampaignBounceMessagesRequest extends MailJimpRequest {
+	public class CampaignMembersRequest extends MailJimpRequest {
 		
 		@JsonProperty("cid")
 		String campaignId;
@@ -39,24 +39,14 @@
 		private int limit;
 	
 		@JsonProperty
-		String since;
+		String status;
 		
-		static private DateFormatter df = null;
-		
-
-		public CampaignBounceMessagesRequest(String apikey, String campaignId, Date since, int start, int limit) {
+		public CampaignMembersRequest(String apikey, String campaignId, String status, int start, int limit) {
 			super(apikey);
 			this.start = start;
 			this.limit = limit;
-			this.campaignId = campaignId;
-			
-			if (df == null)
-			{
-				df = new DateFormatter("yyyy-MM-dd");
-				df.setTimeZone(TimeZone.getTimeZone("GMT"));
-			}
-			
-			this.since = df.print(since, Locale.US);
+			this.campaignId = campaignId;			
+			this.status = status;
 		}
 
 
@@ -94,15 +84,13 @@
 		}
 
 
-		public String getSince() {
-			return since;
+		public String getStatus() {
+			return status;
 		}
 
-
-		public void setSince(String since) {
-			this.since = since;
+		public void setStatus(String status) {
+			this.status = status;
 		}
-
 		
 		
 	}
