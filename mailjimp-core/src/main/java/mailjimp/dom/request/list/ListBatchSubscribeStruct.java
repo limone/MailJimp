@@ -13,6 +13,12 @@ public class ListBatchSubscribeStruct implements Serializable {
   @JsonProperty("EMAIL_TYPE")
   private EmailType emailType;
   
+  @JsonProperty("FNAME")
+  private String firstName;
+  
+  @JsonProperty("LNAME")
+  private String lastName;
+  
   public ListBatchSubscribeStruct() {
     // empty
   }
@@ -38,4 +44,21 @@ public class ListBatchSubscribeStruct implements Serializable {
   public void setEmailType(EmailType emailType) {
     this.emailType = emailType;
   }
+  
+
+public String getFirstName() {
+	return firstName;
+}
+
+public void setFirstName(String firstName) {
+	this.firstName = firstName;
+}
+
+public String getLastName() {
+	return lastName;
+}
+
+public void setLastName(String lastName) {
+	this.lastName = lastName;
+}
 }
