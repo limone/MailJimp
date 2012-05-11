@@ -32,6 +32,7 @@ import mailjimp.dom.enums.InterestGroupingType;
 import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
 import mailjimp.dom.request.list.ListBatchSubscribeStruct;
+import mailjimp.dom.request.list.ListBatchSubscribeStructWithVars;
 import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.ListBatchSubscribeResponse;
 import mailjimp.dom.response.list.ListBatchUnsubscribeResponse;
@@ -42,6 +43,7 @@ import mailjimp.dom.security.ApiKey;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -224,6 +226,50 @@ public class TestMailJimpJsonService extends AbstractServiceTester {
       processError(mje);
     }
   }
+
+  
+  @Test
+  public void testListBatchSubscribeMergeVars() {
+	final int NUM_EMAILS = 10;
+
+    List<ListBatchSubscribeStructWithVars> data = new ArrayList<ListBatchSubscribeStructWithVars>();
+
+    for (int ndx = 0; ndx < NUM_EMAILS; ndx++)
+    {    	
+    	String name = "test" + RandomStringUtils.randomNumeric(5);
+    	String email = name + "@laccetti.com";
+        Map<String, Object> merges = new HashMap<String, Object>();
+        merges.put(MailJimpConstants.MERGE_EMAIL, email);
+        merges.put(MailJimpConstants.MERGE_FNAME, name);
+        merges.put(MailJimpConstants.MERGE_LNAME, "TestMergeVars");
+        merges.put("MMERGE3", "test merge");
+
+        List<Map<Object, Object>> groupings = new ArrayList<Map<Object, Object>>();
+        Map<Object, Object> groups = new HashMap<Object, Object>();
+        groups.put("name", "Test Group");
+        groups.put("groups", "Group 1");
+        groupings.add(groups);
+        merges.put("GROUPINGS", groupings);
+        
+       data.add(new ListBatchSubscribeStructWithVars(email, EmailType.HTML, merges));       
+    }
+    
+
+    try {
+      log.debug("Test list subscribe with merges");
+      ListBatchSubscribeResponse response = mSvc.listBatchSubscribeWithVars(listId, data, false, true, true);
+      log.debug("Batch Submitted subscribed: {}", response);
+      
+      int count = response.getAddCount() + response.getUpdateCount();
+      Assert.assertTrue(count == NUM_EMAILS);
+      Assert.assertTrue(response.getErrorCount() == 0);
+    } catch (MailJimpException mje) {
+      processError(mje);
+    }
+  }
+  
+  
+  
 
   @Test
   public void testListUpdateMember() {
