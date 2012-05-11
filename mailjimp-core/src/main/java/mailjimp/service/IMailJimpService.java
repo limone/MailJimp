@@ -29,6 +29,7 @@ import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
 import mailjimp.dom.request.NamedBoolean;
 import mailjimp.dom.request.list.ListBatchSubscribeStruct;
+import mailjimp.dom.request.list.ListBatchSubscribeStructWithVars;
 import mailjimp.dom.response.campaign.CampaignMembersResponse;
 import mailjimp.dom.response.campaign.CampaignListResponse;
 import mailjimp.dom.response.list.InterestGrouping;
@@ -146,8 +147,8 @@ public interface IMailJimpService extends Serializable {
    * 
    * @throws MailJimpException
    */
-  public ListBatchSubscribeResponse listBatchSubscribe(String listId, List<ListBatchSubscribeStruct> batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailJimpException;
-  
+  public ListBatchSubscribeResponse listBatchSubscribe        (String listId,List<ListBatchSubscribeStruct>         batch, boolean doubleOptin,boolean updateExisting, boolean replaceInterests) throws MailJimpException;
+  public ListBatchSubscribeResponse listBatchSubscribeWithVars(String listId,List<ListBatchSubscribeStructWithVars> batch, boolean doubleOptin,boolean updateExisting, boolean replaceInterests) throws MailJimpException;
   
   /**
    * Batch subscribe many users to a list.  See the <a
@@ -361,5 +362,8 @@ public interface IMailJimpService extends Serializable {
 
 
   public CampaignMembersResponse campaignMembers(String campaignId, String status, int start, int limit) throws MailJimpException;
+
+
+
   
 }

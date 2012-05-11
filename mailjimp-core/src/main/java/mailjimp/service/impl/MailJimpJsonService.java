@@ -32,7 +32,9 @@ import mailjimp.dom.enums.InterestGroupingType;
 import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
 import mailjimp.dom.request.list.ListBatchSubscribeRequest;
+import mailjimp.dom.request.list.ListBatchSubscribeRequestWithVars;
 import mailjimp.dom.request.list.ListBatchSubscribeStruct;
+import mailjimp.dom.request.list.ListBatchSubscribeStructWithVars;
 import mailjimp.dom.request.list.ListBatchUnsubscribeRequest;
 import mailjimp.dom.request.list.ListInterestGroupAddRequest;
 import mailjimp.dom.request.list.ListInterestGroupDelRequest;
@@ -220,6 +222,15 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     log.debug("List batch subscribe response: {}", response);
     return response;
   }
+  
+  @Override
+  public ListBatchSubscribeResponse listBatchSubscribeWithVars(String listId, List<ListBatchSubscribeStructWithVars> batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailJimpException {
+    ListBatchSubscribeResponse response = performRequest("listBatchSubscribe", new ListBatchSubscribeRequestWithVars(apiKey, listId, batch, doubleOptin, updateExisting, replaceInterests), new TypeReference<ListBatchSubscribeResponse>() {/* empty */});
+    log.debug("List batch subscribe response: {}", response);
+    return response;
+  }
+  
+  
 
   @Override
   public ListBatchUnsubscribeResponse listBatchUnsubscribe(String listId, List<String> emails, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailJimpException {
