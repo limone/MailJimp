@@ -17,15 +17,9 @@
 	 */
 	package mailjimp.dom.request.campaign;
 
-	import java.util.Date;
-	import java.util.HashMap;
-	import java.util.Locale;
-	import java.util.TimeZone;
-
 	import mailjimp.dom.request.MailJimpRequest;
 
-	import org.codehaus.jackson.annotate.JsonProperty;
-	import org.springframework.format.datetime.DateFormatter;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 	public class CampaignMembersRequest extends MailJimpRequest {
 		
