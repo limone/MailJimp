@@ -26,8 +26,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 
 public class TemplateListRequest extends MailJimpRequest {
-
-	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty
 	private List<NamedBoolean> types;
@@ -77,10 +75,4 @@ public class TemplateListRequest extends MailJimpRequest {
 	public void setInactives(List<NamedBoolean> inactives) {
 		this.inactives = inactives;
 	}
-
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
 }

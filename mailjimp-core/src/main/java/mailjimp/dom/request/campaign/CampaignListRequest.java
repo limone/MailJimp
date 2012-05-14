@@ -38,6 +38,7 @@
 		@JsonProperty
 		HashMap<String,Object> filters;
 		
+		//TODO //TMG MailJimpConstant uses SimpleDateFormat, perhaps I should drop this and use that.
 		static DateFormatter df = null;
 		
 
@@ -48,7 +49,7 @@
 			this.limit = limit;
 			
 			if (df == null)
-			{
+			{				
 				df = new DateFormatter("yyyy-MM-dd HH:mm:ss");
 				df.setTimeZone(TimeZone.getTimeZone("GMT"));
 			}				

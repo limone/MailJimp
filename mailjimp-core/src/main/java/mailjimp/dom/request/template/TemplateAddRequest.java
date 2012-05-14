@@ -23,7 +23,6 @@ import mailjimp.dom.request.MailJimpRequest;
 
 
 public class TemplateAddRequest extends MailJimpRequest {
-	private static final long serialVersionUID = 1L;
 
 	@JsonProperty
 	private String name;

@@ -29,7 +29,7 @@ public class TemplateUpdateRequest extends MailJimpRequest {
 	private static final long serialVersionUID = 1L;
 
 	@JsonProperty
-	private int id = -1;
+	private int id;
 	
 	@JsonProperty
 	private Map<String, String> values = null;

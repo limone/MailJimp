@@ -26,7 +26,7 @@ public class TemplateInfoRequest extends MailJimpRequest {
 	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty
-	private int tid = -1;
+	private int tid;
 	
 	@JsonProperty
 	private String type;

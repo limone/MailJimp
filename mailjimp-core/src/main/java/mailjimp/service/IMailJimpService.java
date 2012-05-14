@@ -148,6 +148,26 @@ public interface IMailJimpService extends Serializable {
    * @throws MailJimpException
    */
   public ListBatchSubscribeResponse listBatchSubscribe        (String listId,List<ListBatchSubscribeStruct>         batch, boolean doubleOptin,boolean updateExisting, boolean replaceInterests) throws MailJimpException;
+  
+  
+  
+  /**
+   * Batch subscribe a user to a mailing list while allowing you to pass a List<KV Map> of List Variables. 
+   * See the <ahref="http://apidocs.mailchimp.com/1.3/listbatchsubscribe.func.php"
+   * title="MailChimp API">MailChimp API</a> for more info.
+   * 
+   * 
+   * @param listId
+   * @param batch
+   * @param doubleOptin
+   * @param updateExisting
+   * @param replaceInterests
+   * 
+   * @return The result of this call. Containing add, update and error counts.
+   *         In case of errors contains additional information.
+   * 
+   * @throws MailJimpException
+   */    
   public ListBatchSubscribeResponse listBatchSubscribeWithVars(String listId,List<ListBatchSubscribeStructWithVars> batch, boolean doubleOptin,boolean updateExisting, boolean replaceInterests) throws MailJimpException;
   
   /**
@@ -322,14 +342,12 @@ public interface IMailJimpService extends Serializable {
   TemplateInfoResponse templateInfo(int templateId, String type) throws MailJimpException;
 
   /**
+   * Partial implementation of TemplateList which returns all templates in MC
   Parameters	
    * @return                    TemplateListResponse on success with all user templates.
    * @throws MailJimpException  
    */
   TemplateListResponse templateList() throws MailJimpException;
-  // there are a lot of template options which I have chosen not to implement since i don't use them, this is how the signature
-  // might have looked like otherwise.
-  //TemplateListResponse templateList(String category,List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException;
 
 
   /**
@@ -360,10 +378,15 @@ public interface IMailJimpService extends Serializable {
    */
   CampaignListResponse campaignList(HashMap<String, Object> filters, int start, int limit) throws MailJimpException;
 
-
+  /**
+   * Allows you to pull lists of members from a particular campaign, used to pull bounces, unsubscribes, etc via status field.
+  Parameters
+   * filters					Filters for returning campaigns	see http://apidocs.mailchimp.com/api/rtfm/campaigns.func.php
+   * start						Start position (0 beginning)
+   * limit						number of returns to return (start + limit support pagination)
+   * @return                    Object containing a list of campaign items.
+   * @throws MailJimpException  
+   */
   public CampaignMembersResponse campaignMembers(String campaignId, String status, int start, int limit) throws MailJimpException;
-
-
-
   
 }
