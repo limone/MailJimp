@@ -62,6 +62,9 @@ public class MailingList {
   
   @JsonProperty("beamer_address")
   private String beamerAddress;
+
+  @JsonProperty("visibility")
+  private String           visibility;  
   
   private MailingListStats stats;
   
@@ -201,6 +204,6 @@ public class MailingList {
 
   @Override
   public String toString() {
-    return "MailingList [id=" + id + ", webId=" + webId + ", name=" + name + ", dateCreated=" + dateCreated + ", emailTypeOption=" + emailTypeOption + ", useAwesomebar=" + useAwesomebar + ", defaultFromName=" + defaultFromName + ", defaultFromEmail=" + defaultFromEmail + ", defaultSubject=" + defaultSubject + ", defaultLanguage=" + defaultLanguage + ", listRating=" + listRating + ", subscribeUrlShort=" + subscribeUrlShort + ", subscribeUrlLong=" + subscribeUrlLong + ", beamerAddress=" + beamerAddress + ", stats=" + stats + ", modules=" + modules + "]";
+    return "MailingList [id=" + id + ", webId=" + webId + ", name=" + name + ", dateCreated=" + dateCreated + ", emailTypeOption=" + emailTypeOption + ", useAwesomebar=" + useAwesomebar + ", defaultFromName=" + defaultFromName + ", defaultFromEmail=" + defaultFromEmail + ", defaultSubject=" + defaultSubject + ", defaultLanguage=" + defaultLanguage + ", listRating=" + listRating + ", subscribeUrlShort=" + subscribeUrlShort + ", subscribeUrlLong=" + subscribeUrlLong + ", beamerAddress=" + beamerAddress + ", visibility=" + visibility + ", stats=" + stats + ", modules=" + modules + "]";
   }
 }
