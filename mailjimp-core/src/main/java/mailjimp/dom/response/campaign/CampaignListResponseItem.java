@@ -124,6 +124,9 @@ public class CampaignListResponseItem implements Serializable{
 	@JsonProperty
 	String	segment_text;
 	
+	@JsonProperty
+	String parent_id;
+	
 	
 
 //	@JsonProperty	
@@ -345,6 +348,16 @@ public class CampaignListResponseItem implements Serializable{
 //		this.type_opts = type_opts;
 //	}
 //	
+
+
+	public String getParent_id() {
+		return parent_id;
+	}
+
+
+	public void setParent_id(String parent_id) {
+		this.parent_id = parent_id;
+	}
 	
 	
 	
