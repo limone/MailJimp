@@ -1,7 +1,7 @@
 /*
- * Copyright 2011 Michael Laccetti
+ * Copyright 2011 Michael Laccetti and Tim Gilbert
  *
- * This file is part of MailJimp.
+ * This file is part of MailJimp and forked MailJimp under https://github.com/knaak/MailJimp
  *
  * MailJimp is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,23 +15,25 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with MailJimp.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mailjimp.dom.request;
+package mailjimp.dom.response.template;
 
-import java.io.Serializable;
+import java.util.List;
 
-public abstract class MailJimpRequest implements Serializable {
-protected String apikey;
-  
-  protected MailJimpRequest(String apikey) {
-    this.apikey = apikey;
-  }
+import mailjimp.dom.response.MailJimpResponse;
 
-  public String getApikey() {
-    return apikey;
-  }
+import org.codehaus.jackson.annotate.JsonProperty;
 
-  public MailJimpRequest setApikey(String apikey) {
-    this.apikey = apikey;
-    return this;
-  }
+public class TemplateListResponse extends MailJimpResponse {
+
+	@JsonProperty("user")
+	List<TemplateListItemResponse> listItems;
+
+	public List<TemplateListItemResponse> getListItems() {
+		return listItems;
+	}
+
+	public void setListItems(List<TemplateListItemResponse> listItems) {
+		this.listItems = listItems;
+	}
+	
 }

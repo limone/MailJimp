@@ -20,6 +20,7 @@ package mailjimp.service.impl;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,9 @@ import mailjimp.dom.enums.InterestGroupingType;
 import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
 import mailjimp.dom.request.list.ListBatchSubscribeRequest;
+import mailjimp.dom.request.list.ListBatchSubscribeRequestWithVars;
 import mailjimp.dom.request.list.ListBatchSubscribeStruct;
+import mailjimp.dom.request.list.ListBatchSubscribeStructWithVars;
 import mailjimp.dom.request.list.ListBatchUnsubscribeRequest;
 import mailjimp.dom.request.list.ListInterestGroupAddRequest;
 import mailjimp.dom.request.list.ListInterestGroupDelRequest;
@@ -50,8 +53,10 @@ import mailjimp.dom.request.security.ApiKeyAddRequest;
 import mailjimp.dom.request.security.ApiKeyExpireRequest;
 import mailjimp.dom.request.security.ApiKeyRequest;
 import mailjimp.dom.response.MailJimpErrorResponse;
-import mailjimp.dom.response.list.ListBatchSubscribeResponse;
+import mailjimp.dom.response.campaign.CampaignMembersResponse;
+import mailjimp.dom.response.campaign.CampaignListResponse;
 import mailjimp.dom.response.list.InterestGrouping;
+import mailjimp.dom.response.list.ListBatchSubscribeResponse;
 import mailjimp.dom.response.list.ListBatchUnsubscribeResponse;
 import mailjimp.dom.response.list.ListMemberInfoResponse;
 import mailjimp.dom.response.list.ListMembersResponse;
@@ -59,7 +64,10 @@ import mailjimp.dom.response.list.ListsResponse;
 import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
+import mailjimp.dom.response.template.TemplateInfoResponse;
+import mailjimp.dom.response.template.TemplateListResponse;
 import mailjimp.dom.security.ApiKey;
+import mailjimp.service.AbstractMailJimpService;
 import mailjimp.service.MailJimpException;
 
 import org.apache.commons.io.IOUtils;
@@ -113,7 +121,7 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     m.setDateFormat(new SimpleDateFormat("yyyy-MM-MM HH:mm:ss"));
   }
   
-  private <V> V performRequest(String method, Object param, TypeReference<V> typeRef) throws MailJimpException {
+  protected <V> V performRequest(String method, Object param, TypeReference<V> typeRef) throws MailJimpException {
     String requestJson = null;
     try {
       requestJson = m.writeValueAsString(param);
@@ -150,7 +158,8 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     }
 
     try {
-      V val = m.readValue(responseJson, typeRef);
+    	//TMG Added cast to fix bug in JavaC:  http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6302954
+      V val = (V) m.readValue(responseJson, typeRef);
       return val;
     } catch (Exception ex) {
       log.error(String.format("Could not convert JSON to expected type (%s).", typeRef.getType().getClass().getCanonicalName()), ex);
@@ -213,6 +222,15 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     log.debug("List batch subscribe response: {}", response);
     return response;
   }
+  
+  @Override
+  public ListBatchSubscribeResponse listBatchSubscribeWithVars(String listId, List<ListBatchSubscribeStructWithVars> batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailJimpException {
+    ListBatchSubscribeResponse response = performRequest("listBatchSubscribe", new ListBatchSubscribeRequestWithVars(apiKey, listId, batch, doubleOptin, updateExisting, replaceInterests), new TypeReference<ListBatchSubscribeResponse>() {/* empty */});
+    log.debug("List batch subscribe response: {}", response);
+    return response;
+  }
+  
+  
 
   @Override
   public ListBatchUnsubscribeResponse listBatchUnsubscribe(String listId, List<String> emails, boolean deleteMember, boolean sendGoodbye, boolean sendNotify) throws MailJimpException {
@@ -283,4 +301,80 @@ public class MailJimpJsonService extends AbstractMailJimpService {
     log.debug("Delete interesting grouping status: {}", response);
     return response;
   }
+  
+
+  @Override
+  public int templateAdd(String name, String html) throws MailJimpException {
+    int response = performRequest("templateAdd", new mailjimp.dom.request.template.TemplateAddRequest(apiKey, name, html), new TypeReference<Integer>() {/* empty */});
+    log.debug("Tempate Add: {}", response);
+    return response;
+    }
+  
+  
+  @Override
+  public boolean templateDel(int id) throws MailJimpException {
+    boolean response = performRequest("templateDel", new mailjimp.dom.request.template.TemplateDelRequest(apiKey, id), new TypeReference<Boolean>() {/* empty */});
+    log.debug("Tempate delete: {}", response);
+    return response;
+    }
+
+  
+  @Override
+  public boolean templateUndel(int id) throws MailJimpException {
+    boolean response = performRequest("templateUndel", new mailjimp.dom.request.template.TemplateDelRequest(apiKey, id), new TypeReference<Boolean>() {/* empty */});
+    log.debug("Tempate undelete: {}", response);
+    return response;
+    }
+
+  @Override
+  public boolean templateUpdate(int id, String name, String html) throws MailJimpException {
+    boolean response = performRequest("templateUpdate", new mailjimp.dom.request.template.TemplateUpdateRequest(apiKey, id, name, html), new TypeReference<Boolean>() {/* empty */});
+    log.debug("Tempate Update: {}", response);
+    return response;
+    }
+  
+  @Override
+  public TemplateInfoResponse templateInfo(int templateId, String type) throws MailJimpException {
+    TemplateInfoResponse response = performRequest("templateInfo", new mailjimp.dom.request.template.TemplateInfoRequest(apiKey, templateId, type), new TypeReference<TemplateInfoResponse>() {/* empty */});
+    log.debug("Tempate Info: {}", response);
+    return response;
+    }
+
+  @Override
+  public TemplateListResponse templateList() throws MailJimpException { //int templateId, String category, List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException {
+	TemplateListResponse response = performRequest("templates", new mailjimp.dom.request.template.TemplateListRequest(apiKey, null, null, null), new TypeReference<TemplateListResponse>() {/* empty */});
+    log.debug("Tempate List: {}", response);
+    return response;
+    }
+  
+  @Override
+  public String campaignCreate(String type, HashMap<String,Object> options, HashMap<String,String> content) throws MailJimpException { //int templateId, String category, List<NamedBoolean> types, List<NamedBoolean> inactives) throws MailJimpException {
+		String response = performRequest("campaignCreate", new mailjimp.dom.request.campaign.CampaignCreateRequest(apiKey, type, options, content), new TypeReference<String>() {/* empty */});
+	    log.debug("capaign Create: {}", response);
+	    return response;
+	    }
+  
+  @Override
+  public Boolean campaignDelete(String campaignId) throws MailJimpException {
+		Boolean response = performRequest("campaignDelete", new mailjimp.dom.request.campaign.CampaignDeleteRequest(apiKey, campaignId), new TypeReference<Boolean>() {/* empty */});
+	    log.debug("campaign Delete: {}", response);
+	    return response;
+	    }
+  
+  
+  @Override
+  public CampaignListResponse campaignList(HashMap<String,Object> filters, int start, int limit) throws MailJimpException {
+	    CampaignListResponse response = performRequest("campaigns", new mailjimp.dom.request.campaign.CampaignListRequest(apiKey, filters, start, limit), new TypeReference<CampaignListResponse>() {/* empty */});
+	    log.debug("campaign List: {}", response);
+	    
+	    return response;
+	    }
+  
+  @Override
+  public CampaignMembersResponse campaignMembers(String campaignId, String status, int start, int limit) throws MailJimpException {
+	  CampaignMembersResponse response = performRequest("campaignMembers", new mailjimp.dom.request.campaign.CampaignMembersRequest(apiKey, campaignId, status, start, limit), new TypeReference<CampaignMembersResponse>() {/* empty */});
+	    log.debug("campaign members: {}", response);
+	    
+	    return response;
+	    }
 }

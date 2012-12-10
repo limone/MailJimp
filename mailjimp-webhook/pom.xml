@@ -6,7 +6,7 @@
   <name>MailChimp Java API - Webhook</name>
 
   <parent>
-    <groupId>net.mailjimp</groupId>
+    <groupId>ca.morningstar.mailjimp</groupId>
     <artifactId>mailjimp-parent</artifactId>
     <version>0.4-SNAPSHOT</version>
   </parent>
@@ -45,4 +45,5 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+  <groupId>ca.morningstar.mailjimp</groupId>
 </project>

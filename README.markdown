@@ -2,6 +2,10 @@
 
 #### About
 
+This fork is adapted from the original.  My goal is to add in some missing service calls surrounding templates and campaigns.
+
+#### Original About.
+
 MailJimp is a MailChimp library built in Java intended for use within Maven-enabled Spring-based applications.  MailJimp was tested against version 1.3 of the MailChimp API though most of the methods will work with version 1.2. (But I really don't know why you would use it ;)
 The Maven part is not mandatory, of course - feel free to download the source and build yourself the library.  The Spring part is also not mandatory, as long as you deploy the library in a container that understands the `@PostConstruct` annotation, or you manually invoke `MailJimpService::init()` after construction.
 

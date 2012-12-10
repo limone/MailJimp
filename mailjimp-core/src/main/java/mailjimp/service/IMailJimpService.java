@@ -19,6 +19,7 @@ package mailjimp.service;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,13 +27,19 @@ import mailjimp.dom.enums.EmailType;
 import mailjimp.dom.enums.InterestGroupingType;
 import mailjimp.dom.enums.InterestGroupingUpdateType;
 import mailjimp.dom.enums.MemberStatus;
+import mailjimp.dom.request.NamedBoolean;
 import mailjimp.dom.request.list.ListBatchSubscribeStruct;
+import mailjimp.dom.request.list.ListBatchSubscribeStructWithVars;
+import mailjimp.dom.response.campaign.CampaignMembersResponse;
+import mailjimp.dom.response.campaign.CampaignListResponse;
+import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.ListBatchSubscribeResponse;
 import mailjimp.dom.response.list.ListBatchUnsubscribeResponse;
-import mailjimp.dom.response.list.InterestGrouping;
 import mailjimp.dom.response.list.MailingList;
 import mailjimp.dom.response.list.MemberInfo;
 import mailjimp.dom.response.list.MemberResponseInfo;
+import mailjimp.dom.response.template.TemplateInfoResponse;
+import mailjimp.dom.response.template.TemplateListResponse;
 import mailjimp.dom.security.ApiKey;
 
 /**
@@ -140,8 +147,28 @@ public interface IMailJimpService extends Serializable {
    * 
    * @throws MailJimpException
    */
-  public ListBatchSubscribeResponse listBatchSubscribe(String listId, List<ListBatchSubscribeStruct> batch, boolean doubleOptin, boolean updateExisting, boolean replaceInterests) throws MailJimpException;
+  public ListBatchSubscribeResponse listBatchSubscribe        (String listId,List<ListBatchSubscribeStruct>         batch, boolean doubleOptin,boolean updateExisting, boolean replaceInterests) throws MailJimpException;
   
+  
+  
+  /**
+   * Batch subscribe a user to a mailing list while allowing you to pass a List<KV Map> of List Variables. 
+   * See the <ahref="http://apidocs.mailchimp.com/1.3/listbatchsubscribe.func.php"
+   * title="MailChimp API">MailChimp API</a> for more info.
+   * 
+   * 
+   * @param listId
+   * @param batch
+   * @param doubleOptin
+   * @param updateExisting
+   * @param replaceInterests
+   * 
+   * @return The result of this call. Containing add, update and error counts.
+   *         In case of errors contains additional information.
+   * 
+   * @throws MailJimpException
+   */    
+  public ListBatchSubscribeResponse listBatchSubscribeWithVars(String listId,List<ListBatchSubscribeStructWithVars> batch, boolean doubleOptin,boolean updateExisting, boolean replaceInterests) throws MailJimpException;
   
   /**
    * Batch subscribe many users to a list.  See the <a
@@ -256,6 +283,7 @@ public interface IMailJimpService extends Serializable {
    */
   public boolean listInterestGroupDelete(String listId, String groupName, Integer groupingId) throws MailJimpException;
   
+  
   /**
    * Change the name of an interest group.
    * 
@@ -267,4 +295,98 @@ public interface IMailJimpService extends Serializable {
    * @throws MailJimpException  If the interest group could not be renamed.
    */
   public boolean listInterestGroupUpdate(String listId, String oldName, String newName) throws MailJimpException;
+  
+  /**
+  Parameters	
+   * name						the name for the template - names must be unique and a max of 50 bytes
+   * html						a string specifying the entire template to be created. This is NOT campaign content. They are intended to utilize our template language. * 
+   * @return                    new templateId
+   * @throws MailJimpException  If the template couldn't be added.
+   */
+  public int templateAdd(String name, String html) throws MailJimpException;
+
+
+  /**
+  Parameters	
+   * id							the template id
+   * @return                    boolean success
+   * @throws MailJimpException  If the template id can't be found
+   */  
+  boolean templateDel(int templateId) throws MailJimpException;
+  
+  /**
+  Parameters	
+   * id							the template id
+   * @return                    boolean success
+   * @throws MailJimpException  If the template id can't be found   */  
+  boolean templateUndel(int templateId) throws MailJimpException;
+
+  /**
+  Parameters	
+   * id							the template id
+   * name						the new name, null if no change
+   * html						the new html, null if no change
+   * @return                    boolean success
+   * @throws MailJimpException  If the template id can't be found or both name and html are null.
+   */  
+  boolean templateUpdate(int templateId, String name, String html) throws MailJimpException;
+
+  /**
+  Parameters	
+   * id							the template id
+   * name						the new name, null if no change
+   * html						the new html, null if no change
+   * @return                    TemplateInfoResponse success
+   * @throws MailJimpException  If the template id can't be found or both name and html are null.
+   */
+  TemplateInfoResponse templateInfo(int templateId, String type) throws MailJimpException;
+
+  /**
+   * Partial implementation of TemplateList which returns all templates in MC
+  Parameters	
+   * @return                    TemplateListResponse on success with all user templates.
+   * @throws MailJimpException  
+   */
+  TemplateListResponse templateList() throws MailJimpException;
+
+
+  /**
+  Parameters
+   * type						Use MailJimpConstants.CAMPAIGNTYPE to specify the style of campaign
+   * options					Use CampaignCreateRequest.buildOptions to build your options
+   * content					Use CampaignCreateRequest.buildContent to build your content either by string, url, base64 encoded binary.	
+   * @return                    String with campaign id
+   * @throws MailJimpException  
+   */  
+  String campaignCreate(String type, HashMap<String, Object> options, HashMap<String, String> content) throws MailJimpException;
+
+  /**
+  Parameters
+   * campaignId					The Campaign Id	
+   * @return                    boolean success
+   * @throws MailJimpException  
+   */  
+  Boolean campaignDelete(String campaignId) throws MailJimpException;
+
+  /**
+  Parameters
+   * filters					Filters for returning campaigns	see http://apidocs.mailchimp.com/api/rtfm/campaigns.func.php
+   * start						Start position (0 beginning)
+   * limit						number of returns to return (start + limit support pagination)
+   * @return                    Object containing a list of campaign items.
+   * @throws MailJimpException  
+   */
+  CampaignListResponse campaignList(HashMap<String, Object> filters, int start, int limit) throws MailJimpException;
+
+  /**
+   * Allows you to pull lists of members from a particular campaign, used to pull bounces, unsubscribes, etc via status field.
+  Parameters
+   * filters					Filters for returning campaigns	see http://apidocs.mailchimp.com/api/rtfm/campaigns.func.php
+   * start						Start position (0 beginning)
+   * limit						number of returns to return (start + limit support pagination)
+   * @return                    Object containing a list of campaign items.
+   * @throws MailJimpException  
+   */
+  public CampaignMembersResponse campaignMembers(String campaignId, String status, int start, int limit) throws MailJimpException;
+  
 }

@@ -63,6 +63,9 @@ public class MailingList {
   @JsonProperty("beamer_address")
   private String beamerAddress;
   
+  @JsonProperty("visibility")
+  private String visibility;
+  
   private MailingListStats stats;
   
   private List<Module> modules;
@@ -203,4 +206,12 @@ public class MailingList {
   public String toString() {
     return "MailingList [id=" + id + ", webId=" + webId + ", name=" + name + ", dateCreated=" + dateCreated + ", emailTypeOption=" + emailTypeOption + ", useAwesomebar=" + useAwesomebar + ", defaultFromName=" + defaultFromName + ", defaultFromEmail=" + defaultFromEmail + ", defaultSubject=" + defaultSubject + ", defaultLanguage=" + defaultLanguage + ", listRating=" + listRating + ", subscribeUrlShort=" + subscribeUrlShort + ", subscribeUrlLong=" + subscribeUrlLong + ", beamerAddress=" + beamerAddress + ", stats=" + stats + ", modules=" + modules + "]";
   }
+
+public String getVisibility() {
+	return visibility;
+}
+
+public void setVisibility(String visibility) {
+	this.visibility = visibility;
+}
 }

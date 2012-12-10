@@ -32,4 +32,23 @@ public interface MailJimpConstants extends Serializable {
   String           MERGE_EMAIL_TYPE = "EMAIL_TYPE";
   String           MERGE_GROUPINGS  = "GROUPINGS";
   String           MERGE_GROUPS     = "groups";
+  
+  // Campaign Consts
+  
+  final String			CAMPAIGNTYPE_REGULAR = "regular";
+  final String			CAMPAIGNTYPE_PLAINTEXT = "plaintext";
+  final String			CAMPAIGNTYPE_ABSPLIT = "absplit";
+  final String			CAMPAIGNTYPE_RSS = "rss";
+  final String			CAMPAIGNTYPE_AUTO = "auto";
+  
+  final String 			CAMPAIGNSTATUS_SENT = "sent";
+  final String 			CAMPAIGNSTATUS_SAVE = "save";
+  final String 			CAMPAIGNSTATUS_PAUSED = "paused";
+  final String 			CAMPAIGNSTATUS_SCHEDULE = "schedule";
+  final String 			CAMPAIGNSTATUS_SENDING = "sending";
+  
+  final String 			CAMPAIGNMEMBER_STATUS_SENT = "sent";
+  final String			CAMPAIGNMEMBER_STATUS_HARDBOUNCE = "hard";
+  final String			CAMPAIGNMEMBER_STATUS_SOFTBOUNCE = "soft";
+  final String			CAMPAIGNMEMBER_STATUS_ALL = "";
 }
